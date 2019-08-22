@@ -1,1 +1,60 @@
+/*--------- 1ra Area: Codigo de Usuario ---------*/
 
+//--------> Paquetes e importaciones
+package Analizadores.UFE;
+import java_cup.runtime.Symbol;
+import Estructuras.Cola;
+import java.util.ArrayList;
+import Modelos.*;
+
+//--------> Codigo para el parser, variables, metodos
+parser code
+{:
+    public Cola TodosLosErrores = new Cola();
+
+    //Metodo al que se llama automaticamente ante algun error sintactico
+    public void syntax_error(Symbol s){
+        String lexema = s.value.toString();
+        int fila = s.right;
+        int columna = s.left;
+        Errores error = new Errores(lexema,fila,columna,"Token " + lexema + " No esperado", "Sintactico");
+        TodosLosErrores.insertar(error);
+    }
+
+    //Metodo al que se llama en el momento en el que ya no es posible una recuperacion de errores
+    public void unrecovered_syntax_error(Symbol s){
+
+    }
+:}
+
+//--------> Codigo para las acciones gramaticales
+action code
+{:
+    
+:}
+
+/*--------- 2da Area: Declaraciones ---------*/
+
+//--------> Declaracion de terminales
+terminal multiplicacion, division, resta, suma, potencia, igual;
+terminal diferente, menorQue, mayorQue;
+terminal logicoAND, logicoOR, logicoXOR;
+terminal parentesisA, parentesisC, llaveA, llaveC, corcheteA, corcheteC;
+terminal dosPuntos, puntoComa, coma;
+terminal var, component, id, x, y;
+terminal height, width, color, border, className, render;
+terminal retorno, panel, text, textField, button, list;
+terminal element, item, defecto, spinner, min, max;
+terminal image, fuente, importar, from, si;
+terminal sino, repetir, imprimir, mientras;
+terminal entero, doble, cadena, booleano, caracter;
+terminal comentarioLinea, comentarioMultiLinea, identificador;
+
+//--------> Declaracion de no terminales
+non terminal S, INICIO;
+start with S;
+
+/*--------- 3ra Area: Reglas Semanticas ---------*/
+
+S ::= INICIO
+    ;

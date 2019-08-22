@@ -1,1 +1,53 @@
+/*--------- 1ra Area: Codigo de Usuario ---------*/
 
+//--------> Paquetes e importaciones
+package Analizadores.CSS;
+import java_cup.runtime.Symbol;
+import Estructuras.Cola;
+import java.util.ArrayList;
+import Modelos.*;
+
+//--------> Codigo para el parser, variables, metodos
+parser code
+{:
+    public Cola TodosLosErrores = new Cola();
+
+    //Metodo al que se llama automaticamente ante algun error sintactico
+    public void syntax_error(Symbol s){
+        String lexema = s.value.toString();
+        int fila = s.right;
+        int columna = s.left;
+        Errores error = new Errores(lexema,fila,columna,"Token " + lexema + " No esperado", "Sintactico");
+        TodosLosErrores.insertar(error);
+    }
+
+    //Metodo al que se llama en el momento en el que ya no es posible una recuperacion de errores
+    public void unrecovered_syntax_error(Symbol s){
+
+    }
+:}
+
+//--------> Codigo para las acciones gramaticales
+action code
+{:
+    
+:}
+
+/*--------- 2da Area: Declaraciones ---------*/
+
+//--------> Declaracion de terminales
+terminal parentesisA, parentesisC, puntoComa, punto, dosPuntos;
+terminal llaveA, llaveC, coma;
+terminal background, border, borderColor, borderWidth, align;
+terminal font, fontSize, fontColor, hight, width, rgb;
+terminal numero, cadena, comentarioLinea, comentarioMultiLinea, hexadecimal;
+
+//--------> Declaracion de no terminales
+non terminal S, INICIO;
+
+start with S;
+
+/*--------- 3ra Area: Reglas Semanticas ---------*/
+
+S ::= INICIO
+    ;

@@ -16,6 +16,8 @@ public class Proyecto1_Compiladores_SegundoSemestre_2019 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Compilador compilador = new Compilador();
+        compilador.setVisible(true);
     }
     
 }
