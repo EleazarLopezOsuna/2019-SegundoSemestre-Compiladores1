@@ -17,6 +17,7 @@ parser code
         String lexema = s.value.toString();
         int fila = s.right;
         int columna = s.left;
+        System.out.println("ERROR SINTACTICO: " + lexema + " LINEA: " + fila + " COLUMNA: " + columna);
         Errores error = new Errores(lexema,fila,columna,"Token " + lexema + " No esperado", "Sintactico");
         TodosLosErrores.insertar(error);
     }
@@ -42,7 +43,7 @@ terminal inicioTitle, finTitle;
 terminal inicioHead, finHead;
 terminal inicioNoufe, finNoufe;
 terminal inicioDiv, finDiv;
-terminal id, cadena, comentarioMultiLinea, cerrar, igual, texto;
+terminal id, cadena, comentarioMultiLinea, cerrar, abrir, igual, texto;
 
 //--------> Declaracion de no terminales
 non terminal S, INICIO;
@@ -67,7 +68,7 @@ INICIO ::= inicioHtml FIN CABEZA FIN CUERPO FIN finHtml
         ;
 CABEZA ::= inicioHead FIN TITULO FIN finHead
         ;
-TITULO ::= inicioTitle FIN texto FIN finTitle
+TITULO ::= inicioTitle  FIN texto FIN  finTitle
         ;
 CUERPO ::= inicioBody L_OPCIONES FIN finBody
         ;
@@ -79,11 +80,10 @@ OPCIONES ::= ERROR
         ;
 ERROR ::= inicioNoufe FIN texto FIN finNoufe
         ;
-SECCION ::= inicioDiv id igual cadena cerrar L_SECCIONES FIN finDiv
+SECCION ::= inicioDiv id igual cadena cerrar L_SECCIONES FIN abrir finDiv
         ;
 L_SECCIONES ::= L_SECCIONES FIN SECCION2
         | FIN SECCION2
         ;
-SECCION2 ::= texto
-        | SECCION
+SECCION2 ::= SECCION
         ;

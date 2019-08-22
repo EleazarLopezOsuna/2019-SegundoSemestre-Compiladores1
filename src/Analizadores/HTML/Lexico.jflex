@@ -32,6 +32,7 @@ import Modelos.Errores;
 //--------> Expresiones regulares
 cadena                  = [\"][^\"]*[\"]
 comentarioMultiLinea    = "<!--"[^>]*"-->"
+texto                   = ">"[^<]*"<"
 
 //--------> Estados
 
@@ -42,6 +43,7 @@ comentarioMultiLinea    = "<!--"[^>]*"-->"
 //--------> Simbolos
 
 <YYINITIAL> ">"                    { return new Symbol(Simbolos.cerrar, yycolumn, yyline, yytext()); }
+<YYINITIAL> "<"                    { return new Symbol(Simbolos.abrir, yycolumn, yyline, yytext()); }
 <YYINITIAL> "="                    { return new Symbol(Simbolos.igual, yycolumn, yyline, yytext()); }
 
 //--------> Palabras Reservaas
@@ -50,18 +52,19 @@ comentarioMultiLinea    = "<!--"[^>]*"-->"
 <YYINITIAL> "</html>"               { return new Symbol(Simbolos.finHtml, yycolumn, yyline, yytext()); }
 <YYINITIAL> "<head>"                { return new Symbol(Simbolos.inicioHead, yycolumn, yyline, yytext()); }
 <YYINITIAL> "</head>"               { return new Symbol(Simbolos.finHead, yycolumn, yyline, yytext()); }
-<YYINITIAL> "<title>"               { return new Symbol(Simbolos.inicioTitle, yycolumn, yyline, yytext()); }
-<YYINITIAL> "</title>"              { return new Symbol(Simbolos.finTitle, yycolumn, yyline, yytext()); }
+<YYINITIAL> "<title"               { return new Symbol(Simbolos.inicioTitle, yycolumn, yyline, yytext()); }
+<YYINITIAL> "/title>"              { return new Symbol(Simbolos.finTitle, yycolumn, yyline, yytext()); }
 <YYINITIAL> "<body>"                { return new Symbol(Simbolos.inicioBody, yycolumn, yyline, yytext()); }
 <YYINITIAL> "</body>"               { return new Symbol(Simbolos.finBody, yycolumn, yyline, yytext()); }
-<YYINITIAL> "<noufe>"               { return new Symbol(Simbolos.inicioNoufe, yycolumn, yyline, yytext()); }
-<YYINITIAL> "</noufe>"              { return new Symbol(Simbolos.finNoufe, yycolumn, yyline, yytext()); }
+<YYINITIAL> "<noufe"               { return new Symbol(Simbolos.inicioNoufe, yycolumn, yyline, yytext()); }
+<YYINITIAL> "/noufe>"              { return new Symbol(Simbolos.finNoufe, yycolumn, yyline, yytext()); }
 <YYINITIAL> "<div"                  { return new Symbol(Simbolos.inicioDiv, yycolumn, yyline, yytext()); }
-<YYINITIAL> "</div>"                { return new Symbol(Simbolos.finDiv, yycolumn, yyline, yytext()); }
+<YYINITIAL> "/div>"                { return new Symbol(Simbolos.finDiv, yycolumn, yyline, yytext()); }
 <YYINITIAL> "id"                    { return new Symbol(Simbolos.id, yycolumn, yyline, yytext()); }
 
 //--------> Expresiones Regulares
 
+<YYINITIAL> {texto}                 { return new Symbol(Simbolos.texto, yycolumn, yyline, yytext()); }
 <YYINITIAL> {cadena}                { return new Symbol(Simbolos.cadena, yycolumn, yyline, yytext()); }
 <YYINITIAL> {comentarioMultiLinea}  { return new Symbol(Simbolos.comentarioMultiLinea, yycolumn, yyline, yytext()); }
 
@@ -71,5 +74,5 @@ comentarioMultiLinea    = "<!--"[^>]*"-->"
 //--------> Manejo de Error Lexico
 
 .                                   { 
-                                        return new Symbol(Simbolos.texto, yycolumn, yyline, yytext());
+                                        System.out.println("ERROR LEXICO: " + yytext() + " LINEA: " + yyline + " COLUMNA: " + yycolumn);
                                     }
