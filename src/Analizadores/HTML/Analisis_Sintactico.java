@@ -34,13 +34,12 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\024\000\002\002\004\000\002\002\005\000\002\015" +
-    "\003\000\002\015\002\000\002\016\004\000\002\016\003" +
-    "\000\002\003\011\000\002\004\007\000\002\005\007\000" +
-    "\002\006\006\000\002\007\005\000\002\007\004\000\002" +
-    "\010\003\000\002\010\003\000\002\011\007\000\002\013" +
-    "\013\000\002\012\005\000\002\012\004\000\002\014\003" +
-    "\000\002\014\003" });
+    "\000\021\000\002\002\004\000\002\002\003\000\002\003" +
+    "\012\000\002\004\011\000\002\005\011\000\002\006\011" +
+    "\000\002\007\004\000\002\007\003\000\002\010\003\000" +
+    "\002\010\003\000\002\011\011\000\002\013\011\000\002" +
+    "\015\006\000\002\015\005\000\002\012\004\000\002\012" +
+    "\003\000\002\014\003" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -48,48 +47,35 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\066\000\006\004\ufffe\022\007\001\002\000\004\002" +
-    "\070\001\002\000\040\002\uffff\004\uffff\005\uffff\006\uffff" +
-    "\007\uffff\010\uffff\011\uffff\012\uffff\013\uffff\014\uffff\015" +
-    "\uffff\016\uffff\022\067\024\uffff\026\uffff\001\002\000\004" +
-    "\004\010\001\002\000\040\002\ufffc\004\ufffc\005\ufffc\006" +
-    "\ufffc\007\ufffc\010\ufffc\011\ufffc\012\ufffc\013\ufffc\014\ufffc" +
-    "\015\ufffc\016\ufffc\022\ufffc\024\ufffc\026\ufffc\001\002\000" +
-    "\006\012\ufffe\022\007\001\002\000\006\002\ufffe\022\007" +
-    "\001\002\000\004\002\000\001\002\000\004\012\014\001" +
-    "\002\000\006\010\ufffe\022\007\001\002\000\006\006\ufffe" +
-    "\022\007\001\002\000\004\006\017\001\002\000\010\014" +
-    "\ufffe\016\ufffe\022\007\001\002\000\006\005\ufffe\022\007" +
-    "\001\002\000\004\005\022\001\002\000\006\002\ufffb\022" +
-    "\ufffb\001\002\000\012\007\ufffe\014\ufffe\016\ufffe\022\007" +
-    "\001\002\000\006\014\025\016\030\001\002\000\006\022" +
-    "\007\026\ufffe\001\002\000\012\007\ufff4\014\ufff4\016\ufff4" +
-    "\022\ufff4\001\002\000\012\007\ufff5\014\ufff5\016\ufff5\022" +
-    "\ufff5\001\002\000\004\020\032\001\002\000\012\007\ufff6" +
-    "\014\ufff6\016\ufff6\022\ufff6\001\002\000\004\025\033\001" +
-    "\002\000\004\021\034\001\002\000\004\023\035\001\002" +
-    "\000\010\016\ufffe\022\007\026\ufffe\001\002\000\012\016" +
-    "\ufffe\022\007\024\ufffe\026\ufffe\001\002\000\006\016\030" +
-    "\026\040\001\002\000\012\016\uffef\022\uffef\024\uffef\026" +
-    "\uffef\001\002\000\012\016\uffee\022\uffee\024\uffee\026\uffee" +
-    "\001\002\000\012\016\ufff0\022\ufff0\024\ufff0\026\ufff0\001" +
-    "\002\000\010\016\030\024\045\026\040\001\002\000\012" +
-    "\016\ufff1\022\ufff1\024\ufff1\026\ufff1\001\002\000\004\017" +
-    "\046\001\002\000\016\007\ufff2\014\ufff2\016\ufff2\022\ufff2" +
-    "\024\ufff2\026\ufff2\001\002\000\004\026\050\001\002\000" +
-    "\006\015\ufffe\022\007\001\002\000\004\015\052\001\002" +
-    "\000\012\007\ufff3\014\ufff3\016\ufff3\022\ufff3\001\002\000" +
-    "\010\007\054\014\025\016\030\001\002\000\006\005\ufff8" +
-    "\022\ufff8\001\002\000\012\007\ufff7\014\ufff7\016\ufff7\022" +
-    "\ufff7\001\002\000\004\010\060\001\002\000\006\013\ufffe" +
-    "\022\007\001\002\000\006\022\007\026\ufffe\001\002\000" +
-    "\004\026\062\001\002\000\006\011\ufffe\022\007\001\002" +
-    "\000\004\011\064\001\002\000\006\013\ufff9\022\ufff9\001" +
-    "\002\000\004\013\066\001\002\000\006\006\ufffa\022\ufffa" +
-    "\001\002\000\040\002\ufffd\004\ufffd\005\ufffd\006\ufffd\007" +
-    "\ufffd\010\ufffd\011\ufffd\012\ufffd\013\ufffd\014\ufffd\015\ufffd" +
-    "\016\ufffd\022\ufffd\024\ufffd\026\ufffd\001\002\000\004\002" +
-    "\001\001\002" });
+    "\000\074\000\004\023\005\001\002\000\004\002\076\001" +
+    "\002\000\004\004\007\001\002\000\004\002\000\001\002" +
+    "\000\004\022\010\001\002\000\004\023\011\001\002\000" +
+    "\004\012\061\001\002\000\004\023\013\001\002\000\004" +
+    "\006\020\001\002\000\004\023\015\001\002\000\004\005" +
+    "\016\001\002\000\004\022\017\001\002\000\004\002\uffff" +
+    "\001\002\000\004\022\021\001\002\000\004\023\024\001" +
+    "\002\000\004\023\ufff8\001\002\000\004\023\ufff9\001\002" +
+    "\000\006\014\031\016\032\001\002\000\004\023\027\001" +
+    "\002\000\004\023\ufffa\001\002\000\010\007\033\014\031" +
+    "\016\032\001\002\000\004\023\ufffb\001\002\000\004\022" +
+    "\054\001\002\000\004\020\035\001\002\000\004\022\034" +
+    "\001\002\000\004\023\ufffc\001\002\000\004\024\036\001" +
+    "\002\000\004\021\037\001\002\000\004\022\040\001\002" +
+    "\000\004\023\043\001\002\000\004\023\ufff1\001\002\000" +
+    "\004\023\ufff2\001\002\000\006\016\032\017\052\001\002" +
+    "\000\004\023\047\001\002\000\004\023\ufff6\001\002\000" +
+    "\004\023\ufff3\001\002\000\006\016\032\017\050\001\002" +
+    "\000\004\022\051\001\002\000\004\023\ufff5\001\002\000" +
+    "\004\022\053\001\002\000\004\023\ufff4\001\002\000\004" +
+    "\025\055\001\002\000\004\023\056\001\002\000\004\015" +
+    "\057\001\002\000\004\022\060\001\002\000\004\023\ufff7" +
+    "\001\002\000\004\022\062\001\002\000\004\023\064\001" +
+    "\002\000\004\023\073\001\002\000\004\010\065\001\002" +
+    "\000\004\022\066\001\002\000\004\025\067\001\002\000" +
+    "\004\023\070\001\002\000\004\011\071\001\002\000\004" +
+    "\022\072\001\002\000\004\023\ufffd\001\002\000\004\013" +
+    "\074\001\002\000\004\022\075\001\002\000\004\023\ufffe" +
+    "\001\002\000\004\002\001\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -97,31 +83,28 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\066\000\010\002\003\015\005\016\004\001\001\000" +
-    "\002\001\001\000\002\001\001\000\004\003\010\001\001" +
-    "\000\002\001\001\000\006\015\012\016\004\001\001\000" +
-    "\006\015\011\016\004\001\001\000\002\001\001\000\004" +
-    "\004\014\001\001\000\006\015\055\016\004\001\001\000" +
-    "\006\015\015\016\004\001\001\000\004\006\017\001\001" +
-    "\000\010\007\022\015\023\016\004\001\001\000\006\015" +
-    "\020\016\004\001\001\000\002\001\001\000\002\001\001" +
-    "\000\006\015\052\016\004\001\001\000\010\010\030\011" +
-    "\026\013\025\001\001\000\006\015\046\016\004\001\001" +
+    "\000\074\000\006\002\003\003\005\001\001\000\002\001" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\004\004\011\001\001\000\002\001\001\000\004\006" +
+    "\013\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
+    "\001\000\012\007\024\010\025\011\022\013\021\001\001" +
+    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
+    "\010\010\027\011\022\013\021\001\001\000\002\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\010\012\035\015\036\016\004\001\001\000" +
-    "\006\015\042\016\004\001\001\000\006\013\040\014\041" +
-    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\006\013\040\014\043\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\006\015\050\016\004\001\001\000\002\001\001\000\002" +
-    "\001\001\000\010\010\054\011\026\013\025\001\001\000" +
-    "\002\001\001\000\002\001\001\000\004\005\056\001\001" +
-    "\000\006\015\064\016\004\001\001\000\006\015\060\016" +
-    "\004\001\001\000\002\001\001\000\006\015\062\016\004" +
+    "\001\001\000\002\001\001\000\002\001\001\000\012\012" +
+    "\043\013\040\014\041\015\044\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\006\013\040\014" +
+    "\045\001\001\000\002\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "" });
+    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
+    "\002\001\001\000\004\005\062\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
+    "\001\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -221,97 +204,52 @@ class CUP$Analisis_Sintactico$actions {
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 1: // S ::= FIN INICIO FIN 
+          case 1: // S ::= INICIO 
             {
               Object RESULT =null;
 
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("S",0, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("S",0, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 2: // FIN ::= COMENTARIO 
+          case 2: // INICIO ::= abrir inicioHtml cerrar CABEZA CUERPO abrir finHtml cerrar 
             {
               Object RESULT =null;
 
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("FIN",11, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("INICIO",1, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-7)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 3: // FIN ::= 
+          case 3: // CABEZA ::= abrir inicioHead cerrar TITULO abrir finHead cerrar 
             {
               Object RESULT =null;
 
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("FIN",11, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("CABEZA",2, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 4: // COMENTARIO ::= COMENTARIO comentarioMultiLinea 
+          case 4: // TITULO ::= abrir inicioTitle cerrar texto abrir finTitle cerrar 
             {
               Object RESULT =null;
 
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("COMENTARIO",12, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("TITULO",3, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 5: // COMENTARIO ::= comentarioMultiLinea 
+          case 5: // CUERPO ::= abrir inicioBody cerrar L_OPCIONES abrir finBody cerrar 
             {
               Object RESULT =null;
 
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("COMENTARIO",12, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("CUERPO",4, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 6: // INICIO ::= inicioHtml FIN CABEZA FIN CUERPO FIN finHtml 
-            {
-              Object RESULT =null;
-
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("INICIO",1, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
-            }
-          return CUP$Analisis_Sintactico$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 7: // CABEZA ::= inicioHead FIN TITULO FIN finHead 
-            {
-              Object RESULT =null;
-
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("CABEZA",2, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-4)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
-            }
-          return CUP$Analisis_Sintactico$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 8: // TITULO ::= inicioTitle FIN texto FIN finTitle 
-            {
-              Object RESULT =null;
-
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("TITULO",3, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-4)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
-            }
-          return CUP$Analisis_Sintactico$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 9: // CUERPO ::= inicioBody L_OPCIONES FIN finBody 
-            {
-              Object RESULT =null;
-
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("CUERPO",4, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
-            }
-          return CUP$Analisis_Sintactico$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 10: // L_OPCIONES ::= L_OPCIONES FIN OPCIONES 
-            {
-              Object RESULT =null;
-
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("L_OPCIONES",5, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
-            }
-          return CUP$Analisis_Sintactico$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 11: // L_OPCIONES ::= FIN OPCIONES 
+          case 6: // L_OPCIONES ::= L_OPCIONES OPCIONES 
             {
               Object RESULT =null;
 
@@ -320,7 +258,16 @@ class CUP$Analisis_Sintactico$actions {
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 12: // OPCIONES ::= ERROR 
+          case 7: // L_OPCIONES ::= OPCIONES 
+            {
+              Object RESULT =null;
+
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("L_OPCIONES",5, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 8: // OPCIONES ::= ERROR 
             {
               Object RESULT =null;
 
@@ -329,7 +276,7 @@ class CUP$Analisis_Sintactico$actions {
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 13: // OPCIONES ::= SECCION 
+          case 9: // OPCIONES ::= SECCION 
             {
               Object RESULT =null;
 
@@ -338,34 +285,43 @@ class CUP$Analisis_Sintactico$actions {
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 14: // ERROR ::= inicioNoufe FIN texto FIN finNoufe 
+          case 10: // ERROR ::= abrir inicioNoufe cerrar texto abrir finNoufe cerrar 
             {
               Object RESULT =null;
 
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("ERROR",7, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-4)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("ERROR",7, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 15: // SECCION ::= inicioDiv id igual cadena cerrar L_SECCIONES FIN abrir finDiv 
+          case 11: // SECCION ::= abrir inicioDiv id igual cadena cerrar OPC 
             {
               Object RESULT =null;
 
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("SECCION",9, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-8)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("SECCION",9, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 16: // L_SECCIONES ::= L_SECCIONES FIN SECCION2 
+          case 12: // OPC ::= L_SECCIONES abrir finDiv cerrar 
             {
               Object RESULT =null;
 
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("L_SECCIONES",8, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("OPC",11, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 17: // L_SECCIONES ::= FIN SECCION2 
+          case 13: // OPC ::= abrir finDiv cerrar 
+            {
+              Object RESULT =null;
+
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("OPC",11, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 14: // L_SECCIONES ::= L_SECCIONES SECCION2 
             {
               Object RESULT =null;
 
@@ -374,16 +330,16 @@ class CUP$Analisis_Sintactico$actions {
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 18: // SECCION2 ::= texto 
+          case 15: // L_SECCIONES ::= SECCION2 
             {
               Object RESULT =null;
 
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("SECCION2",10, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("L_SECCIONES",8, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 19: // SECCION2 ::= SECCION 
+          case 16: // SECCION2 ::= SECCION 
             {
               Object RESULT =null;
 

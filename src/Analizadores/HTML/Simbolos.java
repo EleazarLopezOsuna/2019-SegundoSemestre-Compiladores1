@@ -8,23 +8,22 @@ package Analizadores.HTML;
 /** CUP generated class containing symbol constants. */
 public class Simbolos {
   /* terminals */
-  public static final int cerrar = 17;
+  public static final int cerrar = 16;
   public static final int cadena = 15;
-  public static final int texto = 20;
+  public static final int texto = 19;
   public static final int inicioHead = 8;
   public static final int inicioTitle = 6;
-  public static final int comentarioMultiLinea = 16;
   public static final int inicioDiv = 12;
   public static final int inicioHtml = 2;
   public static final int inicioBody = 4;
   public static final int finDiv = 13;
-  public static final int igual = 19;
+  public static final int igual = 18;
   public static final int EOF = 0;
   public static final int finNoufe = 11;
   public static final int id = 14;
   public static final int finHead = 9;
   public static final int error = 1;
-  public static final int abrir = 18;
+  public static final int abrir = 17;
   public static final int finBody = 5;
   public static final int finHtml = 3;
   public static final int finTitle = 7;
@@ -46,7 +45,6 @@ public class Simbolos {
   "finDiv",
   "id",
   "cadena",
-  "comentarioMultiLinea",
   "cerrar",
   "abrir",
   "igual",

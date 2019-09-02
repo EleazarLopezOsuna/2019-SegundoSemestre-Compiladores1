@@ -43,47 +43,44 @@ terminal inicioTitle, finTitle;
 terminal inicioHead, finHead;
 terminal inicioNoufe, finNoufe;
 terminal inicioDiv, finDiv;
-terminal id, cadena, comentarioMultiLinea, cerrar, abrir, igual, texto;
+terminal id, cadena, cerrar, abrir, igual, texto;
 
 //--------> Declaracion de no terminales
 non terminal S, INICIO;
 non terminal CABEZA, TITULO, CUERPO;
 non terminal L_OPCIONES, OPCIONES, ERROR;
 non terminal L_SECCIONES, SECCION, SECCION2;
-non terminal FIN, COMENTARIO;
+non terminal OPC;
 
 start with S;
 
 /*--------- 3ra Area: Reglas Semanticas ---------*/
 
-S ::= FIN INICIO FIN
+S ::= INICIO
         ;
-FIN ::= COMENTARIO
-        |
+INICIO ::= abrir inicioHtml cerrar CABEZA CUERPO abrir finHtml cerrar
         ;
-COMENTARIO ::= COMENTARIO comentarioMultiLinea
-        | comentarioMultiLinea
+CABEZA ::= abrir inicioHead cerrar TITULO abrir finHead cerrar
         ;
-INICIO ::= inicioHtml FIN CABEZA FIN CUERPO FIN finHtml
+TITULO ::= abrir inicioTitle cerrar texto abrir finTitle cerrar
         ;
-CABEZA ::= inicioHead FIN TITULO FIN finHead
+CUERPO ::= abrir inicioBody cerrar L_OPCIONES abrir finBody cerrar
         ;
-TITULO ::= inicioTitle  FIN texto FIN  finTitle
-        ;
-CUERPO ::= inicioBody L_OPCIONES FIN finBody
-        ;
-L_OPCIONES ::= L_OPCIONES FIN OPCIONES
-        | FIN OPCIONES
+L_OPCIONES ::= L_OPCIONES OPCIONES
+        | OPCIONES
         ;
 OPCIONES ::= ERROR
         | SECCION
         ;
-ERROR ::= inicioNoufe FIN texto FIN finNoufe
+ERROR ::= abrir inicioNoufe cerrar texto abrir finNoufe cerrar
         ;
-SECCION ::= inicioDiv id igual cadena cerrar L_SECCIONES FIN abrir finDiv
+SECCION ::= abrir inicioDiv id igual cadena cerrar OPC
         ;
-L_SECCIONES ::= L_SECCIONES FIN SECCION2
-        | FIN SECCION2
+OPC ::= L_SECCIONES abrir finDiv cerrar
+        | abrir finDiv cerrar
+        ;
+L_SECCIONES ::= L_SECCIONES SECCION2
+        | SECCION2
         ;
 SECCION2 ::= SECCION
         ;
