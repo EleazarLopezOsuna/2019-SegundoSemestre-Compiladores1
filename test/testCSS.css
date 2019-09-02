@@ -1,0 +1,18 @@
+panel
+{
+ border: true;
+ border-color: rgb(#333333, green, blue);
+ border-width: 2;
+}
+.panelInput /*Sub estilo 1*/
+{
+ background: blue;
+}
+.panelOutput /*Sub estilo 2*/
+{
+ background: rgb(red, green, blue);
+}
+.Auxiliar //Sub estilo 3
+{
+ background: #ff7709;
+}

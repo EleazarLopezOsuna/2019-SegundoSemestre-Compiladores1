@@ -36,18 +36,67 @@ action code
 /*--------- 2da Area: Declaraciones ---------*/
 
 //--------> Declaracion de terminales
-terminal parentesisA, parentesisC, puntoComa, punto, dosPuntos;
+terminal parentesisA, parentesisC, puntoComa, dosPuntos;
 terminal llaveA, llaveC, coma;
 terminal background, border, borderColor, borderWidth, align;
 terminal font, fontSize, fontColor, hight, width, rgb;
-terminal numero, cadena, comentarioLinea, comentarioMultiLinea, hexadecimal;
+terminal numero, cadena, hexadecimal;
+terminal identificador, subidentificador, booleano;
+terminal red, pink, orange, yellow, purple, magenta;
+terminal green, blue, brown, white, gray, black;
+terminal ALIright, ALIleft, ALIcenter;
 
 //--------> Declaracion de no terminales
 non terminal S, INICIO;
+non terminal CARACTERISTICA, CUERPO, OPCIONES, L_OPCIONES;
+non terminal TIPOSCOLOR, COLORES, ALINEACION;
 
 start with S;
 
 /*--------- 3ra Area: Reglas Semanticas ---------*/
 
 S ::= INICIO
+    ;
+INICIO ::= INICIO CARACTERISTICA
+    | CARACTERISTICA
+    ;
+CARACTERISTICA ::= identificador CUERPO
+    | subidentificador CUERPO
+    ;
+CUERPO ::= llaveA L_OPCIONES llaveC
+    ;
+L_OPCIONES ::= L_OPCIONES OPCIONES
+    | OPCIONES
+    ;
+OPCIONES ::= border dosPuntos booleano puntoComa
+    | borderColor dosPuntos TIPOSCOLOR puntoComa
+    | borderWidth dosPuntos numero puntoComa
+    | background dosPuntos TIPOSCOLOR puntoComa
+    | align dosPuntos ALINEACION puntoComa
+    | font dosPuntos cadena puntoComa
+    | fontSize dosPuntos numero puntoComa
+    | fontColor dosPuntos TIPOSCOLOR puntoComa
+    | hight dosPuntos numero puntoComa
+    | width dosPuntos numero puntoComa
+    ;
+TIPOSCOLOR ::= rgb parentesisA COLORES coma COLORES coma COLORES parentesisC
+    | COLORES
+    ;
+COLORES ::= red
+    | pink
+    | orange
+    | yellow
+    | purple
+    | magenta
+    | green
+    | blue
+    | brown
+    | white
+    | gray
+    | black
+    | hexadecimal
+    ;
+ALINEACION ::= ALIleft
+    | ALIright
+    | ALIcenter
     ;

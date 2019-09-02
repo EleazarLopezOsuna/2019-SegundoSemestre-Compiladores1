@@ -8,39 +8,53 @@ package Analizadores.CSS;
 /** CUP generated class containing symbol constants. */
 public class Simbolos {
   /* terminals */
-  public static final int rgb = 20;
-  public static final int borderColor = 12;
-  public static final int cadena = 22;
-  public static final int hexadecimal = 25;
-  public static final int fontColor = 17;
-  public static final int fontSize = 16;
-  public static final int coma = 9;
-  public static final int numero = 21;
-  public static final int comentarioMultiLinea = 24;
-  public static final int comentarioLinea = 23;
-  public static final int punto = 5;
-  public static final int llaveC = 8;
+  public static final int width = 18;
+  public static final int white = 35;
+  public static final int hexadecimal = 22;
+  public static final int borderWidth = 12;
+  public static final int dosPuntos = 5;
+  public static final int brown = 34;
+  public static final int gray = 36;
+  public static final int yellow = 29;
+  public static final int rgb = 19;
+  public static final int coma = 8;
+  public static final int identificador = 23;
+  public static final int border = 10;
+  public static final int purple = 30;
+  public static final int fontSize = 15;
+  public static final int numero = 20;
+  public static final int blue = 33;
   public static final int EOF = 0;
-  public static final int font = 15;
-  public static final int llaveA = 7;
-  public static final int width = 19;
-  public static final int border = 11;
-  public static final int hight = 18;
+  public static final int orange = 28;
+  public static final int ALIleft = 39;
   public static final int error = 1;
-  public static final int align = 14;
-  public static final int background = 10;
-  public static final int parentesisC = 3;
-  public static final int dosPuntos = 6;
+  public static final int hight = 17;
+  public static final int fontColor = 16;
+  public static final int borderColor = 11;
+  public static final int llaveC = 7;
   public static final int puntoComa = 4;
+  public static final int llaveA = 6;
+  public static final int background = 9;
+  public static final int subidentificador = 24;
+  public static final int ALIright = 38;
+  public static final int red = 26;
+  public static final int pink = 27;
+  public static final int green = 32;
+  public static final int booleano = 25;
+  public static final int ALIcenter = 40;
+  public static final int black = 37;
+  public static final int parentesisC = 3;
+  public static final int align = 13;
   public static final int parentesisA = 2;
-  public static final int borderWidth = 13;
+  public static final int font = 14;
+  public static final int cadena = 21;
+  public static final int magenta = 31;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
   "parentesisA",
   "parentesisC",
   "puntoComa",
-  "punto",
   "dosPuntos",
   "llaveA",
   "llaveC",
@@ -58,9 +72,25 @@ public class Simbolos {
   "rgb",
   "numero",
   "cadena",
-  "comentarioLinea",
-  "comentarioMultiLinea",
-  "hexadecimal"
+  "hexadecimal",
+  "identificador",
+  "subidentificador",
+  "booleano",
+  "red",
+  "pink",
+  "orange",
+  "yellow",
+  "purple",
+  "magenta",
+  "green",
+  "blue",
+  "brown",
+  "white",
+  "gray",
+  "black",
+  "ALIright",
+  "ALIleft",
+  "ALIcenter"
   };
 }
 
