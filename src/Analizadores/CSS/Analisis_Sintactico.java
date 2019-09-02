@@ -210,6 +210,7 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
         String lexema = s.value.toString();
         int fila = s.right;
         int columna = s.left;
+        System.out.println("ERROR SINTACTICO: " + lexema + " LINEA: " + fila + " COLUMNA: " + columna);
         Errores error = new Errores(lexema,fila,columna,"Token " + lexema + " No esperado", "Sintactico");
         TodosLosErrores.insertar(error);
     }

@@ -3,6 +3,11 @@ panel
  border: true;
  border-color: rgb(#333333, green, blue);
  border-width: 2;
+ font: 'Arial';
+ font-size: 10;
+ font-color: #451248;
+ hight: 50;
+ width: 80;
 }
 .panelInput /*Sub estilo 1*/
 {

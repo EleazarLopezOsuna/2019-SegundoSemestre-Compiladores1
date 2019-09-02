@@ -55,6 +55,11 @@ public class Test extends javax.swing.JFrame {
         });
 
         jButton2.setText("CSS");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("UFE");
 
@@ -104,6 +109,20 @@ public class Test extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        String texto = areaCodigo.getText();
+        if(!texto.isEmpty()){
+            Analizadores.CSS.Analisis_Lexico lexico_css = new Analizadores.CSS.Analisis_Lexico(new BufferedReader(new StringReader(texto)));
+            Analizadores.CSS.Analisis_Sintactico sintactico_css = new Analizadores.CSS.Analisis_Sintactico(lexico_css);
+            try{
+                sintactico_css.parse();
+            } catch (Exception ex) {
+                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
