@@ -6,7 +6,7 @@
 package Analizadores.UFE;
 
 import java_cup.runtime.Symbol;
-import Estructuras.Cola;
+import Estructuras.*;
 import java.util.ArrayList;
 import Modelos.*;
 import java_cup.runtime.XMLElement;
@@ -34,7 +34,11 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\002\000\002\002\004\000\002\002\003" });
+    "\000\017\000\002\002\004\000\002\002\003\000\002\003" +
+    "\004\000\002\003\003\000\002\006\003\000\002\004\005" +
+    "\000\002\005\006\000\002\005\004\000\002\010\004\000" +
+    "\002\010\002\000\002\007\003\000\002\007\003\000\002" +
+    "\007\003\000\002\007\003\000\002\007\003" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -42,8 +46,20 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\004\000\002\001\002\000\004\002\006\001\002\000" +
-    "\004\002\000\001\002\000\004\002\001\001\002" });
+    "\000\026\000\004\031\005\001\002\000\006\002\ufffd\031" +
+    "\ufffd\001\002\000\004\071\014\001\002\000\004\002\012" +
+    "\001\002\000\006\002\ufffe\031\ufffe\001\002\000\006\002" +
+    "\000\031\005\001\002\000\006\002\uffff\031\uffff\001\002" +
+    "\000\004\002\001\001\002\000\006\027\026\030\025\001" +
+    "\002\000\010\011\015\027\ufff8\030\ufff8\001\002\000\014" +
+    "\072\022\073\017\074\020\075\021\076\024\001\002\000" +
+    "\006\027\ufffa\030\ufffa\001\002\000\006\027\ufff6\030\ufff6" +
+    "\001\002\000\006\027\ufff3\030\ufff3\001\002\000\006\027" +
+    "\ufff5\030\ufff5\001\002\000\006\027\ufff7\030\ufff7\001\002" +
+    "\000\006\027\ufff9\030\ufff9\001\002\000\006\027\ufff4\030" +
+    "\ufff4\001\002\000\004\071\027\001\002\000\006\002\ufffc" +
+    "\031\ufffc\001\002\000\010\011\015\027\ufff8\030\ufff8\001" +
+    "\002\000\006\027\ufffb\030\ufffb\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -51,8 +67,15 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\004\000\006\002\003\003\004\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001" });
+    "\000\026\000\012\002\005\003\007\004\003\006\006\001" +
+    "\001\000\002\001\001\000\004\005\012\001\001\000\002" +
+    "\001\001\000\002\001\001\000\006\004\003\006\010\001" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\004\010\015\001\001\000\004\007\022\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
+    "\001\000\002\001\001\000\002\001\001\000\004\010\027" +
+    "\001\001\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -91,6 +114,7 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
 
 
 
+    public Arbol variables = new Arbol();
     public Cola TodosLosErrores = new Cola();
 
     //Metodo al que se llama automaticamente ante algun error sintactico
@@ -156,6 +180,211 @@ class CUP$Analisis_Sintactico$actions {
               Object RESULT =null;
 
               CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("S",0, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 2: // INICIO ::= INICIO OPCIONES 
+            {
+              Object RESULT =null;
+
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("INICIO",1, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 3: // INICIO ::= OPCIONES 
+            {
+              Object RESULT =null;
+
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("INICIO",1, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 4: // OPCIONES ::= DECLARACION 
+            {
+              Object RESULT =null;
+
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("OPCIONES",4, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 5: // DECLARACION ::= var ASIGNACION puntoComa 
+            {
+              Object RESULT =null;
+
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("DECLARACION",2, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 6: // ASIGNACION ::= ASIGNACION coma identificador IDENT 
+            {
+              Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-1)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-1)).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-1)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).right;
+		String b = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
+		
+    if(!b.isEmpty()){
+        String nombre = a;
+        String tipo = "";
+        String valor = b;
+        if(valor.startsWith("'")){
+            tipo = "caracter";
+            valor = valor.replace("'","");
+        }else if(valor.startsWith("\"")){
+            tipo = "cadena";
+            valor = valor.replace("\"","");
+        }else{
+            if(valor.contains(".")){
+                tipo = "doble";
+            }else{
+                tipo = "entero";
+            }   
+        }
+        Variable var = new Variable(nombre, tipo, valor);
+        if(!variables.insertar(var).equals("Ingresada")){
+            System.out.println("ERROR: Variable duplicada");
+        }
+    }else{
+        String nombre = a;
+        Variable var = new Variable(nombre);
+        if(!variables.insertar(var).equals("Ingresada")){
+            System.out.println("ERROR: Variable duplicada");
+        }
+    }
+
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("ASIGNACION",3, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 7: // ASIGNACION ::= identificador IDENT 
+            {
+              Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-1)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-1)).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-1)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).right;
+		String b = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
+		
+    if(!b.isEmpty()){
+        String nombre = a;
+        String tipo = "";
+        String valor = b;
+        if(valor.startsWith("'")){
+            tipo = "caracter";
+            valor = valor.replace("'","");
+        }else if(valor.startsWith("\"")){
+            tipo = "cadena";
+            valor = valor.replace("\"","");
+        }else{
+            if(valor.contains(".")){
+                tipo = "doble";
+            }else{
+                tipo = "entero";
+            }   
+        }
+        Variable var = new Variable(nombre, tipo, valor);
+        if(!variables.insertar(var).equals("Ingresada")){
+            System.out.println("ERROR: Variable duplicada");
+        }
+    }else{
+        String nombre = a;
+        Variable var = new Variable(nombre);
+        if(!variables.insertar(var).equals("Ingresada")){
+            System.out.println("ERROR: Variable duplicada");
+        }
+    }
+
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("ASIGNACION",3, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 8: // IDENT ::= igual VALOR 
+            {
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
+		 RESULT = a; 
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("IDENT",6, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 9: // IDENT ::= 
+            {
+              String RESULT =null;
+		 RESULT = ""; 
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("IDENT",6, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 10: // VALOR ::= entero 
+            {
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
+		 RESULT = a; 
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("VALOR",5, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 11: // VALOR ::= doble 
+            {
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
+		 RESULT = a; 
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("VALOR",5, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 12: // VALOR ::= cadena 
+            {
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
+		 RESULT = a; 
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("VALOR",5, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 13: // VALOR ::= caracter 
+            {
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
+		 RESULT = a; 
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("VALOR",5, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+            }
+          return CUP$Analisis_Sintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 14: // VALOR ::= booleano 
+            {
+              String RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).right;
+		String a = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
+		 RESULT = a; 
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("VALOR",5, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 

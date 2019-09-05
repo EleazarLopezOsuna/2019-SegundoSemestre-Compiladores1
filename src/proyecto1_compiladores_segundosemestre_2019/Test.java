@@ -62,6 +62,11 @@ public class Test extends javax.swing.JFrame {
         });
 
         jButton3.setText("UFE");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -123,6 +128,20 @@ public class Test extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String texto = areaCodigo.getText();
+        if(!texto.isEmpty()){
+            Analizadores.UFE.Analisis_Lexico lexico_ufe = new Analizadores.UFE.Analisis_Lexico(new BufferedReader(new StringReader(texto)));
+            Analizadores.UFE.Analisis_Sintactico sintactico_ufe = new Analizadores.UFE.Analisis_Sintactico(lexico_ufe);
+            try{
+                sintactico_ufe.parse();
+            } catch (Exception ex) {
+                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

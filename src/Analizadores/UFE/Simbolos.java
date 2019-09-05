@@ -15,19 +15,18 @@ public class Simbolos {
   public static final int resta = 4;
   public static final int imprimir = 53;
   public static final int image = 46;
-  public static final int comentarioMultiLinea = 61;
   public static final int dosPuntos = 20;
   public static final int corcheteC = 19;
   public static final int corcheteA = 18;
   public static final int coma = 22;
   public static final int igual = 7;
-  public static final int identificador = 62;
+  public static final int identificador = 55;
   public static final int multiplicacion = 2;
   public static final int border = 31;
   public static final int logicoOR = 12;
   public static final int element = 40;
   public static final int from = 49;
-  public static final int caracter = 59;
+  public static final int caracter = 60;
   public static final int repetir = 52;
   public static final int panel = 35;
   public static final int menorQue = 9;
@@ -43,11 +42,11 @@ public class Simbolos {
   public static final int var = 23;
   public static final int EOF = 0;
   public static final int error = 1;
-  public static final int doble = 56;
+  public static final int doble = 57;
   public static final int text = 36;
   public static final int color = 30;
   public static final int item = 41;
-  public static final int entero = 55;
+  public static final int entero = 56;
   public static final int render = 33;
   public static final int spinner = 43;
   public static final int llaveC = 17;
@@ -60,7 +59,6 @@ public class Simbolos {
   public static final int logicoXOR = 13;
   public static final int diferente = 8;
   public static final int booleano = 58;
-  public static final int comentarioLinea = 60;
   public static final int parentesisC = 15;
   public static final int parentesisA = 14;
   public static final int className = 32;
@@ -69,7 +67,7 @@ public class Simbolos {
   public static final int division = 3;
   public static final int min = 44;
   public static final int retorno = 34;
-  public static final int cadena = 57;
+  public static final int cadena = 59;
   public static final int sino = 51;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -127,14 +125,12 @@ public class Simbolos {
   "repetir",
   "imprimir",
   "mientras",
+  "identificador",
   "entero",
   "doble",
-  "cadena",
   "booleano",
-  "caracter",
-  "comentarioLinea",
-  "comentarioMultiLinea",
-  "identificador"
+  "cadena",
+  "caracter"
   };
 }
 

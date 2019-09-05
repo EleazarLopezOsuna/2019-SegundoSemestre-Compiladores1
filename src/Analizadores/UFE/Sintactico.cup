@@ -3,13 +3,14 @@
 //--------> Paquetes e importaciones
 package Analizadores.UFE;
 import java_cup.runtime.Symbol;
-import Estructuras.Cola;
+import Estructuras.*;
 import java.util.ArrayList;
 import Modelos.*;
 
 //--------> Codigo para el parser, variables, metodos
 parser code
 {:
+    public Arbol variables = new Arbol();
     public Cola TodosLosErrores = new Cola();
 
     //Metodo al que se llama automaticamente ante algun error sintactico
@@ -47,14 +48,94 @@ terminal retorno, panel, text, textField, button, list;
 terminal element, item, defecto, spinner, min, max;
 terminal image, fuente, importar, from, si;
 terminal sino, repetir, imprimir, mientras;
-terminal entero, doble, cadena, booleano, caracter;
-terminal comentarioLinea, comentarioMultiLinea, identificador;
+terminal String identificador, entero, doble, booleano, cadena, caracter;
 
 //--------> Declaracion de no terminales
 non terminal S, INICIO;
+non terminal DECLARACION, ASIGNACION, OPCIONES;
+non terminal String VALOR, IDENT;
 start with S;
 
 /*--------- 3ra Area: Reglas Semanticas ---------*/
 
 S ::= INICIO
+    ;
+INICIO ::= INICIO OPCIONES
+    | OPCIONES
+    ;
+OPCIONES ::= DECLARACION
+    ;
+DECLARACION ::= var ASIGNACION puntoComa
+    ;
+ASIGNACION ::= ASIGNACION coma identificador:a IDENT:b
+{:
+    if(!b.isEmpty()){
+        String nombre = a;
+        String tipo = "";
+        String valor = b;
+        if(valor.startsWith("'")){
+            tipo = "caracter";
+            valor = valor.replace("'","");
+        }else if(valor.startsWith("\"")){
+            tipo = "cadena";
+            valor = valor.replace("\"","");
+        }else{
+            if(valor.contains(".")){
+                tipo = "doble";
+            }else{
+                tipo = "entero";
+            }   
+        }
+        Variable var = new Variable(nombre, tipo, valor);
+        if(!variables.insertar(var).equals("Ingresada")){
+            System.out.println("ERROR: Variable duplicada");
+        }
+    }else{
+        String nombre = a;
+        Variable var = new Variable(nombre);
+        if(!variables.insertar(var).equals("Ingresada")){
+            System.out.println("ERROR: Variable duplicada");
+        }
+    }
+:}
+    | identificador:a IDENT:b
+{:
+    if(!b.isEmpty()){
+        String nombre = a;
+        String tipo = "";
+        String valor = b;
+        if(valor.startsWith("'")){
+            tipo = "caracter";
+            valor = valor.replace("'","");
+        }else if(valor.startsWith("\"")){
+            tipo = "cadena";
+            valor = valor.replace("\"","");
+        }else{
+            if(valor.contains(".")){
+                tipo = "doble";
+            }else{
+                tipo = "entero";
+            }   
+        }
+        Variable var = new Variable(nombre, tipo, valor);
+        if(!variables.insertar(var).equals("Ingresada")){
+            System.out.println("ERROR: Variable duplicada");
+        }
+    }else{
+        String nombre = a;
+        Variable var = new Variable(nombre);
+        if(!variables.insertar(var).equals("Ingresada")){
+            System.out.println("ERROR: Variable duplicada");
+        }
+    }
+:}
+    ;
+IDENT ::= igual VALOR:a                                 {: RESULT = a; :}
+    |                                                   {: RESULT = ""; :}
+    ;
+VALOR ::= entero:a                                      {: RESULT = a; :}
+    | doble:a                                           {: RESULT = a; :}
+    | cadena:a                                          {: RESULT = a; :}
+    | caracter:a                                        {: RESULT = a; :}
+    | booleano:a                                        {: RESULT = a; :}
     ;

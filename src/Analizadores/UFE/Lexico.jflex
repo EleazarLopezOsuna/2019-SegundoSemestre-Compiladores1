@@ -115,8 +115,8 @@ comentarioMultiLinea    = "/*"( [^*] | (\*+[^*/]) )*\*+\/
 <YYINITIAL> {cadena}                 { return new Symbol(Simbolos.cadena, yycolumn, yyline, yytext()); }
 <YYINITIAL> {booleano}               { return new Symbol(Simbolos.booleano, yycolumn, yyline, yytext()); }
 <YYINITIAL> {caracter}               { return new Symbol(Simbolos.caracter, yycolumn, yyline, yytext()); }
-<YYINITIAL> {comentarioLinea}        { return new Symbol(Simbolos.comentarioLinea, yycolumn, yyline, yytext()); }
-<YYINITIAL> {comentarioMultiLinea}   { return new Symbol(Simbolos.comentarioMultiLinea, yycolumn, yyline, yytext()); }
+<YYINITIAL> {comentarioLinea}        {  }
+<YYINITIAL> {comentarioMultiLinea}   {  }
 <YYINITIAL> {identificador}          { return new Symbol(Simbolos.identificador, yycolumn, yyline, yytext()); }
 
 //--------> Caracteres adicionales

@@ -20,6 +20,12 @@ public class Variable {
         this.tipo = tipo;
         this.contenido = contenido;
     }
+    
+    public Variable(String nombre){
+        this.nombre = nombre;
+        this.tipo = "";
+        this.contenido = "";
+    }
 
     public String getNombre() {
         return nombre;
