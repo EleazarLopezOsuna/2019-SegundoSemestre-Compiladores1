@@ -79,7 +79,14 @@ INICIO ::= INICIO OPCIONES
     | OPCIONES
     ;
 OPCIONES ::= DECLARACION
-    | OPERACION
+    | OPERACION:a
+{:
+    if(a != null){
+        System.out.println(a);
+    } else {
+        System.out.println("ERROR: error aritmetico");
+    }
+:}
     ;
 DECLARACION ::= var ASIGNACION puntoComa
     ;
@@ -171,33 +178,26 @@ OPERACION ::= OPERACION:a suma OPERACION:b
             String valor2 = String.valueOf(b);
             String resultado = valor1 + valor2;
             RESULT = resultado;
-            System.out.println(RESULT);
-        }else if((a instanceof Double && b instanceof Integer) || (a instanceof Integer && b instanceof Double) || (a instanceof Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof Double)){
-            Double resultado = (Double) a + (Double) b;
+        }else if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double)){
+            double resultado = Double.valueOf(String.valueOf(a)) + Double.valueOf(String.valueOf(b));
             RESULT = resultado;
-            System.out.println(RESULT);
         }else if(a instanceof java.lang.Character && b instanceof Integer){
             char uno = (char) a;
             int resultado = (int) uno + (int) b;
             RESULT = resultado;
-            System.out.println(RESULT);
         }else if(a instanceof Integer && b instanceof java.lang.Character){
             char dos = (char) b;
             int resultado = (int) a + (int) dos;
             RESULT = resultado;
-            System.out.println(RESULT);
         }else if(a instanceof java.lang.Character && b instanceof java.lang.Character){
             char uno = (char) a;
             char dos = (char) b;
             int resultado = (int) uno + (int) dos;
             RESULT = resultado;
-            System.out.println(RESULT);
         }else{
-            System.out.println("Combinacion indefinida");
             RESULT = null;
         }
     } else {
-        System.out.println("ERROR EN LAS OPERACIONES");
         RESULT = null;
     }
 :}
@@ -251,7 +251,7 @@ DATO ::= entero:a
     | booleano:a
 {:
     String dato = String.valueOf(a);
-    Boolean retorno = false;
+    boolean retorno = false;
     if(dato.equals("true")){
         retorno = true;
     }

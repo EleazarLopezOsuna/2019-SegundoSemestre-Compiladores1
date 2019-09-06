@@ -382,6 +382,15 @@ class CUP$Analisis_Sintactico$actions {
           case 5: // OPCIONES ::= OPERACION 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
+		
+    if(a != null){
+        System.out.println(a);
+    } else {
+        System.out.println("ERROR: error aritmetico");
+    }
 
               CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("OPCIONES",4, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
@@ -590,33 +599,26 @@ class CUP$Analisis_Sintactico$actions {
             String valor2 = String.valueOf(b);
             String resultado = valor1 + valor2;
             RESULT = resultado;
-            System.out.println(RESULT);
-        }else if((a instanceof Double && b instanceof Integer) || (a instanceof Integer && b instanceof Double) || (a instanceof Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof Double)){
-            Double resultado = (Double) a + (Double) b;
+        }else if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double)){
+            double resultado = Double.valueOf(String.valueOf(a)) + Double.valueOf(String.valueOf(b));
             RESULT = resultado;
-            System.out.println(RESULT);
         }else if(a instanceof java.lang.Character && b instanceof Integer){
             char uno = (char) a;
             int resultado = (int) uno + (int) b;
             RESULT = resultado;
-            System.out.println(RESULT);
         }else if(a instanceof Integer && b instanceof java.lang.Character){
             char dos = (char) b;
             int resultado = (int) a + (int) dos;
             RESULT = resultado;
-            System.out.println(RESULT);
         }else if(a instanceof java.lang.Character && b instanceof java.lang.Character){
             char uno = (char) a;
             char dos = (char) b;
             int resultado = (int) uno + (int) dos;
             RESULT = resultado;
-            System.out.println(RESULT);
         }else{
-            System.out.println("Combinacion indefinida");
             RESULT = null;
         }
     } else {
-        System.out.println("ERROR EN LAS OPERACIONES");
         RESULT = null;
     }
 
@@ -941,7 +943,7 @@ class CUP$Analisis_Sintactico$actions {
 		String a = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
 		
     String dato = String.valueOf(a);
-    Boolean retorno = false;
+    boolean retorno = false;
     if(dato.equals("true")){
         retorno = true;
     }
