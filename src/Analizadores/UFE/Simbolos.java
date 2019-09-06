@@ -8,67 +8,71 @@ package Analizadores.UFE;
 /** CUP generated class containing symbol constants. */
 public class Simbolos {
   /* terminals */
-  public static final int width = 29;
-  public static final int mayorQue = 10;
-  public static final int height = 28;
+  public static final int width = 33;
+  public static final int mayorQue = 12;
+  public static final int igualigual = 8;
+  public static final int height = 32;
   public static final int suma = 5;
   public static final int resta = 4;
-  public static final int imprimir = 53;
-  public static final int image = 46;
-  public static final int dosPuntos = 20;
-  public static final int corcheteC = 19;
-  public static final int corcheteA = 18;
-  public static final int coma = 22;
+  public static final int imprimir = 57;
+  public static final int image = 50;
+  public static final int dosPuntos = 24;
+  public static final int corcheteC = 23;
+  public static final int corcheteA = 22;
+  public static final int coma = 26;
   public static final int igual = 7;
-  public static final int identificador = 55;
+  public static final int identificador = 59;
   public static final int multiplicacion = 2;
-  public static final int border = 31;
-  public static final int logicoOR = 12;
-  public static final int element = 40;
-  public static final int from = 49;
-  public static final int caracter = 60;
-  public static final int repetir = 52;
-  public static final int panel = 35;
-  public static final int menorQue = 9;
-  public static final int si = 50;
-  public static final int button = 38;
-  public static final int mientras = 54;
-  public static final int importar = 48;
-  public static final int fuente = 47;
-  public static final int defecto = 42;
-  public static final int list = 39;
-  public static final int textField = 37;
-  public static final int max = 45;
-  public static final int var = 23;
+  public static final int border = 35;
+  public static final int logicoOR = 16;
+  public static final int element = 44;
+  public static final int from = 53;
+  public static final int caracter = 64;
+  public static final int repetir = 56;
+  public static final int panel = 39;
+  public static final int menorQue = 11;
+  public static final int menorIgual = 13;
+  public static final int si = 54;
+  public static final int button = 42;
+  public static final int mientras = 58;
+  public static final int importar = 52;
+  public static final int fuente = 51;
+  public static final int defecto = 46;
+  public static final int list = 43;
+  public static final int textField = 41;
+  public static final int max = 49;
+  public static final int var = 27;
   public static final int EOF = 0;
+  public static final int mayorIgual = 14;
   public static final int error = 1;
-  public static final int doble = 57;
-  public static final int text = 36;
-  public static final int color = 30;
-  public static final int item = 41;
-  public static final int entero = 56;
-  public static final int render = 33;
-  public static final int spinner = 43;
-  public static final int llaveC = 17;
+  public static final int doble = 61;
+  public static final int text = 40;
+  public static final int color = 34;
+  public static final int item = 45;
+  public static final int entero = 60;
+  public static final int render = 37;
+  public static final int spinner = 47;
+  public static final int llaveC = 21;
   public static final int potencia = 6;
-  public static final int id = 25;
-  public static final int puntoComa = 21;
-  public static final int llaveA = 16;
-  public static final int y = 27;
-  public static final int x = 26;
-  public static final int logicoXOR = 13;
-  public static final int diferente = 8;
-  public static final int booleano = 58;
-  public static final int parentesisC = 15;
-  public static final int parentesisA = 14;
-  public static final int className = 32;
-  public static final int component = 24;
-  public static final int logicoAND = 11;
+  public static final int id = 29;
+  public static final int puntoComa = 25;
+  public static final int llaveA = 20;
+  public static final int y = 31;
+  public static final int x = 30;
+  public static final int logicoXOR = 17;
+  public static final int diferente = 10;
+  public static final int not = 9;
+  public static final int booleano = 62;
+  public static final int parentesisC = 19;
+  public static final int parentesisA = 18;
+  public static final int className = 36;
+  public static final int component = 28;
+  public static final int logicoAND = 15;
   public static final int division = 3;
-  public static final int min = 44;
-  public static final int retorno = 34;
-  public static final int cadena = 59;
-  public static final int sino = 51;
+  public static final int min = 48;
+  public static final int retorno = 38;
+  public static final int cadena = 63;
+  public static final int sino = 55;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -78,9 +82,13 @@ public class Simbolos {
   "suma",
   "potencia",
   "igual",
+  "igualigual",
+  "not",
   "diferente",
   "menorQue",
   "mayorQue",
+  "menorIgual",
+  "mayorIgual",
   "logicoAND",
   "logicoOR",
   "logicoXOR",

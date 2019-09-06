@@ -54,7 +54,12 @@ comentarioMultiLinea    = "/*"( [^*] | (\*+[^*/]) )*\*+\/
 <YYINITIAL> "pow"                    { return new Symbol(Simbolos.potencia, yycolumn, yyline, yytext()); }
 <YYINITIAL> "="                      { return new Symbol(Simbolos.igual, yycolumn, yyline, yytext()); }
 
-<YYINITIAL> "!"                      { return new Symbol(Simbolos.diferente, yycolumn, yyline, yytext()); }
+
+<YYINITIAL> "=="                      { return new Symbol(Simbolos.igualigual, yycolumn, yyline, yytext()); }
+<YYINITIAL> "!"                      { return new Symbol(Simbolos.not, yycolumn, yyline, yytext()); }
+<YYINITIAL> "!="                      { return new Symbol(Simbolos.diferente, yycolumn, yyline, yytext()); }
+<YYINITIAL> "<="                      { return new Symbol(Simbolos.menorIgual, yycolumn, yyline, yytext()); }
+<YYINITIAL> ">="                      { return new Symbol(Simbolos.mayorIgual, yycolumn, yyline, yytext()); }
 <YYINITIAL> "<"                      { return new Symbol(Simbolos.menorQue, yycolumn, yyline, yytext()); }
 <YYINITIAL> ">"                      { return new Symbol(Simbolos.mayorQue, yycolumn, yyline, yytext()); }
 

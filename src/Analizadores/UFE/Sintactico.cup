@@ -18,6 +18,7 @@ parser code
         String lexema = s.value.toString();
         int fila = s.right;
         int columna = s.left;
+        System.out.println("ERROR SINTACTICO");
         Errores error = new Errores(lexema,fila,columna,"Token " + lexema + " No esperado", "Sintactico");
         TodosLosErrores.insertar(error);
     }
@@ -37,8 +38,8 @@ action code
 /*--------- 2da Area: Declaraciones ---------*/
 
 //--------> Declaracion de terminales
-terminal multiplicacion, division, resta, suma, potencia, igual;
-terminal diferente, menorQue, mayorQue;
+terminal multiplicacion, division, resta, suma, potencia, igual, igualigual, not;
+terminal diferente, menorQue, mayorQue, menorIgual, mayorIgual;
 terminal logicoAND, logicoOR, logicoXOR;
 terminal parentesisA, parentesisC, llaveA, llaveC, corcheteA, corcheteC;
 terminal dosPuntos, puntoComa, coma;
@@ -54,6 +55,20 @@ terminal String identificador, entero, doble, booleano, cadena, caracter;
 non terminal S, INICIO;
 non terminal DECLARACION, ASIGNACION, OPCIONES;
 non terminal String VALOR, IDENT;
+non terminal OPERADOR;
+non terminal Object DATO, OPERACION;
+
+//----> precedencia de menor a mayor
+precedence left logicoOR;
+precedence left logicoAND;
+precedence left logicoXOR;
+precedence left not;
+precedence left igualigual, diferente, mayorQue, menorIgual, menorQue, mayorIgual;
+precedence left suma, resta;
+precedence left multiplicacion, division;
+precedence left potencia;
+precedence left parentesisA;
+
 start with S;
 
 /*--------- 3ra Area: Reglas Semanticas ---------*/
@@ -64,6 +79,7 @@ INICIO ::= INICIO OPCIONES
     | OPCIONES
     ;
 OPCIONES ::= DECLARACION
+    | OPERACION
     ;
 DECLARACION ::= var ASIGNACION puntoComa
     ;
@@ -73,25 +89,29 @@ ASIGNACION ::= ASIGNACION coma identificador:a IDENT:b
         String nombre = a;
         String tipo = "";
         String valor = b;
+        Object retorno = null;
         if(valor.startsWith("'")){
-            tipo = "caracter";
             valor = valor.replace("'","");
+            retorno = valor.charAt(0);
         }else if(valor.startsWith("\"")){
             tipo = "cadena";
             valor = valor.replace("\"","");
+            retorno = valor;
         }else{
             if(valor.contains(".")){
-                tipo = "doble";
+                retorno = Double.parseDouble(valor);
             }else{
-                tipo = "entero";
+                retorno = Integer.parseInt(valor);
             }   
         }
-        Variable var = new Variable(nombre, tipo, valor);
+        nombre.toLowerCase();
+        Variable var = new Variable(nombre, retorno);
         if(!variables.insertar(var).equals("Ingresada")){
             System.out.println("ERROR: Variable duplicada");
         }
     }else{
         String nombre = a;
+        nombre.toLowerCase();
         Variable var = new Variable(nombre);
         if(!variables.insertar(var).equals("Ingresada")){
             System.out.println("ERROR: Variable duplicada");
@@ -104,25 +124,29 @@ ASIGNACION ::= ASIGNACION coma identificador:a IDENT:b
         String nombre = a;
         String tipo = "";
         String valor = b;
+        Object retorno = null;
         if(valor.startsWith("'")){
-            tipo = "caracter";
             valor = valor.replace("'","");
+            retorno = valor.charAt(0);
         }else if(valor.startsWith("\"")){
             tipo = "cadena";
             valor = valor.replace("\"","");
+            retorno = valor;
         }else{
             if(valor.contains(".")){
-                tipo = "doble";
+                retorno = Double.parseDouble(valor);
             }else{
-                tipo = "entero";
+                retorno = Integer.parseInt(valor);
             }   
         }
-        Variable var = new Variable(nombre, tipo, valor);
+        nombre.toLowerCase();
+        Variable var = new Variable(nombre, retorno);
         if(!variables.insertar(var).equals("Ingresada")){
             System.out.println("ERROR: Variable duplicada");
         }
     }else{
         String nombre = a;
+        nombre.toLowerCase();
         Variable var = new Variable(nombre);
         if(!variables.insertar(var).equals("Ingresada")){
             System.out.println("ERROR: Variable duplicada");
@@ -137,5 +161,117 @@ VALOR ::= entero:a                                      {: RESULT = a; :}
     | doble:a                                           {: RESULT = a; :}
     | cadena:a                                          {: RESULT = a; :}
     | caracter:a                                        {: RESULT = a; :}
-    | booleano:a                                        {: RESULT = a; :}
+    | booleano:a                                        {: RESULT = a.toLowerCase(); :}
+    ;
+OPERACION ::= OPERACION:a suma OPERACION:b
+{:
+    if(a != null && b != null){
+        if(a instanceof String || b instanceof String){
+            String valor1 = String.valueOf(a);
+            String valor2 = String.valueOf(b);
+            String resultado = valor1 + valor2;
+            RESULT = resultado;
+            System.out.println(RESULT);
+        }else if((a instanceof Double && b instanceof Integer) || (a instanceof Integer && b instanceof Double) || (a instanceof Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof Double)){
+            Double resultado = (Double) a + (Double) b;
+            RESULT = resultado;
+            System.out.println(RESULT);
+        }else if(a instanceof java.lang.Character && b instanceof Integer){
+            char uno = (char) a;
+            int resultado = (int) uno + (int) b;
+            RESULT = resultado;
+            System.out.println(RESULT);
+        }else if(a instanceof Integer && b instanceof java.lang.Character){
+            char dos = (char) b;
+            int resultado = (int) a + (int) dos;
+            RESULT = resultado;
+            System.out.println(RESULT);
+        }else if(a instanceof java.lang.Character && b instanceof java.lang.Character){
+            char uno = (char) a;
+            char dos = (char) b;
+            int resultado = (int) uno + (int) dos;
+            RESULT = resultado;
+            System.out.println(RESULT);
+        }else{
+            System.out.println("Combinacion indefinida");
+            RESULT = null;
+        }
+    } else {
+        System.out.println("ERROR EN LAS OPERACIONES");
+        RESULT = null;
+    }
+:}
+    | OPERACION:a resta OPERACION:b
+    | OPERACION:a division OPERACION:b
+    | OPERACION:a potencia OPERACION:b
+    | OPERACION:a multiplicacion OPERACION:b
+    | parentesisA OPERACION parentesisC
+    | resta OPERACION:a
+    | diferente OPERACION:a
+    | OPERACION:a diferente igual OPERACION:b
+    | OPERACION:a igualigual OPERACION:b
+    | OPERACION:a menorQue OPERACION:b
+    | OPERACION:a mayorQue OPERACION:b
+    | OPERACION:a menorIgual OPERACION:b
+    | OPERACION:a mayorIgual OPERACION:b
+    | OPERACION:a logicoAND OPERACION:b
+    | OPERACION:a logicoOR OPERACION:b
+    | OPERACION:a logicoXOR OPERACION:b
+    | DATO:a
+{:
+    if(a == null){
+        RESULT = null;
+    }else{
+        RESULT = a;
+    }
+:}
+    ;
+DATO ::= entero:a
+{:
+    int retorno = Integer.parseInt(String.valueOf(a));
+    RESULT = retorno;
+:}
+    | doble:a
+{:
+    double retorno = Double.parseDouble(String.valueOf(a));
+    RESULT = retorno;
+:}
+    | cadena:a
+{:
+    String retorno = String.valueOf(a);
+    retorno = retorno.replace("\"", "");
+    RESULT = retorno;
+:}
+    | caracter:a
+{:
+    String valor = String.valueOf(a);
+    char retorno = valor.charAt(1);
+    RESULT = retorno;
+:}
+    | booleano:a
+{:
+    String dato = String.valueOf(a);
+    Boolean retorno = false;
+    if(dato.equals("true")){
+        retorno = true;
+    }
+    RESULT = retorno;
+:}
+    | identificador:a                                     
+{: 
+    String nombre = a.toLowerCase();
+    if(variables.getRaiz() != null){
+        Variable var = variables.obtenerValor(nombre, variables.getRaiz());
+        Object valor = var.getContenido();
+        if(valor != null){
+            RESULT = valor;
+     }else{
+            System.out.println("ERROR: Variable no inicializada");
+            RESULT = null;
+        }
+    }else{
+        System.out.println("ERROR: Variable no inicializada");
+        RESULT = null;
+    }
+:}
     ;

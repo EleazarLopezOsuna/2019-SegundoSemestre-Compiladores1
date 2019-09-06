@@ -12,18 +12,15 @@ package Modelos;
 public class Variable {
 
     private String nombre;
-    private String tipo;
     private Object contenido;
 
-    public Variable(String nombre, String tipo, Object contenido) {
+    public Variable(String nombre, Object contenido) {
         this.nombre = nombre;
-        this.tipo = tipo;
         this.contenido = contenido;
     }
     
     public Variable(String nombre){
         this.nombre = nombre;
-        this.tipo = "";
         this.contenido = "";
     }
 
@@ -33,14 +30,6 @@ public class Variable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
 
     public Object getContenido() {
