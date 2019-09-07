@@ -592,7 +592,7 @@ class CUP$Analisis_Sintactico$actions {
             String valor2 = String.valueOf(b);
             String resultado = valor1 + valor2;
             RESULT = resultado;
-        }else if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double)){
+        }else if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Double)){
             double resultado = Double.valueOf(String.valueOf(a)) + Double.valueOf(String.valueOf(b));
             RESULT = resultado;
         }else if(a instanceof java.lang.Character && b instanceof Integer){
@@ -608,6 +608,8 @@ class CUP$Analisis_Sintactico$actions {
             char dos = (char) b;
             int resultado = (int) uno + (int) dos;
             RESULT = resultado;
+        }else if(a instanceof Integer && b instanceof Integer){
+            RESULT = (int) a + (int) b;
         }else{
             RESULT = null;
         }
@@ -631,7 +633,7 @@ class CUP$Analisis_Sintactico$actions {
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
 		
     if(a != null && b != null){
-        if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double)){
+        if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Double)){
             double resultado = Double.valueOf(String.valueOf(a)) - Double.valueOf(String.valueOf(b));
             RESULT = resultado;
         }else if(a instanceof java.lang.Character && b instanceof Integer){
@@ -647,6 +649,8 @@ class CUP$Analisis_Sintactico$actions {
             char dos = (char) b;
             int resultado = (int) uno - (int) dos;
             RESULT = resultado;
+        }else if(a instanceof Integer && b instanceof Integer){
+            RESULT = (int) a - (int) b;
         }else{
             RESULT = null;
         }
@@ -683,22 +687,33 @@ class CUP$Analisis_Sintactico$actions {
                 comprobador = false;
             }
         }
+        if(b instanceof java.lang.Character){
+            int numero = (char) b;
+            b = numero;
+        }
+        if(a instanceof java.lang.Character){
+            int numero = (char) a;
+            a = numero;
+        }
         if(comprobador){
-            if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double)){
+            if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Double)){
                 double resultado = Double.valueOf(String.valueOf(a)) / Double.valueOf(String.valueOf(b));
                 RESULT = resultado;
             }else if(a instanceof java.lang.Character && b instanceof Integer){
                 char uno = (char) a;
-                int resultado = (int) uno / (int) b;
+                double resultado = Double.valueOf(String.valueOf(uno)) / Double.valueOf(String.valueOf(b));
                 RESULT = resultado;
             }else if(a instanceof Integer && b instanceof java.lang.Character){
                 char dos = (char) b;
-                int resultado = (int) a / (int) dos;
+                double resultado = Double.valueOf(String.valueOf(a)) / Double.valueOf(String.valueOf(dos));
                 RESULT = resultado;
             }else if(a instanceof java.lang.Character && b instanceof java.lang.Character){
                 char uno = (char) a;
                 char dos = (char) b;
-                int resultado = (int) uno / (int) dos;
+                double resultado = Double.valueOf(String.valueOf(uno)) / Double.valueOf(String.valueOf(dos));
+                RESULT = resultado;
+            }else if(a instanceof Integer && b instanceof Integer){
+                double resultado = Double.valueOf(String.valueOf(a)) / Double.valueOf(String.valueOf(b));
                 RESULT = resultado;
             }else{
                 RESULT = null;
@@ -726,7 +741,7 @@ class CUP$Analisis_Sintactico$actions {
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
 		
     if(a != null && b != null){
-        if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double)){
+        if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Double)){
             double base = Double.valueOf(String.valueOf(a));
             double exponente = Double.valueOf(String.valueOf(b));
             double resultado = Double.valueOf(String.valueOf((int) Math.pow(base, exponente)));
@@ -756,6 +771,11 @@ class CUP$Analisis_Sintactico$actions {
             double exponente = Double.valueOf(String.valueOf(numero2));
             double resultado = Double.valueOf(String.valueOf((int) Math.pow(base, exponente)));
             RESULT = resultado;
+        }else if(a instanceof Integer && b instanceof Integer){
+            int base = (int) a;
+            int exponente = (int) b;
+            int resultado = (int) Math.pow(base, exponente);
+            RESULT = resultado;
         }else{
             RESULT = null;
         }
@@ -779,7 +799,7 @@ class CUP$Analisis_Sintactico$actions {
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
 		
     if(a != null && b != null){
-        if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double)){
+        if((a instanceof java.lang.Double && b instanceof Integer) || (a instanceof Integer && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Character) ||(a instanceof java.lang.Character && b instanceof java.lang.Double) || (a instanceof java.lang.Double && b instanceof java.lang.Double)){
             double resultado = Double.valueOf(String.valueOf(a)) * Double.valueOf(String.valueOf(b));
             RESULT = resultado;
         }else if(a instanceof java.lang.Character && b instanceof Integer){
@@ -794,6 +814,9 @@ class CUP$Analisis_Sintactico$actions {
             char uno = (char) a;
             char dos = (char) b;
             int resultado = (int) uno * (int) dos;
+            RESULT = resultado;
+        }else if(a instanceof Integer && b instanceof Integer){
+            int resultado = (int) a * (int) b;
             RESULT = resultado;
         }else{
             RESULT = null;
