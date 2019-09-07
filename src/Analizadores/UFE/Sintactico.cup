@@ -54,7 +54,7 @@ terminal String identificador, entero, doble, booleano, cadena, caracter;
 //--------> Declaracion de no terminales
 non terminal S, INICIO;
 non terminal DECLARACION, ASIGNACION, OPCIONES;
-non terminal String VALOR, IDENT;
+non terminal Object VALOR, IDENT;
 non terminal OPERADOR;
 non terminal Object DATO, OPERACION;
 
@@ -92,33 +92,16 @@ DECLARACION ::= var ASIGNACION puntoComa
     ;
 ASIGNACION ::= ASIGNACION coma identificador:a IDENT:b
 {:
-    if(!b.isEmpty()){
+    if(b != null){
         String nombre = a;
-        String tipo = "";
-        String valor = b;
-        Object retorno = null;
-        if(valor.startsWith("'")){
-            valor = valor.replace("'","");
-            retorno = valor.charAt(0);
-        }else if(valor.startsWith("\"")){
-            tipo = "cadena";
-            valor = valor.replace("\"","");
-            retorno = valor;
-        }else{
-            if(valor.contains(".")){
-                retorno = Double.parseDouble(valor);
-            }else{
-                retorno = Integer.parseInt(valor);
-            }   
-        }
-        nombre.toLowerCase();
-        Variable var = new Variable(nombre, retorno);
+        nombre = nombre.toLowerCase();
+        Variable var = new Variable(nombre, b);
         if(!variables.insertar(var).equals("Ingresada")){
             System.out.println("ERROR: Variable duplicada");
         }
     }else{
         String nombre = a;
-        nombre.toLowerCase();
+        nombre = nombre.toLowerCase();
         Variable var = new Variable(nombre);
         if(!variables.insertar(var).equals("Ingresada")){
             System.out.println("ERROR: Variable duplicada");
@@ -127,33 +110,16 @@ ASIGNACION ::= ASIGNACION coma identificador:a IDENT:b
 :}
     | identificador:a IDENT:b
 {:
-    if(!b.isEmpty()){
+    if(b != null){
         String nombre = a;
-        String tipo = "";
-        String valor = b;
-        Object retorno = null;
-        if(valor.startsWith("'")){
-            valor = valor.replace("'","");
-            retorno = valor.charAt(0);
-        }else if(valor.startsWith("\"")){
-            tipo = "cadena";
-            valor = valor.replace("\"","");
-            retorno = valor;
-        }else{
-            if(valor.contains(".")){
-                retorno = Double.parseDouble(valor);
-            }else{
-                retorno = Integer.parseInt(valor);
-            }   
-        }
-        nombre.toLowerCase();
-        Variable var = new Variable(nombre, retorno);
+        nombre = nombre.toLowerCase();
+        Variable var = new Variable(nombre, b);
         if(!variables.insertar(var).equals("Ingresada")){
             System.out.println("ERROR: Variable duplicada");
         }
     }else{
         String nombre = a;
-        nombre.toLowerCase();
+        nombre = nombre.toLowerCase();
         Variable var = new Variable(nombre);
         if(!variables.insertar(var).equals("Ingresada")){
             System.out.println("ERROR: Variable duplicada");
@@ -164,11 +130,7 @@ ASIGNACION ::= ASIGNACION coma identificador:a IDENT:b
 IDENT ::= igual VALOR:a                                 {: RESULT = a; :}
     |                                                   {: RESULT = ""; :}
     ;
-VALOR ::= entero:a                                      {: RESULT = a; :}
-    | doble:a                                           {: RESULT = a; :}
-    | cadena:a                                          {: RESULT = a; :}
-    | caracter:a                                        {: RESULT = a; :}
-    | booleano:a                                        {: RESULT = a.toLowerCase(); :}
+VALOR ::= OPERACION:a                                   {: RESULT = a; :}
     ;
 OPERACION ::= OPERACION:a suma OPERACION:b
 {:
@@ -364,15 +326,286 @@ OPERACION ::= OPERACION:a suma OPERACION:b
     RESULT = a;
 :}
     | not OPERACION:a
+{:
+    if(a instanceof Boolean){
+        boolean resultado = (boolean) a;
+        RESULT = !resultado;
+    } else {
+        RESULT = null;
+    }
+:}
     | OPERACION:a diferente OPERACION:b
+{:
+    if(a instanceof Integer && b instanceof Integer){
+        int numero1 = (int) a;
+        int numero2 = (int) b;
+        RESULT = numero1 != numero2;
+    } else if(a instanceof Integer && b instanceof Double){
+        int numero1 = (int) a;
+        double numero2 = (double) b;
+        RESULT = numero1 != numero2;
+    } else if(a instanceof Double && b instanceof Integer){
+        double numero1 = (double) a;
+        int numero2 = (int) b;
+        RESULT = numero1 != numero2;
+    } else if(a instanceof Double && b instanceof Double){
+        double numero1 = (double) a;
+        double numero2 = (double) b;
+        RESULT = numero1 != numero2;
+    } else if(a instanceof Integer && b instanceof Character){
+        int numero1 = (int) a;
+        char numero2 = (char) b;
+        RESULT = numero1 != numero2;
+    } else if(a instanceof Character && b instanceof Integer){
+        char numero1 = (char) a;
+        int numero2 = (int) b;
+        RESULT = numero1 != numero2;
+    } else if(a instanceof Character && b instanceof Double){
+        char numero1 = (char) a;
+        double numero2 = (double) b;
+        RESULT = numero1 != numero2;
+    } else if(a instanceof Double && b instanceof Character){
+        double numero1 = (double) a;
+        char numero2 = (char) a;
+        RESULT = numero1 != numero2;
+    } else if(a instanceof Character && b instanceof Character){
+        char numero1 = (char) a;
+        char numero2 = (char) a;
+        RESULT = numero1 != numero2;
+    } else if(a instanceof String && b instanceof String){
+        String numero1 = (String) a;
+        String numero2 = (String) b;
+        RESULT = !numero1.equals(numero2);
+    }
+:}
     | OPERACION:a igualigual OPERACION:b
+{:
+    if(a instanceof Integer && b instanceof Integer){
+        int numero1 = (int) a;
+        int numero2 = (int) b;
+        RESULT = numero1 == numero2;
+    } else if(a instanceof Integer && b instanceof Double){
+        int numero1 = (int) a;
+        double numero2 = (double) b;
+        RESULT = numero1 == numero2;
+    } else if(a instanceof Double && b instanceof Integer){
+        double numero1 = (double) a;
+        int numero2 = (int) b;
+        RESULT = numero1 == numero2;
+    } else if(a instanceof Double && b instanceof Double){
+        double numero1 = (double) a;
+        double numero2 = (double) b;
+        RESULT = numero1 == numero2;
+    } else if(a instanceof Integer && b instanceof Character){
+        int numero1 = (int) a;
+        char numero2 = (char) b;
+        RESULT = numero1 == numero2;
+    } else if(a instanceof Character && b instanceof Integer){
+        char numero1 = (char) a;
+        int numero2 = (int) b;
+        RESULT = numero1 == numero2;
+    } else if(a instanceof Character && b instanceof Double){
+        char numero1 = (char) a;
+        double numero2 = (double) b;
+        RESULT = numero1 == numero2;
+    } else if(a instanceof Double && b instanceof Character){
+        double numero1 = (double) a;
+        char numero2 = (char) a;
+        RESULT = numero1 == numero2;
+    } else if(a instanceof Character && b instanceof Character){
+        char numero1 = (char) a;
+        char numero2 = (char) a;
+        RESULT = numero1 == numero2;
+    } else if(a instanceof String && b instanceof String){
+        String numero1 = (String) a;
+        String numero2 = (String) b;
+        RESULT = numero1.equals(numero2);
+    }
+:}
     | OPERACION:a menorQue OPERACION:b
+{:
+    if(a instanceof Integer && b instanceof Integer){
+        int numero1 = (int) a;
+        int numero2 = (int) b;
+        RESULT = numero1 < numero2;
+    } else if(a instanceof Integer && b instanceof Double){
+        int numero1 = (int) a;
+        double numero2 = (double) b;
+        RESULT = numero1 < numero2;
+    } else if(a instanceof Double && b instanceof Integer){
+        double numero1 = (double) a;
+        int numero2 = (int) b;
+        RESULT = numero1 < numero2;
+    } else if(a instanceof Double && b instanceof Double){
+        double numero1 = (double) a;
+        double numero2 = (double) b;
+        RESULT = numero1 < numero2;
+    } else if(a instanceof Integer && b instanceof Character){
+        int numero1 = (int) a;
+        char numero2 = (char) b;
+        RESULT = numero1 < numero2;
+    } else if(a instanceof Character && b instanceof Integer){
+        char numero1 = (char) a;
+        int numero2 = (int) b;
+        RESULT = numero1 < numero2;
+    } else if(a instanceof Character && b instanceof Double){
+        char numero1 = (char) a;
+        double numero2 = (double) b;
+        RESULT = numero1 < numero2;
+    } else if(a instanceof Double && b instanceof Character){
+        double numero1 = (double) a;
+        char numero2 = (char) a;
+        RESULT = numero1 < numero2;
+    } else if(a instanceof Character && b instanceof Character){
+        char numero1 = (char) a;
+        char numero2 = (char) a;
+        RESULT = numero1 < numero2;
+    }
+:}
     | OPERACION:a mayorQue OPERACION:b
+{:
+    if(a instanceof Integer && b instanceof Integer){
+        int numero1 = (int) a;
+        int numero2 = (int) b;
+        RESULT = numero1 > numero2;
+    } else if(a instanceof Integer && b instanceof Double){
+        int numero1 = (int) a;
+        double numero2 = (double) b;
+        RESULT = numero1 > numero2;
+    } else if(a instanceof Double && b instanceof Integer){
+        double numero1 = (double) a;
+        int numero2 = (int) b;
+        RESULT = numero1 > numero2;
+    } else if(a instanceof Double && b instanceof Double){
+        double numero1 = (double) a;
+        double numero2 = (double) b;
+        RESULT = numero1 > numero2;
+    } else if(a instanceof Integer && b instanceof Character){
+        int numero1 = (int) a;
+        char numero2 = (char) b;
+        RESULT = numero1 > numero2;
+    } else if(a instanceof Character && b instanceof Integer){
+        char numero1 = (char) a;
+        int numero2 = (int) b;
+        RESULT = numero1 > numero2;
+    } else if(a instanceof Character && b instanceof Double){
+        char numero1 = (char) a;
+        double numero2 = (double) b;
+        RESULT = numero1 > numero2;
+    } else if(a instanceof Double && b instanceof Character){
+        double numero1 = (double) a;
+        char numero2 = (char) a;
+        RESULT = numero1 > numero2;
+    } else if(a instanceof Character && b instanceof Character){
+        char numero1 = (char) a;
+        char numero2 = (char) a;
+        RESULT = numero1 > numero2;
+    }
+:}
     | OPERACION:a menorIgual OPERACION:b
+{:
+    if(a instanceof Integer && b instanceof Integer){
+        int numero1 = (int) a;
+        int numero2 = (int) b;
+        RESULT = numero1 <= numero2;
+    } else if(a instanceof Integer && b instanceof Double){
+        int numero1 = (int) a;
+        double numero2 = (double) b;
+        RESULT = numero1 <= numero2;
+    } else if(a instanceof Double && b instanceof Integer){
+        double numero1 = (double) a;
+        int numero2 = (int) b;
+        RESULT = numero1 <= numero2;
+    } else if(a instanceof Double && b instanceof Double){
+        double numero1 = (double) a;
+        double numero2 = (double) b;
+        RESULT = numero1 <= numero2;
+    } else if(a instanceof Integer && b instanceof Character){
+        int numero1 = (int) a;
+        char numero2 = (char) b;
+        RESULT = numero1 <= numero2;
+    } else if(a instanceof Character && b instanceof Integer){
+        char numero1 = (char) a;
+        int numero2 = (int) b;
+        RESULT = numero1 <= numero2;
+    } else if(a instanceof Character && b instanceof Double){
+        char numero1 = (char) a;
+        double numero2 = (double) b;
+        RESULT = numero1 <= numero2;
+    } else if(a instanceof Double && b instanceof Character){
+        double numero1 = (double) a;
+        char numero2 = (char) a;
+        RESULT = numero1 <= numero2;
+    } else if(a instanceof Character && b instanceof Character){
+        char numero1 = (char) a;
+        char numero2 = (char) a;
+        RESULT = numero1 <= numero2;
+    }
+:}
     | OPERACION:a mayorIgual OPERACION:b
+{:
+    if(a instanceof Integer && b instanceof Integer){
+        int numero1 = (int) a;
+        int numero2 = (int) b;
+        RESULT = numero1 >= numero2;
+    } else if(a instanceof Integer && b instanceof Double){
+        int numero1 = (int) a;
+        double numero2 = (double) b;
+        RESULT = numero1 >= numero2;
+    } else if(a instanceof Double && b instanceof Integer){
+        double numero1 = (double) a;
+        int numero2 = (int) b;
+        RESULT = numero1 >= numero2;
+    } else if(a instanceof Double && b instanceof Double){
+        double numero1 = (double) a;
+        double numero2 = (double) b;
+        RESULT = numero1 >= numero2;
+    } else if(a instanceof Integer && b instanceof Character){
+        int numero1 = (int) a;
+        char numero2 = (char) b;
+        RESULT = numero1 >= numero2;
+    } else if(a instanceof Character && b instanceof Integer){
+        char numero1 = (char) a;
+        int numero2 = (int) b;
+        RESULT = numero1 >= numero2;
+    } else if(a instanceof Character && b instanceof Double){
+        char numero1 = (char) a;
+        double numero2 = (double) b;
+        RESULT = numero1 >= numero2;
+    } else if(a instanceof Double && b instanceof Character){
+        double numero1 = (double) a;
+        char numero2 = (char) a;
+        RESULT = numero1 >= numero2;
+    } else if(a instanceof Character && b instanceof Character){
+        char numero1 = (char) a;
+        char numero2 = (char) a;
+        RESULT = numero1 >= numero2;
+    }
+:}
     | OPERACION:a logicoAND OPERACION:b
+{:
+    if(a instanceof Boolean && b instanceof Boolean){
+        boolean valor1 = (boolean) a;
+        boolean valor2 = (boolean) b;
+        RESULT = valor1 && valor2;
+    }
+:}
     | OPERACION:a logicoOR OPERACION:b
+{:
+    if(a instanceof Boolean && b instanceof Boolean){
+        boolean valor1 = (boolean) a;
+        boolean valor2 = (boolean) b;
+        RESULT = valor1 || valor2;
+    }
+:}
     | OPERACION:a logicoXOR OPERACION:b
+{:
+    if(a instanceof Boolean && b instanceof Boolean){
+        boolean valor1 = (boolean) a;
+        boolean valor2 = (boolean) b;
+        RESULT = valor1^valor2;
+    }
+:}
     | DATO:a
 {:
     if(a == null){
