@@ -4,7 +4,6 @@
 package Analizadores.UFE;
 import java_cup.runtime.Symbol;
 import Estructuras.*;
-import java.util.ArrayList;
 import Modelos.*;
 
 //--------> Codigo para el parser, variables, metodos
@@ -54,9 +53,9 @@ terminal String identificador, entero, doble, booleano, cadena, caracter;
 //--------> Declaracion de no terminales
 non terminal S, INICIO;
 non terminal DECLARACION, ASIGNACION, OPCIONES;
-non terminal Object VALOR, IDENT;
-non terminal OPERADOR;
-non terminal Object DATO, OPERACION;
+non terminal Object IDENT, IDENT2;
+non terminal OPERADOR, FUNCIONES, SI, SINO, OPCIONESSI, OPCSI;
+non terminal Object DATO, OPERACION, LISTAEXP;
 
 //----> precedencia de menor a mayor
 precedence left logicoOR;
@@ -87,6 +86,7 @@ OPCIONES ::= DECLARACION
         System.out.println("ERROR: error aritmetico");
     }
 :}
+    | FUNCIONES
     ;
 DECLARACION ::= var ASIGNACION puntoComa
     ;
@@ -111,11 +111,21 @@ ASIGNACION ::= ASIGNACION coma identificador:a IDENT:b
     | identificador:a IDENT:b
 {:
     if(b != null){
-        String nombre = a;
-        nombre = nombre.toLowerCase();
-        Variable var = new Variable(nombre, b);
-        if(!variables.insertar(var).equals("Ingresada")){
-            System.out.println("ERROR: Variable duplicada");
+        if(b instanceof String[]){
+        
+        } else {
+            if(b instanceof Object[]){
+            Object[] prueba = (Object[]) b;
+            for(int i = 0; i < prueba.length; i++){
+                System.out.println(a + "[" + i + "] = " + prueba[i]);
+            }
+    }
+            String nombre = a;
+            nombre = nombre.toLowerCase();
+            Variable var = new Variable(nombre, b);
+            if(!variables.insertar(var).equals("Ingresada")){
+                System.out.println("ERROR: Variable duplicada");
+            }
         }
     }else{
         String nombre = a;
@@ -127,10 +137,61 @@ ASIGNACION ::= ASIGNACION coma identificador:a IDENT:b
     }
 :}
     ;
-IDENT ::= igual VALOR:a                                 {: RESULT = a; :}
+IDENT ::= igual OPERACION:a                                 
+{: 
+    RESULT = a; 
+:}
+    | corcheteA OPERACION:a corcheteC IDENT2:b
+{:
+    if(a instanceof Integer){
+        if(b != null){
+            int c = (int) a;
+            Object retorno[] = new Object[c];
+            if(b instanceof String){
+                for(int i = 0; i < c; i++){
+                    retorno[i] = 0;
+                }
+            } else {
+                for(int i = 0; i < c; i++){
+                    retorno[i] = b;
+                }
+            }
+            RESULT = retorno;
+        }
+    } else {
+        System.out.println("ERROR se esperaba dato entero");
+        String retorno[] = new String[1];
+        RESULT = retorno;
+    }
+:}
     |                                                   {: RESULT = ""; :}
     ;
-VALOR ::= OPERACION:a                                   {: RESULT = a; :}
+LISTAEXP ::= LISTAEXP:a coma OPERACION:b
+{:
+    Object viejo[] = (Object[]) a;
+    Object nuevo[] = new Object[viejo.length + 1];
+    for(int i = 0; i < viejo.length; i++){
+        nuevo[i] = viejo[i];
+    }
+    nuevo[viejo.length] = b;
+    RESULT = nuevo;
+:}
+    | OPERACION:a
+{:
+    Object retorno[] = {a};
+    RESULT = retorno;
+:}
+    ;
+IDENT2 ::= igual OPERACION:a
+{:
+    if(a != null){
+        RESULT = a;
+    } else {
+        System.out.println("ERROR se esperaba dato");
+        RESULT = null;
+    }
+:}
+    |                                                   {: RESULT = ""; :}
     ;
 OPERACION ::= OPERACION:a suma OPERACION:b
 {:
@@ -614,6 +675,10 @@ OPERACION ::= OPERACION:a suma OPERACION:b
         RESULT = a;
     }
 :}
+    | llaveA LISTAEXP:a llaveC
+{:
+    RESULT = a;
+:}
     ;
 DATO ::= entero:a
 {:
@@ -663,4 +728,17 @@ DATO ::= entero:a
         RESULT = null;
     }
 :}
+    ;
+FUNCIONES ::= SI
+    ;
+SI ::= si parentesisA OPERACION parentesisC llaveA OPCSI llaveC SINO
+    ;
+SINO ::= sino OPCIONESSI
+    |
+    ;
+OPCIONESSI ::= SI
+    | llaveA OPCSI llaveC
+    ;
+OPCSI ::= INICIO
+    | 
     ;
