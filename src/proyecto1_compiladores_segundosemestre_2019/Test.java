@@ -4,7 +4,11 @@
  * and open the template in the editor.
  */
 package proyecto1_compiladores_segundosemestre_2019;
+import Nodos.NodoSintactico;
 import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -135,14 +139,60 @@ public class Test extends javax.swing.JFrame {
         if(!texto.isEmpty()){
             Analizadores.UFE.Analisis_Lexico lexico_ufe = new Analizadores.UFE.Analisis_Lexico(new BufferedReader(new StringReader(texto)));
             Analizadores.UFE.Analisis_Sintactico sintactico_ufe = new Analizadores.UFE.Analisis_Sintactico(lexico_ufe);
+            analizar(sintactico_ufe.padre);
             try{
                 sintactico_ufe.parse();
+                FileWriter archivo = null;
+                PrintWriter pw = null;
+                String cadena = graficarNodo(sintactico_ufe.padre);
+                
+                try{
+                    archivo = new FileWriter("arbol.dot");
+                    pw = new PrintWriter(archivo);
+                    pw.println("digraph G{\nnode[shape=box];\nrankdir=UD;\n");
+                    pw.println(cadena);
+                    pw.println("\n}");
+                    archivo.close();
+                }catch (IOException e){}
+                
+                try{
+                    String cmd = "dot -Tpng arbol.dot -o arbol.png";
+                    Runtime.getRuntime().exec(cmd);
+                }catch (IOException e){}
             } catch (Exception ex) {
                 Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    public void analizar(NodoSintactico nodo){
+        
+    }
+    
+    public String graficarNodo(NodoSintactico nodo){
+        String cadena = "";
+        for(NodoSintactico hijos: nodo.getHijos()){
+            String nodoPadre = "";
+            String nodoHijo = "";
+            if(nodo.getValor() != null){
+                nodoPadre = "\"" + nodo.getNumNodo() + "_" + nodo.getNombre() + "\"" + "[label = \"" + nodo.getValor() + "\"];";
+            } else {
+                nodoPadre = "\"" + nodo.getNumNodo() + "_" + nodo.getNombre() + "\"" + "[label = \"" + nodo.getNombre() + "\"];";
+            }
+            if(hijos.getValor() != null){
+                nodoHijo = "\"" + hijos.getNumNodo() + "_" + hijos.getNombre() + "\"" + "[label = \"" + hijos.getValor() + "\"];";
+            } else {
+                nodoHijo = "\"" + hijos.getNumNodo() + "_" + hijos.getNombre() + "\"" + "[label = \"" + hijos.getNombre() + "\"];";
+            }
+            String apuntadorPadre = "\"" + nodo.getNumNodo() + "_" + nodo.getNombre() + "\"";
+            String apuntadorHijo = "\"" + hijos.getNumNodo() + "_" + hijos.getNombre() + "\"";
+            cadena += nodoPadre + "\n" + nodoHijo + "\n" + apuntadorPadre + "->" + apuntadorHijo + ";\n";
+            cadena += graficarNodo(hijos);
+            
+        }
+        return cadena;
+    }
+    
     /**
      * @param args the command line arguments
      */

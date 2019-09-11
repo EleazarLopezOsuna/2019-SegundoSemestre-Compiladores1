@@ -27,7 +27,7 @@ public class Simbolos {
   public static final int logicoOR = 16;
   public static final int element = 44;
   public static final int from = 53;
-  public static final int caracter = 64;
+  public static final int caracter = 61;
   public static final int repetir = 56;
   public static final int panel = 39;
   public static final int menorQue = 11;
@@ -45,11 +45,11 @@ public class Simbolos {
   public static final int EOF = 0;
   public static final int mayorIgual = 14;
   public static final int error = 1;
-  public static final int doble = 61;
+  public static final int doble = 63;
   public static final int text = 40;
   public static final int color = 34;
   public static final int item = 45;
-  public static final int entero = 60;
+  public static final int entero = 62;
   public static final int render = 37;
   public static final int spinner = 47;
   public static final int llaveC = 21;
@@ -62,7 +62,7 @@ public class Simbolos {
   public static final int logicoXOR = 17;
   public static final int diferente = 10;
   public static final int not = 9;
-  public static final int booleano = 62;
+  public static final int booleano = 64;
   public static final int parentesisC = 19;
   public static final int parentesisA = 18;
   public static final int className = 36;
@@ -71,7 +71,7 @@ public class Simbolos {
   public static final int division = 3;
   public static final int min = 48;
   public static final int retorno = 38;
-  public static final int cadena = 63;
+  public static final int cadena = 60;
   public static final int sino = 55;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -134,11 +134,11 @@ public class Simbolos {
   "imprimir",
   "mientras",
   "identificador",
+  "cadena",
+  "caracter",
   "entero",
   "doble",
-  "booleano",
-  "cadena",
-  "caracter"
+  "booleano"
   };
 }
 
