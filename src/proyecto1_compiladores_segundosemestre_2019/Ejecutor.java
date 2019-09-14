@@ -21,25 +21,29 @@ public class Ejecutor {
     }
 
     private void recorrer(NodoSintactico raiz, Entorno ent) {
+        Expresion resultado;
+        Entorno nuevo;
+        boolean boleano;
         switch (raiz.getNombre()) {
             case "INICIO":
-                Entorno nuevo = new Entorno(ent);
+                nuevo = new Entorno(ent);
                 recorrer(raiz.getHijos().get(0), nuevo);
                 break;
             case "OPCION":
+            case "FUNCION":
+            case "SINO":
+            case "SINO-SI":
                 recorrer(raiz.getHijos().get(0), ent);
                 break;
             case "OPCIONES":
-                recorrer(raiz.getHijos().get(0), ent);
-                recorrer(raiz.getHijos().get(1), ent);
-                break;
             case "ASIGNACIONES":
+            case "FUNCIONES":
                 recorrer(raiz.getHijos().get(0), ent);
                 recorrer(raiz.getHijos().get(1), ent);
                 break;
             case "E":
                 Expresion hola = resolverExpresion(raiz.getHijos().get(0), ent);
-                System.out.println(hola.valor);
+                break;
             case "SDA":
             case "ADA":
             case "AD":
@@ -49,6 +53,51 @@ public class Ejecutor {
                 //AD - Arreglo Declaracion
                 //SD - Simple Declaracion
                 EjecutarDeclaracion(raiz, ent);
+                break;
+            case "SI":
+                resultado = resolverExpresion(raiz.getHijos().get(0), ent);
+                switch(resultado.tipo){
+                    case booleano:
+                        boleano = (boolean) resultado.valor;
+                        if(boleano){
+                            nuevo = new Entorno(ent);
+                            recorrer(raiz.getHijos().get(1), nuevo);
+                        }
+                        break;
+                    default:
+                        //AGREGAR EL ERROR
+                        System.out.println(resultado.valor);
+                        break;
+                }
+                break;
+            case "SI-SINO":
+                resultado = resolverExpresion(raiz.getHijos().get(0), ent);
+                switch(resultado.tipo){
+                    case booleano:
+                        boleano = (boolean) resultado.valor;
+                        if(boleano){
+                            nuevo = new Entorno(ent);
+                            recorrer(raiz.getHijos().get(1), nuevo);
+                        } else {
+                            nuevo = new Entorno(ent);
+                            recorrer(raiz.getHijos().get(2), nuevo);
+                        }
+                        break;
+                    default:
+                        //AGREGAR EL ERROR
+                        System.out.println(resultado.valor);
+                        break;
+                }
+                break;
+            case "IMPRIMIR":
+                resultado = resolverExpresion(raiz.getHijos().get(0), ent);
+                if(resultado.tipo != Simbolo.EnumTipo.error){
+                    System.out.println(resultado.valor);
+                }else{
+                    //AGREGAR EL ERROR
+                    System.out.println(resultado.valor);
+                }
+                break;
         }
     }
 

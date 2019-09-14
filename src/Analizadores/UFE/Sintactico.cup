@@ -56,6 +56,7 @@ terminal String identificador, cadena, caracter, entero, doble, booleano;
 non terminal INICIO;
 non terminal NodoSintactico DECLARACION, ASIGNACION, IDENT, SI, SINO, E;
 non terminal NodoSintactico FUNCIONES, DATO, LISTAEXP, INSTRUCCIONES, OPCIONES;
+non terminal NodoSintactico IMPRIMIR;
 
 
 //----> precedencia de menor a mayor
@@ -436,6 +437,10 @@ FUNCIONES ::= SI:a
 {:
     RESULT = a;
 :}
+    | IMPRIMIR:a
+{:
+    RESULT = a;
+:}
     ;
 SI ::= si:b parentesisA E:a parentesisC llaveA llaveC
 {:
@@ -494,6 +499,16 @@ SINO ::= sino SI:a
 {:
     NodoSintactico tmp = new NodoSintactico("SINO", aleft, aright);
     tmp.addHijo(a);
+    tmp.setNumNodo(contador++);
+
+    RESULT = tmp;
+:}
+    ;
+
+IMPRIMIR ::= imprimir:a parentesisA E:b parentesisC puntoComa
+{:
+    NodoSintactico tmp = new NodoSintactico("IMPRIMIR", aleft, aright);
+    tmp.addHijo(b);
     tmp.setNumNodo(contador++);
 
     RESULT = tmp;
