@@ -16,11 +16,15 @@ public class NodoSintactico {
     private ArrayList<NodoSintactico> hijos;
     private Object valor;
     private int numNodo;
+    private int linea;
+    private int columna;
 
-    public NodoSintactico(String nombre) {
+    public NodoSintactico(String nombre, int linea, int columna) {
         this.nombre = nombre;
         hijos = new ArrayList<>();
         setNumNodo(0);
+        this.linea = linea;
+        this.columna = columna;
     }
 
     public void addHijo(NodoSintactico hijo){
@@ -58,6 +62,23 @@ public class NodoSintactico {
     public void setNumNodo(int numNodo) {
         this.numNodo = numNodo;
     }
+
+    public int getLinea() {
+        return linea;
+    }
+
+    public void setLinea(int linea) {
+        this.linea = linea;
+    }
+
+    public int getColumna() {
+        return columna;
+    }
+
+    public void setColumna(int columna) {
+        this.columna = columna;
+    }
+    
     
     
 }

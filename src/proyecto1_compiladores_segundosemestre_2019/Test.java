@@ -139,13 +139,13 @@ public class Test extends javax.swing.JFrame {
         if(!texto.isEmpty()){
             Analizadores.UFE.Analisis_Lexico lexico_ufe = new Analizadores.UFE.Analisis_Lexico(new BufferedReader(new StringReader(texto)));
             Analizadores.UFE.Analisis_Sintactico sintactico_ufe = new Analizadores.UFE.Analisis_Sintactico(lexico_ufe);
-            analizar(sintactico_ufe.padre);
             try{
                 sintactico_ufe.parse();
+                Ejecutor ejecutor = new Ejecutor();
+                ejecutor.Ejecutar(sintactico_ufe.padre);
                 FileWriter archivo = null;
                 PrintWriter pw = null;
                 String cadena = graficarNodo(sintactico_ufe.padre);
-                
                 try{
                     archivo = new FileWriter("arbol.dot");
                     pw = new PrintWriter(archivo);
@@ -165,10 +165,6 @@ public class Test extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    public void analizar(NodoSintactico nodo){
-        
-    }
-    
     public String graficarNodo(NodoSintactico nodo){
         String cadena = "";
         for(NodoSintactico hijos: nodo.getHijos()){
@@ -188,7 +184,6 @@ public class Test extends javax.swing.JFrame {
             String apuntadorHijo = "\"" + hijos.getNumNodo() + "_" + hijos.getNombre() + "\"";
             cadena += nodoPadre + "\n" + nodoHijo + "\n" + apuntadorPadre + "->" + apuntadorHijo + ";\n";
             cadena += graficarNodo(hijos);
-            
         }
         return cadena;
     }

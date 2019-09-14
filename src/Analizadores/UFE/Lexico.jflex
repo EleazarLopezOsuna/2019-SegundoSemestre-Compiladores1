@@ -31,7 +31,7 @@ import Modelos.Errores;
 
 //--------> Expresiones regulares
 entero                  = [0-9]+
-doble                   = [\-]?[0-9]+(\.[0-9]+)?
+doble                   = [0-9]+(\.[0-9]+)
 cadena                  = [\"][^\"]*[\"]
 booleano                = ("true"|"false")
 caracter                = "'"(.)"'"
