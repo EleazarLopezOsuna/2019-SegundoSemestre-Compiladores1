@@ -129,6 +129,7 @@ public class Ejecutor {
                 }
             } else {
                 //AGREGAR EL ERROR
+                System.out.println(resultado.tipo);
             }
         } else {
             //AGREGAR EL ERROR
@@ -139,11 +140,13 @@ public class Ejecutor {
     private void EjecutarMientras(NodoSintactico raiz, Entorno ent) {
         Expresion resultado = resolverExpresion(raiz.getHijos().get(0), ent);
         switch (resultado.tipo) {
-            case entero:
-                int contador = (int) resultado.valor;
-                while (contador > 0) {
-                    recorrer(raiz.getHijos().get(1), ent);
-                    contador--;
+            case booleano:
+                boolean comprobador = (boolean) resultado.valor;
+                while (comprobador) {
+                    Entorno nuevo = new Entorno(ent);
+                    recorrer(raiz.getHijos().get(1), nuevo);
+                    resultado = resolverExpresion(raiz.getHijos().get(0), ent);
+                    comprobador = (boolean) resultado.valor;
                 }
                 break;
             case error:
@@ -152,7 +155,7 @@ public class Ejecutor {
                 break;
             default:
                 //AGREGAR EL ERROR
-                System.out.println("Se esperaba tipo entero, tipo " + resultado.tipo + " encontrado");
+                System.out.println("Se esperaba tipo booleano, tipo " + resultado.tipo + " encontrado");
                 break;
         }
     }
@@ -163,7 +166,8 @@ public class Ejecutor {
             case entero:
                 int contador = (int) resultado.valor;
                 while (contador > 0) {
-                    recorrer(raiz.getHijos().get(1), ent);
+                    Entorno nuevo = new Entorno(ent);
+                    recorrer(raiz.getHijos().get(1), nuevo);
                     contador--;
                 }
                 break;
