@@ -56,15 +56,15 @@ terminal String identificador, cadena, caracter, entero, doble, booleano;
 non terminal INICIO;
 non terminal NodoSintactico DECLARACION, ASIGNACION, IDENT, SI, SINO, E;
 non terminal NodoSintactico FUNCIONES, DATO, LISTAEXP, INSTRUCCIONES, OPCIONES;
-non terminal NodoSintactico IMPRIMIR;
+non terminal NodoSintactico IMPRIMIR, MIENTRAS, REPETIR;
 
 
 //----> precedencia de menor a mayor
 precedence left logicoOR;
 precedence left logicoAND;
 precedence left logicoXOR;
-precedence left not;
 precedence left igualigual, diferente, mayorQue, menorIgual, menorQue, mayorIgual;
+precedence right not;
 precedence left suma, resta;
 precedence left multiplicacion, division;
 precedence left potencia;
@@ -120,6 +120,19 @@ OPCIONES ::= DECLARACION:a
 DECLARACION ::= var ASIGNACION:a puntoComa
 {:
     RESULT = a;
+:}
+    | identificador:a igual E:b puntoComa
+{:
+    NodoSintactico identificador = new NodoSintactico("ID", aleft, aright);
+    identificador.setValor(a);
+    identificador.setNumNodo(contador++);
+
+    NodoSintactico tmp = new NodoSintactico("REASIGNACION", aleft, aright);
+    tmp.addHijo(identificador);
+    tmp.addHijo(b);
+    tmp.setNumNodo(contador++);
+    
+    RESULT = tmp;
 :}
     ;
 ASIGNACION ::= ASIGNACION:a coma IDENT:b
@@ -441,6 +454,14 @@ FUNCIONES ::= SI:a
 {:
     RESULT = a;
 :}
+    | MIENTRAS:a
+{:
+    RESULT = a;
+:}
+    | REPETIR:a
+{:
+    RESULT = a;
+:}
     ;
 SI ::= si:b parentesisA E:a parentesisC llaveA llaveC
 {:
@@ -509,6 +530,44 @@ IMPRIMIR ::= imprimir:a parentesisA E:b parentesisC puntoComa
 {:
     NodoSintactico tmp = new NodoSintactico("IMPRIMIR", aleft, aright);
     tmp.addHijo(b);
+    tmp.setNumNodo(contador++);
+
+    RESULT = tmp;
+:}
+    ;
+
+MIENTRAS ::= mientras:a parentesisA E:b parentesisC llaveA llaveC
+{:
+    NodoSintactico tmp = new NodoSintactico("MIENTRAS", aleft, aright);
+    tmp.addHijo(b);
+    tmp.setNumNodo(contador++);
+
+    RESULT = tmp;
+:}
+    | mientras:a parentesisA E:b parentesisC llaveA INSTRUCCIONES:c llaveC
+{:
+    NodoSintactico tmp = new NodoSintactico("MIENTRAS", aleft, aright);
+    tmp.addHijo(b);
+    tmp.addHijo(c);
+    tmp.setNumNodo(contador++);
+
+    RESULT = tmp;
+:}
+    ;
+
+REPETIR ::= repetir:a parentesisA E:b parentesisC llaveA llaveC
+{:
+    NodoSintactico tmp = new NodoSintactico("REPETIR", aleft, aright);
+    tmp.addHijo(b);
+    tmp.setNumNodo(contador++);
+
+    RESULT = tmp;
+:}
+    | repetir:a parentesisA E:b parentesisC llaveA INSTRUCCIONES:c llaveC
+{:
+    NodoSintactico tmp = new NodoSintactico("REPETIR", aleft, aright);
+    tmp.addHijo(b);
+    tmp.addHijo(c);
     tmp.setNumNodo(contador++);
 
     RESULT = tmp;

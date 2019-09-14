@@ -56,10 +56,10 @@ public class Ejecutor {
                 break;
             case "SI":
                 resultado = resolverExpresion(raiz.getHijos().get(0), ent);
-                switch(resultado.tipo){
+                switch (resultado.tipo) {
                     case booleano:
                         boleano = (boolean) resultado.valor;
-                        if(boleano){
+                        if (boleano) {
                             nuevo = new Entorno(ent);
                             recorrer(raiz.getHijos().get(1), nuevo);
                         }
@@ -72,10 +72,10 @@ public class Ejecutor {
                 break;
             case "SI-SINO":
                 resultado = resolverExpresion(raiz.getHijos().get(0), ent);
-                switch(resultado.tipo){
+                switch (resultado.tipo) {
                     case booleano:
                         boleano = (boolean) resultado.valor;
-                        if(boleano){
+                        if (boleano) {
                             nuevo = new Entorno(ent);
                             recorrer(raiz.getHijos().get(1), nuevo);
                         } else {
@@ -91,12 +91,89 @@ public class Ejecutor {
                 break;
             case "IMPRIMIR":
                 resultado = resolverExpresion(raiz.getHijos().get(0), ent);
-                if(resultado.tipo != Simbolo.EnumTipo.error){
+                if (resultado.tipo != Simbolo.EnumTipo.error) {
                     System.out.println(resultado.valor);
-                }else{
+                } else {
                     //AGREGAR EL ERROR
                     System.out.println(resultado.valor);
                 }
+                break;
+            case "REPETIR":
+                if (raiz.getHijos().size() == 2) {
+                    nuevo = new Entorno(ent);
+                    EjecutarRepetir(raiz, nuevo);
+                }
+                break;
+            case "MIENTRAS":
+                if (raiz.getHijos().size() == 2) {
+                    nuevo = new Entorno(ent);
+                    EjecutarMientras(raiz, nuevo);
+                }
+                break;
+            case "REASIGNACION":
+                EjecutarReasignacion(raiz, ent);
+                break;
+        }
+    }
+
+    private void EjecutarReasignacion(NodoSintactico raiz, Entorno ent) {
+        String nombre = (String) raiz.getHijos().get(0).getValor();
+        Simbolo sim = ent.buscar(nombre, raiz.getLinea(), raiz.getColumna());
+        if (sim != null) {
+            Expresion resultado = resolverExpresion(raiz.getHijos().get(1), ent);
+            if (resultado.tipo != Simbolo.EnumTipo.error) {
+                sim = new Simbolo(resultado.tipo, resultado.valor);
+                if(!ent.modificar(nombre, sim)){
+                    //AGREGAR EL ERROR
+                    System.out.println("Error al reasignar la variable");
+                }
+            } else {
+                //AGREGAR EL ERROR
+            }
+        } else {
+            //AGREGAR EL ERROR
+            System.out.println("La variable no existe");
+        }
+    }
+
+    private void EjecutarMientras(NodoSintactico raiz, Entorno ent) {
+        Expresion resultado = resolverExpresion(raiz.getHijos().get(0), ent);
+        switch (resultado.tipo) {
+            case entero:
+                int contador = (int) resultado.valor;
+                while (contador > 0) {
+                    recorrer(raiz.getHijos().get(1), ent);
+                    contador--;
+                }
+                break;
+            case error:
+                //AGREGAR EL ERROR
+                System.out.println(resultado.valor);
+                break;
+            default:
+                //AGREGAR EL ERROR
+                System.out.println("Se esperaba tipo entero, tipo " + resultado.tipo + " encontrado");
+                break;
+        }
+    }
+
+    private void EjecutarRepetir(NodoSintactico raiz, Entorno ent) {
+        Expresion resultado = resolverExpresion(raiz.getHijos().get(0), ent);
+        switch (resultado.tipo) {
+            case entero:
+                int contador = (int) resultado.valor;
+                while (contador > 0) {
+                    recorrer(raiz.getHijos().get(1), ent);
+                    contador--;
+                }
+                break;
+            case error:
+                //AGREGAR EL ERROR
+                System.out.println(resultado.valor);
+                break;
+            default:
+                //AGREGAR EL ERROR
+                System.out.println("Se esperaba tipo entero, tipo " + resultado.tipo + " encontrado");
                 break;
         }
     }
@@ -661,7 +738,7 @@ public class Ejecutor {
                 }
                 break;
             case caracter:
-                switch(expresion2.tipo){
+                switch (expresion2.tipo) {
                     case entero:
                         //Caracter Entero
                         resultado = (int) expresion1.valor > (int) expresion2.valor;
@@ -716,7 +793,7 @@ public class Ejecutor {
                 }
                 break;
             case caracter:
-                switch(expresion2.tipo){
+                switch (expresion2.tipo) {
                     case entero:
                         //Caracter Entero
                         resultado = (int) expresion1.valor < (int) expresion2.valor;
@@ -771,7 +848,7 @@ public class Ejecutor {
                 }
                 break;
             case caracter:
-                switch(expresion2.tipo){
+                switch (expresion2.tipo) {
                     case entero:
                         //Caracter Entero
                         resultado = (int) expresion1.valor >= (int) expresion2.valor;
@@ -826,7 +903,7 @@ public class Ejecutor {
                 }
                 break;
             case caracter:
-                switch(expresion2.tipo){
+                switch (expresion2.tipo) {
                     case entero:
                         //Caracter Entero
                         resultado = (int) expresion1.valor <= (int) expresion2.valor;
@@ -881,7 +958,7 @@ public class Ejecutor {
                 }
                 break;
             case caracter:
-                switch(expresion2.tipo){
+                switch (expresion2.tipo) {
                     case entero:
                         //Caracter Entero
                         resultado = (int) expresion1.valor == (int) expresion2.valor;
@@ -897,7 +974,7 @@ public class Ejecutor {
                 }
                 break;
             case cadena:
-                switch(expresion2.tipo){
+                switch (expresion2.tipo) {
                     case cadena:
                         //Cadena Cadena
                         String cadena1 = (String) expresion1.valor;
@@ -946,7 +1023,7 @@ public class Ejecutor {
                 }
                 break;
             case caracter:
-                switch(expresion2.tipo){
+                switch (expresion2.tipo) {
                     case entero:
                         //Caracter Entero
                         resultado = (int) expresion1.valor != (int) expresion2.valor;
@@ -962,7 +1039,7 @@ public class Ejecutor {
                 }
                 break;
             case cadena:
-                switch(expresion2.tipo){
+                switch (expresion2.tipo) {
                     case cadena:
                         //Cadena Cadena
                         String cadena1 = (String) expresion1.valor;
