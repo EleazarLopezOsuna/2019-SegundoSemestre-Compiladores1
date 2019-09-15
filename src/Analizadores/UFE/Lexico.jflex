@@ -39,8 +39,8 @@ identificador           = [a-zA-Z]([a-zA-Z]|[0-9|"_"])*
 comentarioLinea         = "//".*
 comentarioMultiLinea    = "/*"( [^*] | (\*+[^*/]) )*\*+\/
 hexadecimal             = "#"[0-9a-f]{6}
-texto                   = [^"{"]*
-otros                   = [\t|\r|\n|\f|\s|\v]*
+texto                   = ([^("{" | "<")] | [\t|\r|\n|\f|\s])*
+otros                   = [\t|\r|\n|\f|\s]*
 
 //--------> Estados
 %state TEXTO, ETIQUETA
@@ -141,8 +141,10 @@ otros                   = [\t|\r|\n|\f|\s|\v]*
 
 <TEXTO> {otros}                  { /* Espacios en blanco se ignoran */ }
 <TEXTO> "{"                      { yybegin(YYINITIAL); return new Symbol(Simbolos.llaveA, yycolumn, yyline, yytext()); }
+<TEXTO> {cadena}                 { yybegin(YYINITIAL); return new Symbol(Simbolos.cadena, yycolumn, yyline, yytext()); }
 <TEXTO> "<"                      { yybegin(YYINITIAL); return new Symbol(Simbolos.menorQue, yycolumn, yyline, yytext()); }
-<TEXTO> {texto}                  { yybegin(YYINITIAL); return new Symbol(Simbolos.texto, yycolumn, yyline, yytext()); }
+<TEXTO> {texto}                  { return new Symbol(Simbolos.texto, yycolumn, yyline, yytext()); }
+
 
 //--------> Expresiones Regulares
 

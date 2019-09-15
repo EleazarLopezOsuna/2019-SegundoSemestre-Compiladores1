@@ -659,6 +659,40 @@ OPCOMPONENTES ::= PANEL:a
 :}
     ;
 
+TEXT ::= menorQue textField:a ATRIBUTOS:b mayorQue menorQue ftextField mayorQue
+{:
+    NodoSintactico nuevo = new NodoSintactico("TEXTFIELD", aleft, aright);
+    nuevo.addHijo(b);
+    nuevo.setNumNodo(contador++);
+
+    RESULT = nuevo;
+:}
+    | menorQue textField:a ATRIBUTOS:b mayorQue IDTEXT:c menorQue ftextField mayorQue
+{:
+    NodoSintactico nuevo = new NodoSintactico("TEXTFIELD", aleft, aright);
+    nuevo.addHijo(b);
+    nuevo.addHijo(c);
+    nuevo.setNumNodo(contador++);
+
+    RESULT = nuevo;
+:}
+    | menorQue textField:a mayorQue menorQue ftextField mayorQue
+{:
+    NodoSintactico nuevo = new NodoSintactico("TEXTFIELD", aleft, aright);
+    nuevo.setNumNodo(contador++);
+
+    RESULT = nuevo;
+:}
+    | menorQue textField:a mayorQue IDTEXT:b menorQue ftextField mayorQue
+{:
+    NodoSintactico nuevo = new NodoSintactico("TEXTFIELD", aleft, aright);
+    nuevo.addHijo(b);
+    nuevo.setNumNodo(contador++);
+
+    RESULT = nuevo;
+:}
+    ;
+
 TEXT ::= menorQue textt:a ATRIBUTOS:b mayorQue menorQue ftext mayorQue
 {:
     NodoSintactico nuevo = new NodoSintactico("TEXT", aleft, aright);
@@ -696,6 +730,14 @@ TEXT ::= menorQue textt:a ATRIBUTOS:b mayorQue menorQue ftext mayorQue
 IDTEXT ::= texto:a
 {:
     NodoSintactico texto = new NodoSintactico("TEXTO", aleft, aright);
+    a = a.replace("\"","");
+    a = a.replace("\t","");
+    if(a.startsWith("\n")){
+        a = a.replaceFirst("\n", "");
+    }
+    if(a.endsWith("\n")){
+        a = a.replaceFirst("(?s)(.*)" + "\n", "$1" + "");
+    }
     texto.setValor(a);
     texto.setNumNodo(contador++);
     
@@ -708,6 +750,15 @@ IDTEXT ::= texto:a
     identificador.setNumNodo(contador++);
 
     RESULT = identificador;
+:}
+    | cadena:a
+{:
+    NodoSintactico texto = new NodoSintactico("TEXTO", aleft, aright);
+    a = a.replace("\"","");
+    texto.setValor(a);
+    texto.setNumNodo(contador++);
+    
+    RESULT = texto;
 :}
     ;
 
