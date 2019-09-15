@@ -113,6 +113,8 @@ public class Ejecutor {
             case "REASIGNACION":
                 EjecutarReasignacion(raiz, ent);
                 break;
+            default: 
+                break;
         }
     }
 

@@ -8,71 +8,79 @@ package Analizadores.UFE;
 /** CUP generated class containing symbol constants. */
 public class Simbolos {
   /* terminals */
-  public static final int width = 33;
-  public static final int mayorQue = 12;
-  public static final int igualigual = 8;
-  public static final int height = 32;
+  public static final int panel = 39;
+  public static final int button = 42;
+  public static final int menorQue = 11;
+  public static final int identificador = 66;
+  public static final int booleano = 71;
+  public static final int importar = 58;
   public static final int suma = 5;
+  public static final int item = 51;
+  public static final int parentesisC = 19;
+  public static final int max = 55;
+  public static final int border = 35;
   public static final int resta = 4;
-  public static final int imprimir = 57;
-  public static final int image = 50;
+  public static final int height = 32;
+  public static final int parentesisA = 18;
   public static final int dosPuntos = 24;
+  public static final int hexadecimal = 65;
+  public static final int cadena = 67;
+  public static final int fspinner = 49;
+  public static final int color = 34;
+  public static final int mientras = 64;
+  public static final int list = 43;
+  public static final int multiplicacion = 2;
+  public static final int imprimir = 63;
+  public static final int menorIgual = 13;
+  public static final int sino = 61;
+  public static final int mayorQue = 12;
+  public static final int caracter = 68;
+  public static final int ftextField = 45;
+  public static final int fdefecto = 48;
+  public static final int id = 29;
+  public static final int retorno = 38;
+  public static final int mayorIgual = 14;
+  public static final int posicionY = 31;
+  public static final int posicionX = 30;
+  public static final int render = 37;
+  public static final int from = 59;
+  public static final int textField = 41;
+  public static final int component = 28;
+  public static final int spinner = 53;
+  public static final int ftext = 44;
+  public static final int logicoAND = 15;
+  public static final int textt = 40;
+  public static final int llaveC = 21;
+  public static final int className = 36;
+  public static final int llaveA = 20;
+  public static final int texto = 72;
+  public static final int logicoXOR = 17;
+  public static final int division = 3;
+  public static final int EOF = 0;
+  public static final int repetir = 62;
+  public static final int fuente = 57;
+  public static final int potencia = 6;
+  public static final int puntoComa = 25;
+  public static final int error = 1;
+  public static final int image = 56;
+  public static final int logicoOR = 16;
+  public static final int diferente = 10;
+  public static final int si = 60;
+  public static final int entero = 69;
+  public static final int width = 33;
+  public static final int fbutton = 46;
+  public static final int defecto = 52;
+  public static final int igualigual = 8;
+  public static final int coma = 26;
+  public static final int fitem = 47;
+  public static final int not = 9;
+  public static final int doble = 70;
+  public static final int igual = 7;
   public static final int corcheteC = 23;
   public static final int corcheteA = 22;
-  public static final int coma = 26;
-  public static final int igual = 7;
-  public static final int identificador = 59;
-  public static final int multiplicacion = 2;
-  public static final int border = 35;
-  public static final int logicoOR = 16;
-  public static final int element = 44;
-  public static final int from = 53;
-  public static final int caracter = 61;
-  public static final int repetir = 56;
-  public static final int panel = 39;
-  public static final int menorQue = 11;
-  public static final int menorIgual = 13;
-  public static final int si = 54;
-  public static final int button = 42;
-  public static final int mientras = 58;
-  public static final int importar = 52;
-  public static final int fuente = 51;
-  public static final int defecto = 46;
-  public static final int list = 43;
-  public static final int textField = 41;
-  public static final int max = 49;
   public static final int var = 27;
-  public static final int EOF = 0;
-  public static final int mayorIgual = 14;
-  public static final int error = 1;
-  public static final int doble = 63;
-  public static final int text = 40;
-  public static final int color = 34;
-  public static final int item = 45;
-  public static final int entero = 62;
-  public static final int render = 37;
-  public static final int spinner = 47;
-  public static final int llaveC = 21;
-  public static final int potencia = 6;
-  public static final int id = 29;
-  public static final int puntoComa = 25;
-  public static final int llaveA = 20;
-  public static final int y = 31;
-  public static final int x = 30;
-  public static final int logicoXOR = 17;
-  public static final int diferente = 10;
-  public static final int not = 9;
-  public static final int booleano = 64;
-  public static final int parentesisC = 19;
-  public static final int parentesisA = 18;
-  public static final int className = 36;
-  public static final int component = 28;
-  public static final int logicoAND = 15;
-  public static final int division = 3;
-  public static final int min = 48;
-  public static final int retorno = 38;
-  public static final int cadena = 60;
-  public static final int sino = 55;
+  public static final int min = 54;
+  public static final int element = 50;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -104,8 +112,8 @@ public class Simbolos {
   "var",
   "component",
   "id",
-  "x",
-  "y",
+  "posicionX",
+  "posicionY",
   "height",
   "width",
   "color",
@@ -114,10 +122,16 @@ public class Simbolos {
   "render",
   "retorno",
   "panel",
-  "text",
+  "textt",
   "textField",
   "button",
   "list",
+  "ftext",
+  "ftextField",
+  "fbutton",
+  "fitem",
+  "fdefecto",
+  "fspinner",
   "element",
   "item",
   "defecto",
@@ -133,12 +147,14 @@ public class Simbolos {
   "repetir",
   "imprimir",
   "mientras",
+  "hexadecimal",
   "identificador",
   "cadena",
   "caracter",
   "entero",
   "doble",
-  "booleano"
+  "booleano",
+  "texto"
   };
 }
 
