@@ -11,11 +11,10 @@ public class Simbolos {
   public static final int panel = 39;
   public static final int button = 42;
   public static final int menorQue = 11;
-  public static final int identificador = 66;
-  public static final int booleano = 71;
+  public static final int identificador = 67;
+  public static final int booleano = 72;
   public static final int importar = 58;
   public static final int suma = 5;
-  public static final int item = 51;
   public static final int parentesisC = 19;
   public static final int max = 55;
   public static final int border = 35;
@@ -24,7 +23,7 @@ public class Simbolos {
   public static final int parentesisA = 18;
   public static final int dosPuntos = 24;
   public static final int hexadecimal = 65;
-  public static final int cadena = 67;
+  public static final int cadena = 68;
   public static final int fspinner = 49;
   public static final int color = 34;
   public static final int mientras = 64;
@@ -34,7 +33,7 @@ public class Simbolos {
   public static final int menorIgual = 13;
   public static final int sino = 61;
   public static final int mayorQue = 12;
-  public static final int caracter = 68;
+  public static final int caracter = 69;
   public static final int ftextField = 45;
   public static final int fdefecto = 48;
   public static final int id = 29;
@@ -53,7 +52,8 @@ public class Simbolos {
   public static final int llaveC = 21;
   public static final int className = 36;
   public static final int llaveA = 20;
-  public static final int texto = 72;
+  public static final int texto = 73;
+  public static final int onClick = 66;
   public static final int logicoXOR = 17;
   public static final int division = 3;
   public static final int EOF = 0;
@@ -63,18 +63,19 @@ public class Simbolos {
   public static final int puntoComa = 25;
   public static final int error = 1;
   public static final int image = 56;
+  public static final int items = 51;
   public static final int logicoOR = 16;
   public static final int diferente = 10;
   public static final int si = 60;
-  public static final int entero = 69;
+  public static final int entero = 70;
   public static final int width = 33;
   public static final int fbutton = 46;
   public static final int defecto = 52;
   public static final int igualigual = 8;
   public static final int coma = 26;
   public static final int fitem = 47;
+  public static final int doble = 71;
   public static final int not = 9;
-  public static final int doble = 70;
   public static final int igual = 7;
   public static final int corcheteC = 23;
   public static final int corcheteA = 22;
@@ -133,7 +134,7 @@ public class Simbolos {
   "fdefecto",
   "fspinner",
   "element",
-  "item",
+  "items",
   "defecto",
   "spinner",
   "min",
@@ -148,6 +149,7 @@ public class Simbolos {
   "imprimir",
   "mientras",
   "hexadecimal",
+  "onClick",
   "identificador",
   "cadena",
   "caracter",

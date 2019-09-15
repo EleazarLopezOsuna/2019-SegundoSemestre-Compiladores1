@@ -49,9 +49,9 @@ terminal var, component, id, posicionX, posicionY;
 terminal height, width, color, border, className, render;
 terminal retorno, panel, textt, textField, button, list;
 terminal ftext, ftextField, fbutton, fitem, fdefecto, fspinner;
-terminal element, item, defecto, spinner, min, max;
+terminal element, items, defecto, spinner, min, max;
 terminal image, fuente, importar, from, si;
-terminal sino, repetir, imprimir, mientras, hexadecimal;
+terminal sino, repetir, imprimir, mientras, hexadecimal, onClick;
 terminal String identificador, cadena, caracter, entero, doble, booleano, texto;
 
 //--------> Declaracion de no terminales
@@ -62,6 +62,8 @@ non terminal NodoSintactico IMPRIMIR, MIENTRAS, REPETIR;
 non terminal NodoSintactico COMPONENTE, RETORNO, COMPONENTES, OPCOMPONENTES, PANEL;
 non terminal NodoSintactico TEXT, TEXTFIELD, BUTTON, LIST, SPINNER, IMAGE;
 non terminal NodoSintactico ATRIBUTOS, ATRIBUTO, ENTVAR, COLOR, IDTEXT;
+non terminal NodoSintactico ATRIBUTOSB, ATRIBUTOB;
+non terminal NodoSintactico OPCIONESLISTA, ELEMENTS, DEFAULT, ITEM, ITEMS;
 
 
 //----> precedencia de menor a mayor
@@ -659,7 +661,111 @@ OPCOMPONENTES ::= PANEL:a
 :}
     ;
 
-TEXT ::= menorQue textField:a ATRIBUTOS:b mayorQue menorQue ftextField mayorQue
+LIST ::= menorQue list:a ATRIBUTOS:b mayorQue OPCIONESLISTA:c menorQue division list mayorQue
+{:
+    NodoSintactico items = new NodoSintactico("LISTA", aleft, aright);
+    items.addHijo(b);
+    items.addHijo(c);
+    items.setNumNodo(contador++);
+
+    RESULT = items;
+:}
+    | menorQue list:a mayorQue OPCIONESLISTA:b menorQue division list mayorQue
+{:
+    NodoSintactico items = new NodoSintactico("LISTA", aleft, aright);
+    items.addHijo(b);
+    items.setNumNodo(contador++);
+
+    RESULT = items;
+:}
+    ;
+
+OPCIONESLISTA ::= ELEMENTS:a DEFAULT:b
+{:
+    NodoSintactico items = new NodoSintactico("OPCIONESLISTA", aleft, aright);
+    items.addHijo(a);
+    items.addHijo(b);
+    items.setNumNodo(contador++);
+
+    RESULT = items;
+:}
+    | ELEMENTS:a
+{:
+    NodoSintactico items = new NodoSintactico("OPCIONESLISTA", aleft, aright);
+    items.addHijo(a);
+    items.setNumNodo(contador++);
+
+    RESULT = items;
+:}
+    ;
+
+ELEMENTS ::= menorQue element:a mayorQue ITEMS:b menorQue division element mayorQue
+{:
+    NodoSintactico items = new NodoSintactico("ELEMENTOS", aleft, aright);
+    items.addHijo(b);
+    items.setNumNodo(contador++);
+
+    RESULT = items;
+:}
+    ;
+
+DEFAULT ::= menorQue defecto:a mayorQue IDTEXT:b menorQue fdefecto mayorQue
+{:
+    NodoSintactico defecto = new NodoSintactico("DEFECTO", aleft, aright);
+    defecto.addHijo(b);
+    defecto.setNumNodo(contador++);
+
+    RESULT = defecto;
+:}
+    ;
+
+ITEMS ::= ITEMS:a ITEM:b
+{:
+    a.addHijo(b);
+    
+    RESULT = a;
+:}
+    | ITEM:a
+{:
+    NodoSintactico nuevo = new NodoSintactico("ITEMS", aleft, aright);
+    nuevo.setNumNodo(contador++);
+    nuevo.addHijo(a);
+
+    RESULT = nuevo;
+:}
+    ;
+
+ITEM ::= menorQue items:b mayorQue IDTEXT:c menorQue fitem mayorQue
+{:
+    RESULT = c;
+:}
+    ;
+
+BUTTON ::= menorQue button:a ATRIBUTOSB:b mayorQue IDTEXT:c menorQue fbutton mayorQue
+{:
+    NodoSintactico button = new NodoSintactico("BUTTON", aleft, aright);
+    button.addHijo(b);
+    button.addHijo(c);
+    button.setNumNodo(contador++);
+    
+    RESULT = button;
+:}
+    | menorQue button:a onClick igual ENTVAR:b mayorQue IDTEXT:c menorQue fbutton mayorQue
+{:
+    NodoSintactico atributos = new NodoSintactico("ATRIBUTOS", aleft, aright);
+    atributos.addHijo(b);
+    atributos.setNumNodo(contador++);
+
+    NodoSintactico button = new NodoSintactico("BUTTON", aleft, aright);
+    button.addHijo(atributos);
+    button.addHijo(c);
+    button.setNumNodo(contador++);
+    
+    RESULT = button;
+:}
+    ;
+
+TEXTFIELD ::= menorQue textField:a ATRIBUTOS:b mayorQue menorQue ftextField mayorQue
 {:
     NodoSintactico nuevo = new NodoSintactico("TEXTFIELD", aleft, aright);
     nuevo.addHijo(b);
@@ -755,6 +861,13 @@ IDTEXT ::= texto:a
 {:
     NodoSintactico texto = new NodoSintactico("TEXTO", aleft, aright);
     a = a.replace("\"","");
+    a = a.replace("\t","");
+    if(a.startsWith("\n")){
+        a = a.replaceFirst("\n", "");
+    }
+    if(a.endsWith("\n")){
+        a = a.replaceFirst("(?s)(.*)" + "\n", "$1" + "");
+    }
     texto.setValor(a);
     texto.setNumNodo(contador++);
     
@@ -886,12 +999,115 @@ ATRIBUTO ::= id:a igual identificador:b
 :}
     ;
 
+ATRIBUTOSB ::= ATRIBUTOSB:a ATRIBUTOB:b
+{:
+    a.addHijo(b);
+    RESULT = a;
+:}
+    | ATRIBUTOB:a
+{:
+    NodoSintactico nuevo = new NodoSintactico("ATRIBUTOS", aleft, aright);
+    nuevo.setNumNodo(contador++);
+    nuevo.addHijo(a);
+
+    RESULT = nuevo;
+:}
+    ;
+
+ATRIBUTOB ::= id:a igual identificador:b
+{:
+    NodoSintactico identificador = new NodoSintactico("ID", aleft, aright);
+    identificador.setValor(b);
+    identificador.setNumNodo(contador++);
+
+    NodoSintactico nuevo = new NodoSintactico("AT_ID", aleft, aright);
+    nuevo.setNumNodo(contador++);
+    nuevo.addHijo(identificador);
+
+    RESULT = nuevo;
+:}
+    | posicionY:a igual ENTVAR:b
+{:
+    NodoSintactico nuevo = new NodoSintactico("AT_Y", aleft, aright);
+    nuevo.setNumNodo(contador++);
+    nuevo.addHijo(b);
+
+    RESULT = nuevo;
+:}
+    | posicionX:a igual ENTVAR:b
+{:
+    NodoSintactico nuevo = new NodoSintactico("AT_X", aleft, aright);
+    nuevo.setNumNodo(contador++);
+    nuevo.addHijo(b);
+
+    RESULT = nuevo;
+:}
+    | height:a igual ENTVAR:b
+{:
+    NodoSintactico nuevo = new NodoSintactico("AT_HEIGHT", aleft, aright);
+    nuevo.setNumNodo(contador++);
+    nuevo.addHijo(b);
+
+    RESULT = nuevo;
+:}
+    | width:a igual ENTVAR:b
+{:
+    NodoSintactico nuevo = new NodoSintactico("AT_WIDTH", aleft, aright);
+    nuevo.setNumNodo(contador++);
+    nuevo.addHijo(b);
+
+    RESULT = nuevo;
+:}
+    | color igual COLOR:a
+{:
+    NodoSintactico nuevo = new NodoSintactico("AT_COLOR", aleft, aright);
+    nuevo.setNumNodo(contador++);
+    nuevo.addHijo(a);
+
+    RESULT = nuevo;
+:}
+    | border:a igual ENTVAR:b
+{:
+    NodoSintactico nuevo = new NodoSintactico("AT_BORDER", aleft, aright);
+    nuevo.setNumNodo(contador++);
+    nuevo.addHijo(b);
+
+    RESULT = nuevo;
+:}
+    | className:a igual cadena:b
+{:
+    b = b.replace("\"", "");
+    NodoSintactico nombre = new NodoSintactico("NOMBRE_CLASE", aleft, aright);
+    nombre.setValor(b);
+    nombre.setNumNodo(contador++);
+
+    NodoSintactico nuevo = new NodoSintactico("AT_CLASSNAME", aleft, aright);
+    nuevo.setNumNodo(contador++);
+    nuevo.addHijo(nombre);
+
+    RESULT = nuevo;
+:}
+    | onClick:a igual ENTVAR:b
+{:
+    NodoSintactico nuevo = new NodoSintactico("AT_ONCLICK", aleft, aright);
+    nuevo.setNumNodo(contador++);
+    nuevo.addHijo(b);
+
+    RESULT = nuevo;
+:}
+    ;
+
 ENTVAR ::= DATO:a
 {:
     NodoSintactico tmp = new NodoSintactico("E", aleft, aright);
     tmp.setNumNodo(contador++);
     tmp.addHijo(a);
-    RESULT = tmp;
+
+    NodoSintactico entvar = new NodoSintactico("ENTVAR", aleft, aright);
+    entvar.addHijo(tmp);
+    entvar.setNumNodo(contador++);
+
+    RESULT = entvar;
 :}
     | llaveA identificador:a llaveC
 {:
@@ -899,7 +1115,11 @@ ENTVAR ::= DATO:a
     identificador.setValor(a);
     identificador.setNumNodo(contador++);
 
-    RESULT = identificador;
+    NodoSintactico entvar = new NodoSintactico("ENTVAR", aleft, aright);
+    entvar.addHijo(identificador);
+    entvar.setNumNodo(contador++);
+
+    RESULT = entvar;
 :}
     ;
 
