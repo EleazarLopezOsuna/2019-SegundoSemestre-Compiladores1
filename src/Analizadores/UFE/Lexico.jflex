@@ -39,8 +39,8 @@ identificador           = [a-zA-Z]([a-zA-Z]|[0-9|"_"])*
 comentarioLinea         = "//".*
 comentarioMultiLinea    = "/*"( [^*] | (\*+[^*/]) )*\*+\/
 hexadecimal             = "#"[0-9a-f]{6}
-texto                   = ([^("{" | "<")] | [\t|\r|\n|\f|\s|\v])*
-otros                   = [\t|\r|\n|\f|\s|\v]
+texto                   = ([^("{" | "<")] |\t|\r|\n|\f|\s|\v)*
+otros                   = [\t|\r|\n|\f|\s|\v]*
 
 //--------> Estados
 %state TEXTO, ETIQUETA
@@ -77,7 +77,6 @@ otros                   = [\t|\r|\n|\f|\s|\v]
 <YYINITIAL> "["                      { return new Symbol(Simbolos.corcheteA, yycolumn, yyline, yytext()); }
 <YYINITIAL> "]"                      { return new Symbol(Simbolos.corcheteC, yycolumn, yyline, yytext()); }
 
-<YYINITIAL> ":"                      { return new Symbol(Simbolos.dosPuntos, yycolumn, yyline, yytext()); }
 <YYINITIAL> ";"                      { return new Symbol(Simbolos.puntoComa, yycolumn, yyline, yytext()); }
 <YYINITIAL> ","                      { return new Symbol(Simbolos.coma, yycolumn, yyline, yytext()); }
 
@@ -105,8 +104,8 @@ otros                   = [\t|\r|\n|\f|\s|\v]
 <YYINITIAL> "list"                   { return new Symbol(Simbolos.list, yycolumn, yyline, yytext()); }
 <YYINITIAL> "elements"                { return new Symbol(Simbolos.element, yycolumn, yyline, yytext()); }
 <YYINITIAL> "item"                   { yybegin(ETIQUETA); return new Symbol(Simbolos.items, yycolumn, yyline, yytext()); }
-<YYINITIAL> "default"                { yybegin(ETIQUETA); return new Symbol(Simbolos.defecto, yycolumn, yyline, yytext()); }
-<YYINITIAL> "spinner"                { yybegin(ETIQUETA); return new Symbol(Simbolos.spinner, yycolumn, yyline, yytext()); }
+<YYINITIAL> "default"                { return new Symbol(Simbolos.defecto, yycolumn, yyline, yytext()); }
+<YYINITIAL> "spinner"                { return new Symbol(Simbolos.spinner, yycolumn, yyline, yytext()); }
 <YYINITIAL> "/item"                   { return new Symbol(Simbolos.fitem, yycolumn, yyline, yytext()); }
 <YYINITIAL> "/default"                { return new Symbol(Simbolos.fdefecto, yycolumn, yyline, yytext()); }
 <YYINITIAL> "/spinner"                { return new Symbol(Simbolos.fspinner, yycolumn, yyline, yytext()); }
@@ -143,10 +142,8 @@ otros                   = [\t|\r|\n|\f|\s|\v]
 <ETIQUETA> "onclick"                { return new Symbol(Simbolos.onClick, yycolumn, yyline, yytext()); }
 <ETIQUETA> ">"                      { yybegin(TEXTO); return new Symbol(Simbolos.mayorQue, yycolumn, yyline, yytext()); }
 <ETIQUETA> {identificador}          { return new Symbol(Simbolos.identificador, yycolumn, yyline, yytext()); }
-
 <TEXTO> {otros}                  { /* Espacios en blanco se ignoran */ }
 <TEXTO> "{"                      { yybegin(YYINITIAL); return new Symbol(Simbolos.llaveA, yycolumn, yyline, yytext()); }
-<TEXTO> {cadena}                 { yybegin(YYINITIAL); return new Symbol(Simbolos.cadena, yycolumn, yyline, yytext()); }
 <TEXTO> "<"                      { yybegin(YYINITIAL); return new Symbol(Simbolos.menorQue, yycolumn, yyline, yytext()); }
 <TEXTO> {texto}                  { yybegin(YYINITIAL); return new Symbol(Simbolos.texto, yycolumn, yyline, yytext()); }
 
@@ -164,7 +161,7 @@ otros                   = [\t|\r|\n|\f|\s|\v]
 <YYINITIAL> {hexadecimal}            { return new Symbol(Simbolos.hexadecimal, yycolumn, yyline, yytext()); }
 
 //--------> Caracteres adicionales
-[\t|\r|\n|\f|\s|\v]              { /* Espacios en blanco se ignoran */ }
+[\t|\r|\n|\f|\s|\v]*              { /* Espacios en blanco se ignoran */ }
 
 //--------> Manejo de Error Lexico
 

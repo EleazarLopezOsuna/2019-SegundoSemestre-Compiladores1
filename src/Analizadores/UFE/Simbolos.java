@@ -8,80 +8,79 @@ package Analizadores.UFE;
 /** CUP generated class containing symbol constants. */
 public class Simbolos {
   /* terminals */
-  public static final int panel = 39;
-  public static final int button = 42;
+  public static final int panel = 38;
+  public static final int button = 41;
   public static final int menorQue = 11;
-  public static final int identificador = 67;
-  public static final int booleano = 72;
-  public static final int importar = 58;
+  public static final int identificador = 66;
+  public static final int booleano = 71;
+  public static final int importar = 57;
   public static final int suma = 5;
   public static final int parentesisC = 19;
-  public static final int max = 55;
-  public static final int border = 35;
+  public static final int max = 54;
+  public static final int border = 34;
   public static final int resta = 4;
-  public static final int height = 32;
+  public static final int height = 31;
   public static final int parentesisA = 18;
-  public static final int dosPuntos = 24;
-  public static final int hexadecimal = 65;
-  public static final int cadena = 68;
-  public static final int fspinner = 49;
-  public static final int color = 34;
-  public static final int mientras = 64;
-  public static final int list = 43;
+  public static final int hexadecimal = 64;
+  public static final int cadena = 67;
+  public static final int fspinner = 48;
+  public static final int color = 33;
+  public static final int mientras = 63;
+  public static final int list = 42;
   public static final int multiplicacion = 2;
-  public static final int imprimir = 63;
+  public static final int imprimir = 62;
   public static final int menorIgual = 13;
-  public static final int sino = 61;
+  public static final int sino = 60;
   public static final int mayorQue = 12;
-  public static final int caracter = 69;
+  public static final int caracter = 68;
   public static final int ftextField = 45;
-  public static final int fdefecto = 48;
-  public static final int id = 29;
-  public static final int retorno = 38;
+  public static final int fdefecto = 47;
+  public static final int id = 28;
+  public static final int retorno = 37;
   public static final int mayorIgual = 14;
-  public static final int posicionY = 31;
-  public static final int posicionX = 30;
-  public static final int render = 37;
-  public static final int from = 59;
-  public static final int textField = 41;
-  public static final int component = 28;
+  public static final int posicionY = 30;
+  public static final int posicionX = 29;
+  public static final int render = 36;
+  public static final int from = 58;
+  public static final int textField = 40;
+  public static final int component = 27;
   public static final int spinner = 53;
-  public static final int ftext = 44;
+  public static final int ftext = 43;
   public static final int logicoAND = 15;
-  public static final int textt = 40;
+  public static final int textt = 39;
   public static final int llaveC = 21;
-  public static final int className = 36;
+  public static final int className = 35;
   public static final int llaveA = 20;
-  public static final int texto = 73;
-  public static final int onClick = 66;
+  public static final int texto = 72;
+  public static final int onClick = 65;
   public static final int logicoXOR = 17;
   public static final int division = 3;
   public static final int EOF = 0;
-  public static final int repetir = 62;
-  public static final int fuente = 57;
+  public static final int repetir = 61;
+  public static final int fuente = 56;
   public static final int potencia = 6;
-  public static final int puntoComa = 25;
+  public static final int puntoComa = 24;
   public static final int error = 1;
-  public static final int image = 56;
-  public static final int items = 51;
+  public static final int image = 55;
+  public static final int items = 50;
   public static final int logicoOR = 16;
   public static final int diferente = 10;
-  public static final int si = 60;
-  public static final int entero = 70;
-  public static final int width = 33;
+  public static final int si = 59;
+  public static final int entero = 69;
+  public static final int width = 32;
   public static final int fbutton = 46;
-  public static final int defecto = 52;
+  public static final int defecto = 51;
   public static final int igualigual = 8;
-  public static final int coma = 26;
-  public static final int fitem = 47;
-  public static final int doble = 71;
+  public static final int coma = 25;
+  public static final int fitem = 44;
   public static final int not = 9;
+  public static final int doble = 70;
   public static final int igual = 7;
   public static final int corcheteC = 23;
   public static final int corcheteA = 22;
-  public static final int var = 27;
-  public static final int min = 54;
-  public static final int element = 50;
+  public static final int var = 26;
+  public static final int min = 52;
+  public static final int element = 49;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -107,7 +106,6 @@ public class Simbolos {
   "llaveC",
   "corcheteA",
   "corcheteC",
-  "dosPuntos",
   "puntoComa",
   "coma",
   "var",
@@ -128,16 +126,16 @@ public class Simbolos {
   "button",
   "list",
   "ftext",
+  "fitem",
   "ftextField",
   "fbutton",
-  "fitem",
   "fdefecto",
   "fspinner",
   "element",
   "items",
   "defecto",
-  "spinner",
   "min",
+  "spinner",
   "max",
   "image",
   "fuente",
