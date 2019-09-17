@@ -40,7 +40,7 @@ comentarioLinea         = "//".*
 comentarioMultiLinea    = "/*"( [^*] | (\*+[^*/]) )*\*+\/
 hexadecimal             = "#"[0-9a-f]{6}
 texto                   = ([^("{" | "<")] |\t|\r|\n|\f|\s|\v)*
-otros                   = [\t|\r|\n|\f|\s|\v]*
+otros                   = [\t|\r|\n|\f|\s]*
 
 //--------> Estados
 %state TEXTO, ETIQUETA
@@ -161,7 +161,7 @@ otros                   = [\t|\r|\n|\f|\s|\v]*
 <YYINITIAL> {hexadecimal}            { return new Symbol(Simbolos.hexadecimal, yycolumn, yyline, yytext()); }
 
 //--------> Caracteres adicionales
-[\t|\r|\n|\f|\s|\v]*              { /* Espacios en blanco se ignoran */ }
+[\t|\r|\n|\f|\s]*              { /* Espacios en blanco se ignoran */ }
 
 //--------> Manejo de Error Lexico
 

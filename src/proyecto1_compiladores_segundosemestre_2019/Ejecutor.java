@@ -29,13 +29,19 @@ public class Ejecutor {
                 nuevo = new Entorno(ent);
                 recorrer(raiz.getHijos().get(0), nuevo);
                 break;
-            case "OPCION":
             case "FUNCION":
             case "SINO":
             case "SINO-SI":
                 recorrer(raiz.getHijos().get(0), ent);
                 break;
             case "OPCIONES":
+                if(raiz.getHijos().size() == 1){
+                    recorrer(raiz.getHijos().get(0), ent);
+                } else {
+                    recorrer(raiz.getHijos().get(0), ent);
+                    recorrer(raiz.getHijos().get(1), ent);
+                }
+                break;
             case "ASIGNACIONES":
             case "FUNCIONES":
                 recorrer(raiz.getHijos().get(0), ent);
