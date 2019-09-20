@@ -144,7 +144,6 @@ public class Test extends javax.swing.JFrame {
                 String path = "C:/Users/USER/Desktop/Prueba/src/";
                 Ejecutor ejecutor = new Ejecutor();
                 ejecutor.Ejecutar(sintactico_ufe.padre, "Main", path);
-                System.out.println("Componentes: " + ejecutor.componentesUfex.getComponentes().size());
                 FileWriter archivo = null;
                 PrintWriter pw = null;
                 String cadena = graficarNodo(sintactico_ufe.padre);

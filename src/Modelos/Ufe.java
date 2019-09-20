@@ -5,26 +5,26 @@
  */
 package Modelos;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
  * @author Eleazar Lopez <Universidad de San Carlos de Guatemala>
  */
 public class Ufe {
-    private ArrayList<Componente> componentes;
+    private HashMap<String, Componente> componentes;
     private String nombre;
 
     public Ufe(String nombre){
-        componentes = new ArrayList<>();
+        componentes = new HashMap<>();
         this.nombre = nombre;
     }
 
-    public ArrayList<Componente> getComponentes() {
+    public HashMap<String, Componente> getComponentes() {
         return componentes;
     }
 
-    public void setComponentes(ArrayList<Componente> componentes) {
+    public void setComponentes(HashMap<String, Componente> componentes) {
         this.componentes = componentes;
     }
 
