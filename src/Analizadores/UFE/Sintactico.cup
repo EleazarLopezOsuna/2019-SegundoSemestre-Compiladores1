@@ -1005,7 +1005,6 @@ TEXT ::= menorQue textt:a ATRIBUTOS:b mayorQue menorQue ftext mayorQue
 IDTEXT ::= texto:a
 {:
     NodoSintactico texto = new NodoSintactico("TEXTO", aleft, aright);
-    a = a.replace("\"","");
     a = a.replace("\t","");
     if(a.startsWith("\n")){
         a = a.replaceFirst("\n", "");

@@ -3327,7 +3327,6 @@ class CUP$Analisis_Sintactico$actions {
 		String a = (String)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.peek()).value;
 		
     NodoSintactico texto = new NodoSintactico("TEXTO", aleft, aright);
-    a = a.replace("\"","");
     a = a.replace("\t","");
     if(a.startsWith("\n")){
         a = a.replaceFirst("\n", "");

@@ -5,11 +5,15 @@
  */
 package Modelos;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Eleazar Lopez <Universidad de San Carlos de Guatemala>
  */
-public abstract class Componente {
+public class Componente {
+    
+    private EnumTipo tipo;
     private String id;
     private int posX;
     private int posY;
@@ -18,7 +22,118 @@ public abstract class Componente {
     private String color;
     private int border;
     private String className;
+    private String onClick;
+    private String nombre;
+    private String fuente;
+    private ArrayList<String> items;
+    private int defecto;
+    private int min;
+    private int max;
+    private String contenido;
+    private ArrayList<Componente> componentes;
 
+    public Componente(EnumTipo tipo) {
+        this.tipo = tipo;
+        id = "";
+        posX = 0;
+        posY = 0;
+        height = 100;
+        width = 100;
+        color = "white";
+        border = 0;
+        className = "";
+        onClick = "";
+        fuente = "";
+        items = new ArrayList<>();
+        defecto = 0;
+        min = -100;
+        max = 100;
+        contenido = "";
+        componentes = new ArrayList<>();
+    }
+
+    public EnumTipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(EnumTipo tipo) {
+        this.tipo = tipo;
+    }
+    
+    public String getOnClick() {
+        return onClick;
+    }
+
+    public void setOnClick(String onClick) {
+        this.onClick = onClick;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getFuente() {
+        return fuente;
+    }
+
+    public void setFuente(String fuente) {
+        this.fuente = fuente;
+    }
+
+    public ArrayList<String> getItems() {
+        return items;
+    }
+
+    public void setItems(ArrayList<String> items) {
+        this.items = items;
+    }
+
+    public int getDefecto() {
+        return defecto;
+    }
+
+    public void setDefecto(int defecto) {
+        this.defecto = defecto;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
+    }
+
+    public String getContenido() {
+        return contenido;
+    }
+
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
+
+    public ArrayList<Componente> getComponentes() {
+        return componentes;
+    }
+
+    public void setComponentes(ArrayList<Componente> componentes) {
+        this.componentes = componentes;
+    }
+    
+    
+    
     public String getId() {
         return id;
     }
@@ -83,4 +198,8 @@ public abstract class Componente {
         this.className = className;
     }
     
+    
+    public enum EnumTipo{
+        panel, text, textfield, button, image, spinner, list, ufex
+    }
 }

@@ -5,10 +5,18 @@
  */
 package proyecto1_compiladores_segundosemestre_2019;
 
-import Modelos.Entorno;
-import Modelos.Expresion;
-import Modelos.Simbolo;
+import Modelos.*;
 import Nodos.NodoSintactico;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,36 +24,34 @@ import Nodos.NodoSintactico;
  */
 public class Ejecutor {
 
-    public void Ejecutar(NodoSintactico raiz) {
-        recorrer(raiz, null);
+    public Ufe componentesUfex;
+    public String path;
+
+    public void Ejecutar(NodoSintactico raiz, String nombreArchivo, String path) {
+        componentesUfex = new Ufe(nombreArchivo);
+        this.path = path;
+        recorrer(raiz, null, null);
     }
 
-    private void recorrer(NodoSintactico raiz, Entorno ent) {
+    private void recorrer(NodoSintactico raiz, Entorno ent, Componente componente) {
         Expresion resultado;
         Entorno nuevo;
         boolean boleano;
         switch (raiz.getNombre()) {
             case "INICIO":
                 nuevo = new Entorno(ent);
-                recorrer(raiz.getHijos().get(0), nuevo);
+                recorrer(raiz.getHijos().get(0), nuevo, componente);
                 break;
             case "FUNCION":
             case "SINO":
             case "SINO-SI":
-                recorrer(raiz.getHijos().get(0), ent);
-                break;
             case "OPCIONES":
-                if(raiz.getHijos().size() == 1){
-                    recorrer(raiz.getHijos().get(0), ent);
-                } else {
-                    recorrer(raiz.getHijos().get(0), ent);
-                    recorrer(raiz.getHijos().get(1), ent);
-                }
-                break;
             case "ASIGNACIONES":
             case "FUNCIONES":
-                recorrer(raiz.getHijos().get(0), ent);
-                recorrer(raiz.getHijos().get(1), ent);
+            case "INSTRUCCIONES":
+                for (NodoSintactico hijo : raiz.getHijos()) {
+                    recorrer(hijo, ent, componente);
+                }
                 break;
             case "E":
                 Expresion hola = resolverExpresion(raiz.getHijos().get(0), ent);
@@ -67,7 +73,7 @@ public class Ejecutor {
                         boleano = (boolean) resultado.valor;
                         if (boleano) {
                             nuevo = new Entorno(ent);
-                            recorrer(raiz.getHijos().get(1), nuevo);
+                            recorrer(raiz.getHijos().get(1), nuevo, componente);
                         }
                         break;
                     default:
@@ -83,10 +89,10 @@ public class Ejecutor {
                         boleano = (boolean) resultado.valor;
                         if (boleano) {
                             nuevo = new Entorno(ent);
-                            recorrer(raiz.getHijos().get(1), nuevo);
+                            recorrer(raiz.getHijos().get(1), nuevo, componente);
                         } else {
                             nuevo = new Entorno(ent);
-                            recorrer(raiz.getHijos().get(2), nuevo);
+                            recorrer(raiz.getHijos().get(2), nuevo, componente);
                         }
                         break;
                     default:
@@ -107,21 +113,352 @@ public class Ejecutor {
             case "REPETIR":
                 if (raiz.getHijos().size() == 2) {
                     nuevo = new Entorno(ent);
-                    EjecutarRepetir(raiz, nuevo);
+                    EjecutarRepetir(raiz, nuevo, componente);
                 }
                 break;
             case "MIENTRAS":
                 if (raiz.getHijos().size() == 2) {
                     nuevo = new Entorno(ent);
-                    EjecutarMientras(raiz, nuevo);
+                    EjecutarMientras(raiz, nuevo, componente);
                 }
                 break;
             case "REASIGNACION":
                 EjecutarReasignacion(raiz, ent);
                 break;
-            default: 
+            case "COMPONENTE":
+                nuevo = new Entorno(ent);
+                String nombre = (String) raiz.getHijos().get(0).getValor();
+                Componente nuevoComponente = new Componente(Componente.EnumTipo.ufex);
+                nuevoComponente.setNombre(nombre);
+                for (int i = 1; i < raiz.getHijos().size(); i++) {
+                    recorrer(raiz.getHijos().get(i), nuevo, nuevoComponente);
+                }
+                break;
+            case "RETORNO":
+                NodoSintactico nuevaRaiz = raiz.getHijos().get(0);
+                nuevaRaiz.getHijos().forEach((hijo) -> {
+                    componente.getComponentes().add(EjecutarComponente(hijo, ent));
+                });
+                componentesUfex.getComponentes().add(componente);
+                break;
+            case "IMPORT_COMPONENTE":
+                String nombreComponente = (String) raiz.getHijos().get(0).getValor();
+                Expresion ruta = resolverAritmetica(raiz.getHijos().get(1).getHijos().get(0), ent);
+                String direccion = "ERROR";
+                switch (ruta.tipo) {
+                    case cadena:
+                        direccion = (String) ruta.valor;
+                        direccion = direccion.replace("./", path);
+                        break;
+                    case error:
+                        //AGREGAR EL ERROR
+                        System.out.println(ruta.valor);
+                        break;
+                    default:
+                        //AGREGAR EL ERROR
+                        System.out.println("Se esperaba cadena");
+                        break;
+                }
+                File archivo = new File(direccion);
+                String documento = "";
+                int agregado = 0;
+                if (archivo.exists()) {
+                    if (archivo.canRead()) {
+                        if (archivo.getName().endsWith("ufe")) {
+                            try {
+                                try (BufferedReader in = new BufferedReader(
+                                        new InputStreamReader(
+                                                new FileInputStream(archivo), "UTF8"))) {
+                                    String str;
+                                    while ((str = in.readLine()) != null) {
+                                        documento += str + "\n";
+                                    }
+                                }
+                            } catch (IOException e) {
+                            }
+                            documento = documento.replace("á", "a");
+                            documento = documento.replace("é", "e");
+                            documento = documento.replace("í", "i");
+                            documento = documento.replace("ó", "o");
+                            documento = documento.replace("ú", "u");
+                            documento = documento.replace("ñ", "n");
+
+                            //Se ejecuta el analizador
+                            Analizadores.UFE.Analisis_Lexico lexico_ufe = new Analizadores.UFE.Analisis_Lexico(new BufferedReader(new StringReader(documento)));
+                            Analizadores.UFE.Analisis_Sintactico sintactico_ufe = new Analizadores.UFE.Analisis_Sintactico(lexico_ufe);
+                            try {
+                                sintactico_ufe.parse();
+                                Ejecutor ejecutor = new Ejecutor();
+                                ejecutor.Ejecutar(sintactico_ufe.padre, "Main", path);
+                                for(Componente compo: ejecutor.componentesUfex.getComponentes()){
+                                    if(compo.getNombre().equals(nombreComponente)){
+                                        componentesUfex.getComponentes().add(compo);
+                                        agregado++;
+                                        break;
+                                    }
+                                }
+                            } catch (Exception ex) {
+                                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Extension no compatible");
+                        }
+                    } else {
+                        //AGREGAR EL ERROR
+                        System.out.println("Error al leer el archivo");
+                    }
+                } else {
+                    //AGREGAR EL ERROR
+                    System.out.println("El archivo no existe");
+                }
+                
+                if(agregado == 0){
+                    //AGREGAR EL ERROR
+                    System.out.println("No existe el componente");
+                }
+
+            default:
                 break;
         }
+    }
+
+    private void imprimirComponentes(ArrayList<Componente> retorno, String cadena) {
+        for (Componente comp : retorno) {
+            System.out.println(cadena + comp.getTipo());
+            if (comp.getTipo() == Componente.EnumTipo.panel) {
+                String nueva = cadena + "     ";
+                imprimirComponentesPanel(comp, nueva);
+            }
+        }
+    }
+
+    private void imprimirComponentesPanel(Componente retorno, String cadena) {
+        for (Componente comp : retorno.getComponentes()) {
+            System.out.println(cadena + comp.getTipo());
+            if (comp.getTipo() == Componente.EnumTipo.panel) {
+                String nueva = cadena + "     ";
+                imprimirComponentesPanel(comp, nueva);
+            }
+        }
+    }
+
+    private Componente EjecutarComponente(NodoSintactico raiz, Entorno ent) {
+        Componente retorno = null;
+        switch (raiz.getNombre()) {
+            case "PANEL":
+                retorno = new Componente(Componente.EnumTipo.panel);
+                EjecutarPropiedades(retorno, raiz.getHijos().get(0), ent);
+                if (raiz.getHijos().size() > 1) {
+                    EjecutarElementos(retorno, raiz.getHijos().get(1), ent);
+                }
+                break;
+            case "TEXT":
+                retorno = new Componente(Componente.EnumTipo.text);
+                EjecutarPropiedades(retorno, raiz.getHijos().get(0), ent);
+                if (raiz.getHijos().size() > 1) {
+                    EjecutarContenido(retorno, raiz.getHijos().get(1), ent);
+                }
+                break;
+            case "TEXTFIELD":
+                retorno = new Componente(Componente.EnumTipo.textfield);
+                EjecutarPropiedades(retorno, raiz.getHijos().get(0), ent);
+                if (raiz.getHijos().size() > 1) {
+                    EjecutarContenido(retorno, raiz.getHijos().get(1), ent);
+                }
+                break;
+            case "BUTTON":
+                retorno = new Componente(Componente.EnumTipo.button);
+                EjecutarPropiedades(retorno, raiz.getHijos().get(0), ent);
+                if (raiz.getHijos().size() > 1) {
+                    EjecutarNombre(retorno, raiz.getHijos().get(1), ent);
+                }
+                break;
+            case "IMAGEN":
+                retorno = new Componente(Componente.EnumTipo.image);
+                EjecutarPropiedades(retorno, raiz.getHijos().get(0), ent);
+                break;
+            case "SPINNER":
+                retorno = new Componente(Componente.EnumTipo.spinner);
+                EjecutarPropiedades(retorno, raiz.getHijos().get(0), ent);
+                if (raiz.getHijos().size() > 1) {
+                    EjecutarDefault(retorno, raiz.getHijos().get(1), ent);
+                }
+                break;
+            case "LIST":
+                retorno = new Componente(Componente.EnumTipo.list);
+                EjecutarPropiedades(retorno, raiz.getHijos().get(0), ent);
+                break;
+            default:
+                break;
+        }
+        return retorno;
+    }
+
+    private void EjecutarContenido(Componente comp, NodoSintactico raiz, Entorno ent) {
+        if (raiz.getHijos().size() > 0) {
+            Expresion expresion = resolverExpresion(raiz.getHijos().get(0), ent);
+            if (expresion.tipo != Simbolo.EnumTipo.error) {
+                comp.setContenido(String.valueOf(expresion.valor));
+            }
+        } else {
+            comp.setContenido(String.valueOf(raiz.getValor()));
+        }
+    }
+
+    private void EjecutarNombre(Componente comp, NodoSintactico raiz, Entorno ent) {
+
+    }
+
+    private void EjecutarDefault(Componente comp, NodoSintactico raiz, Entorno ent) {
+
+    }
+
+    private void EjecutarElementos(Componente comp, NodoSintactico raiz, Entorno ent) {
+        raiz.getHijos().forEach((hijo) -> {
+            comp.getComponentes().add(EjecutarComponente(hijo, ent));
+        });
+    }
+
+    private void EjecutarPropiedades(Componente comp, NodoSintactico raiz, Entorno ent) {
+        Expresion exp;
+        for (NodoSintactico hijo : raiz.getHijos()) {
+            switch (hijo.getNombre()) {
+                case "AT_ID":
+                    comp.setId(String.valueOf(hijo.getValor()));
+                    break;
+                case "AT_X":
+                    exp = resolverAritmetica(hijo.getHijos().get(0).getHijos().get(0), ent);
+                    comp.setPosX(Integer.valueOf(String.valueOf(exp.valor)));
+                    break;
+                case "AT_Y":
+                    exp = resolverAritmetica(hijo.getHijos().get(0).getHijos().get(0), ent);
+                    comp.setPosY(Integer.valueOf(String.valueOf(exp.valor)));
+                    break;
+                case "AT_HEIGHT":
+                    exp = resolverAritmetica(hijo.getHijos().get(0).getHijos().get(0), ent);
+                    comp.setHeight(Integer.valueOf(String.valueOf(exp.valor)));
+                    break;
+                case "AT_WIDTH":
+                    exp = resolverAritmetica(hijo.getHijos().get(0).getHijos().get(0), ent);
+                    comp.setWidth(Integer.valueOf(String.valueOf(exp.valor)));
+                    break;
+                case "AT_COLOR":
+                    exp = resolverAritmetica(hijo.getHijos().get(0), ent);
+                    comp.setColor(String.valueOf(exp.valor));
+                    break;
+                case "AT_BORDER":
+                    exp = resolverAritmetica(hijo.getHijos().get(0).getHijos().get(0), ent);
+                    comp.setBorder(Integer.valueOf(String.valueOf(exp.valor)));
+                    break;
+                case "AT_MIN":
+                    exp = resolverAritmetica(hijo.getHijos().get(0).getHijos().get(0), ent);
+                    comp.setMin(Integer.valueOf(String.valueOf(exp.valor)));
+                    break;
+                case "AT_MAX":
+                    exp = resolverAritmetica(hijo.getHijos().get(0).getHijos().get(0), ent);
+                    comp.setMax(Integer.valueOf(String.valueOf(exp.valor)));
+                    break;
+                case "AT_FUENTE":
+                    exp = resolverAritmetica(hijo.getHijos().get(0).getHijos().get(0), ent);
+                    comp.setFuente(String.valueOf(exp.valor));
+                    break;
+                case "AT_ONCLICK":
+                    exp = resolverAritmetica(hijo.getHijos().get(0), ent);
+                    comp.setOnClick(String.valueOf(exp.valor));
+                    break;
+            }
+        }
+    }
+
+    private Expresion resolverAritmetica(NodoSintactico raiz, Entorno ent) {
+        switch (raiz.getNombre()) {
+            case "COLOR":
+                return new Expresion(Simbolo.EnumTipo.cadena, raiz.getValor());
+            case "ENTERO":
+                return new Expresion(Simbolo.EnumTipo.entero, raiz.getValor());
+            case "DOBLE":
+                return new Expresion(Simbolo.EnumTipo.doble, raiz.getValor());
+            case "CADENA":
+                return new Expresion(Simbolo.EnumTipo.cadena, raiz.getValor());
+            case "ID":
+                if (raiz.getHijos().isEmpty()) {
+                    Simbolo sim = ent.buscar(String.valueOf(raiz.getValor()), raiz.getLinea(), raiz.getColumna());
+                    if (sim != null) {
+                        if (sim.tipo != Simbolo.EnumTipo.vacio) {
+                            return new Expresion(sim.tipo, sim.valor);
+                        } else {
+                            return new Expresion(Simbolo.EnumTipo.error, "Variable Vacia");
+                        }
+                    }
+                    return new Expresion(Simbolo.EnumTipo.error, "La Variable no existe");
+                } else {
+                    Expresion index = resolverAritmetica(raiz.getHijos().get(0), ent);
+                    if (index.tipo == Simbolo.EnumTipo.entero) {
+                        String nombreVariable = String.valueOf(index.valor) + "_" + String.valueOf(raiz.getValor());
+                        Simbolo var = ent.buscar(String.valueOf(raiz.getValor()), raiz.getLinea(), raiz.getColumna());
+                        if (var != null) {
+                            int maximo = (int) var.valor;
+                            int indice = (int) index.valor;
+                            if (indice < maximo) {
+                                if (indice >= 0) {
+                                    Simbolo sim = ent.buscar(nombreVariable, raiz.getLinea(), raiz.getColumna());
+                                    if (sim != null) {
+                                        return new Expresion(sim.tipo, sim.valor);
+                                    } else {
+                                        return new Expresion(Simbolo.EnumTipo.error, "Variable Vacia");
+                                    }
+                                } else {
+                                    return new Expresion(Simbolo.EnumTipo.error, "Indice debe ser un Entero Positivo");
+                                }
+                            } else {
+                                return new Expresion(Simbolo.EnumTipo.error, "Indice fuera del limite");
+                            }
+                        } else {
+                            return new Expresion(Simbolo.EnumTipo.error, "La Variable no Existe");
+                        }
+                    } else {
+                        return new Expresion(Simbolo.EnumTipo.error, "Se esperaba un indice tipo entero, tipo " + index.tipo + " encontrado");
+                    }
+                }
+            case "CARACTER":
+                return new Expresion(Simbolo.EnumTipo.caracter, raiz.getValor());
+            case "BOOLEANO":
+                return new Expresion(Simbolo.EnumTipo.booleano, raiz.getValor());
+            case "+":
+                return OperarSuma(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case "-":
+                return OperarResta(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case "*":
+                return OperarMultiplicacion(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case "/":
+                return OperarDivision(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case "NEGATIVO":
+                return OperarNegativo(resolverAritmetica(raiz.getHijos().get(0), ent));
+            case "pow":
+                return OperarPotencia(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case "||":
+                return OperarOrLogico(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case "&&":
+                return OperarAndLogico(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case "!":
+                return OperarNotLogico(resolverAritmetica(raiz.getHijos().get(0), ent));
+            case "^":
+                return OperarXorLogico(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case ">":
+                return OperarMayorQue(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case "<":
+                return OperarMenorQue(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case ">=":
+                return OperarMayorIgualQue(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case "<=":
+                return OperarMenorIgualQue(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case "==":
+                return OperarIgual(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+            case "!=":
+                return OperarDiferente(resolverAritmetica(raiz.getHijos().get(0), ent), resolverAritmetica(raiz.getHijos().get(1), ent));
+        }
+        return new Expresion(Simbolo.EnumTipo.error, "ERROR");
     }
 
     private void EjecutarReasignacion(NodoSintactico raiz, Entorno ent) {
@@ -131,7 +468,7 @@ public class Ejecutor {
             Expresion resultado = resolverExpresion(raiz.getHijos().get(1), ent);
             if (resultado.tipo != Simbolo.EnumTipo.error) {
                 sim = new Simbolo(resultado.tipo, resultado.valor);
-                if(!ent.modificar(nombre, sim)){
+                if (!ent.modificar(nombre, sim)) {
                     //AGREGAR EL ERROR
                     System.out.println("Error al reasignar la variable");
                 }
@@ -145,14 +482,14 @@ public class Ejecutor {
         }
     }
 
-    private void EjecutarMientras(NodoSintactico raiz, Entorno ent) {
+    private void EjecutarMientras(NodoSintactico raiz, Entorno ent, Componente componente) {
         Expresion resultado = resolverExpresion(raiz.getHijos().get(0), ent);
         switch (resultado.tipo) {
             case booleano:
                 boolean comprobador = (boolean) resultado.valor;
                 while (comprobador) {
                     Entorno nuevo = new Entorno(ent);
-                    recorrer(raiz.getHijos().get(1), nuevo);
+                    recorrer(raiz.getHijos().get(1), nuevo, componente);
                     resultado = resolverExpresion(raiz.getHijos().get(0), ent);
                     comprobador = (boolean) resultado.valor;
                 }
@@ -168,14 +505,14 @@ public class Ejecutor {
         }
     }
 
-    private void EjecutarRepetir(NodoSintactico raiz, Entorno ent) {
+    private void EjecutarRepetir(NodoSintactico raiz, Entorno ent, Componente componente) {
         Expresion resultado = resolverExpresion(raiz.getHijos().get(0), ent);
         switch (resultado.tipo) {
             case entero:
                 int contador = (int) resultado.valor;
                 while (contador > 0) {
                     Entorno nuevo = new Entorno(ent);
-                    recorrer(raiz.getHijos().get(1), nuevo);
+                    recorrer(raiz.getHijos().get(1), nuevo, componente);
                     contador--;
                 }
                 break;
