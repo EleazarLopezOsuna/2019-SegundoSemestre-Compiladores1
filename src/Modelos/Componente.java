@@ -5,6 +5,7 @@
  */
 package Modelos;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +20,7 @@ public class Componente {
     private int posY;
     private int height;
     private int width;
-    private String color;
+    private Color color;
     private int border;
     private String className;
     private String onClick;
@@ -39,7 +40,7 @@ public class Componente {
         posY = 0;
         height = 100;
         width = 100;
-        color = "white";
+        color = Color.white;
         border = 0;
         className = "";
         onClick = "";
@@ -174,12 +175,54 @@ public class Componente {
         this.width = width;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setColor(String NombreColor) {
+        switch(NombreColor.toLowerCase()){
+            case "red":
+                color = Color.red;
+                break;
+            case "pink":
+                color = Color.pink;
+                break;
+            case "orange":
+                color = Color.orange;
+                break;
+            case "yellow":
+                color = Color.yellow;
+                break;
+            case "purple":
+                color = new Color(87,35,100);
+                break;
+            case "magenta":
+                color = Color.magenta;
+                break;
+            case "green":
+                color = Color.green;
+                break;
+            case "blue":
+                color = Color.blue;
+                break;
+            case "brown":
+                color = new Color(138,114,104);
+                break;
+            case "white":
+                color = Color.white;
+                break;
+            case "gray":
+                color = Color.gray;
+                break;
+            case "black":
+                color = Color.black;
+                break;
+            default:
+                if(NombreColor.contains("#")){
+                    color = Color.decode(NombreColor);
+                }
+                break;
+        }
     }
 
     public int getBorder() {

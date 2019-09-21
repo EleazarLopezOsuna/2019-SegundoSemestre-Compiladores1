@@ -129,7 +129,12 @@ otros                   = [\t|\r|\n|\f|\s]*
 <ETIQUETA> {cadena}                 { return new Symbol(Simbolos.cadena, yycolumn, yyline, yytext()); }
 <ETIQUETA> {booleano}               { return new Symbol(Simbolos.booleano, yycolumn, yyline, yytext()); }
 <ETIQUETA> {caracter}               { return new Symbol(Simbolos.caracter, yycolumn, yyline, yytext()); }
+<ETIQUETA> {hexadecimal}            { return new Symbol(Simbolos.hexadecimal, yycolumn, yyline, yytext()); }
 <ETIQUETA> "id"                     { return new Symbol(Simbolos.id, yycolumn, yyline, yytext()); }
+<ETIQUETA> "("                      { return new Symbol(Simbolos.parentesisA, yycolumn, yyline, yytext()); }
+<ETIQUETA> ")"                      { return new Symbol(Simbolos.parentesisC, yycolumn, yyline, yytext()); }
+<ETIQUETA> "["                      { return new Symbol(Simbolos.corcheteA, yycolumn, yyline, yytext()); }
+<ETIQUETA> "]"                      { return new Symbol(Simbolos.corcheteC, yycolumn, yyline, yytext()); }
 <ETIQUETA> "{"                      { return new Symbol(Simbolos.llaveA, yycolumn, yyline, yytext()); }
 <ETIQUETA> "}"                      { return new Symbol(Simbolos.llaveC, yycolumn, yyline, yytext()); }
 <ETIQUETA> "x"                      { return new Symbol(Simbolos.posicionX, yycolumn, yyline, yytext()); }

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,11 +28,130 @@ public class Ejecutor {
     public Ufe componentesUfex;
     public String path;
     public String nombreComponenteActual = "";
+    public HashMap<String, Componente> paraGraficar;
 
     public void Ejecutar(NodoSintactico raiz, String nombreArchivo, String path) {
+        paraGraficar = new HashMap<>();
         componentesUfex = new Ufe(nombreArchivo);
         this.path = path;
+        recorrerImports(raiz, null);
         recorrer(raiz, null, null);
+        recorrerRender(raiz, null);
+    }
+
+    private void recorrerRender(NodoSintactico raiz, Entorno ent) {
+        switch (raiz.getNombre()) {
+            case "INICIO":
+                Entorno nuevo = new Entorno(ent);
+                recorrerRender(raiz.getHijos().get(0), nuevo);
+                break;
+            case "OPCIONES":
+                for (NodoSintactico hijo : raiz.getHijos()) {
+                    recorrerRender(hijo, ent);
+                }
+                break;
+            case "RENDER":
+                String componenteRender = (String) raiz.getHijos().get(0).getValor();
+                String divRender = (String) raiz.getHijos().get(1).getValor();
+                if (componentesUfex.getComponentes().containsKey(componenteRender)) {
+                    Componente comp = componentesUfex.getComponentes().get(componenteRender);
+                    if(paraGraficar.containsKey(divRender)){
+                        paraGraficar.replace(divRender, comp);
+                    } else {
+                        paraGraficar.put(divRender, comp);
+                    }
+                } else {
+                    //AGREGAR EL ERROR
+                    System.out.println("El componente: " + componenteRender + " no existe");
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void recorrerImports(NodoSintactico raiz, Entorno ent) {
+        switch (raiz.getNombre()) {
+            case "INICIO":
+                Entorno nuevo = new Entorno(ent);
+                recorrerImports(raiz.getHijos().get(0), nuevo);
+                break;
+            case "OPCIONES":
+                for (NodoSintactico hijo : raiz.getHijos()) {
+                    recorrerImports(hijo, ent);
+                }
+                break;
+            case "IMPORT_COMPONENTE":
+                String nombreComponente = (String) raiz.getHijos().get(0).getValor();
+                Expresion ruta = resolverAritmetica(raiz.getHijos().get(1).getHijos().get(0), ent);
+                String direccion = "ERROR";
+                switch (ruta.tipo) {
+                    case cadena:
+                        direccion = (String) ruta.valor;
+                        direccion = direccion.replace("./", path);
+                        break;
+                    case error:
+                        //AGREGAR EL ERROR
+                        System.out.println(ruta.valor);
+                        break;
+                    default:
+                        //AGREGAR EL ERROR
+                        System.out.println("Se esperaba cadena");
+                        break;
+                }
+                File archivo = new File(direccion);
+                String documento = "";
+                if (archivo.exists()) {
+                    if (archivo.canRead()) {
+                        if (archivo.getName().endsWith("ufe")) {
+                            try {
+                                try (BufferedReader in = new BufferedReader(
+                                        new InputStreamReader(
+                                                new FileInputStream(archivo), "UTF8"))) {
+                                    String str;
+                                    while ((str = in.readLine()) != null) {
+                                        documento += str + "\n";
+                                    }
+                                }
+                            } catch (IOException e) {
+                            }
+                            documento = documento.replace("á", "a");
+                            documento = documento.replace("é", "e");
+                            documento = documento.replace("í", "i");
+                            documento = documento.replace("ó", "o");
+                            documento = documento.replace("ú", "u");
+                            documento = documento.replace("ñ", "n");
+
+                            //Se ejecuta el analizador
+                            Analizadores.UFE.Analisis_Lexico lexico_ufe = new Analizadores.UFE.Analisis_Lexico(new BufferedReader(new StringReader(documento)));
+                            Analizadores.UFE.Analisis_Sintactico sintactico_ufe = new Analizadores.UFE.Analisis_Sintactico(lexico_ufe);
+                            try {
+                                sintactico_ufe.parse();
+                                Ejecutor ejecutor = new Ejecutor();
+                                ejecutor.Ejecutar(sintactico_ufe.padre, "Main", path);
+                                if (ejecutor.componentesUfex.getComponentes().containsKey(nombreComponente)) {
+                                    Componente compo = ejecutor.componentesUfex.getComponentes().get(nombreComponente);
+                                    componentesUfex.getComponentes().put(nombreComponente, compo);
+                                }
+                            } catch (Exception ex) {
+                                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Extension no compatible");
+                        }
+                    } else {
+                        //AGREGAR EL ERROR
+                        System.out.println("Error al leer el archivo");
+                    }
+                } else {
+                    //AGREGAR EL ERROR
+                    System.out.println("El archivo no existe");
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     private void recorrer(NodoSintactico raiz, Entorno ent, Componente componente) {
@@ -150,74 +270,6 @@ public class Ejecutor {
                     System.out.println("Componente: " + nombreComponenteActual + " ya existe");
                 }
                 break;
-            case "IMPORT_COMPONENTE":
-                String nombreComponente = (String) raiz.getHijos().get(0).getValor();
-                Expresion ruta = resolverAritmetica(raiz.getHijos().get(1).getHijos().get(0), ent);
-                String direccion = "ERROR";
-                switch (ruta.tipo) {
-                    case cadena:
-                        direccion = (String) ruta.valor;
-                        direccion = direccion.replace("./", path);
-                        break;
-                    case error:
-                        //AGREGAR EL ERROR
-                        System.out.println(ruta.valor);
-                        break;
-                    default:
-                        //AGREGAR EL ERROR
-                        System.out.println("Se esperaba cadena");
-                        break;
-                }
-                File archivo = new File(direccion);
-                String documento = "";
-                if (archivo.exists()) {
-                    if (archivo.canRead()) {
-                        if (archivo.getName().endsWith("ufe")) {
-                            try {
-                                try (BufferedReader in = new BufferedReader(
-                                        new InputStreamReader(
-                                                new FileInputStream(archivo), "UTF8"))) {
-                                    String str;
-                                    while ((str = in.readLine()) != null) {
-                                        documento += str + "\n";
-                                    }
-                                }
-                            } catch (IOException e) {
-                            }
-                            documento = documento.replace("á", "a");
-                            documento = documento.replace("é", "e");
-                            documento = documento.replace("í", "i");
-                            documento = documento.replace("ó", "o");
-                            documento = documento.replace("ú", "u");
-                            documento = documento.replace("ñ", "n");
-
-                            //Se ejecuta el analizador
-                            Analizadores.UFE.Analisis_Lexico lexico_ufe = new Analizadores.UFE.Analisis_Lexico(new BufferedReader(new StringReader(documento)));
-                            Analizadores.UFE.Analisis_Sintactico sintactico_ufe = new Analizadores.UFE.Analisis_Sintactico(lexico_ufe);
-                            try {
-                                sintactico_ufe.parse();
-                                Ejecutor ejecutor = new Ejecutor();
-                                ejecutor.Ejecutar(sintactico_ufe.padre, "Main", path);
-                                if (ejecutor.componentesUfex.getComponentes().containsKey(nombreComponente)) {
-                                    Componente compo = ejecutor.componentesUfex.getComponentes().get(nombreComponente);
-                                    componentesUfex.getComponentes().put(nombreComponente, compo);
-                                }
-                            } catch (Exception ex) {
-                                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Extension no compatible");
-                        }
-                    } else {
-                        //AGREGAR EL ERROR
-                        System.out.println("Error al leer el archivo");
-                    }
-                } else {
-                    //AGREGAR EL ERROR
-                    System.out.println("El archivo no existe");
-                }
-                break;
             case "ITEMS":
                 for (NodoSintactico hijo : raiz.getHijos()) {
                     String valorItem = "";
@@ -284,6 +336,7 @@ public class Ejecutor {
                         EjecutarPropiedades(retorno, raiz.getHijos().get(0), ent);
                     }
                 } else {
+                    EjecutarPropiedades(retorno, raiz.getHijos().get(0), ent);
                     EjecutarElementos(retorno, raiz.getHijos().get(1), ent);
                 }
                 break;
@@ -363,6 +416,7 @@ public class Ejecutor {
             Expresion expresion = resolverExpresion(raiz.getHijos().get(0), ent);
             if (expresion.tipo != Simbolo.EnumTipo.error) {
                 comp.setNombre(String.valueOf(expresion.valor));
+                System.out.println(expresion.valor);
             }
         } else {
             comp.setNombre(String.valueOf(raiz.getValor()));
@@ -430,7 +484,7 @@ public class Ejecutor {
                     break;
                 case "AT_COLOR":
                     exp = resolverAritmetica(hijo.getHijos().get(0), ent);
-                    comp.setColor(String.valueOf(exp.valor));
+                    comp.setColor(String.valueOf(hijo.getHijos().get(0).getValor()));
                     break;
                 case "AT_BORDER":
                     exp = resolverAritmetica(hijo.getHijos().get(0).getHijos().get(0), ent);
@@ -449,8 +503,12 @@ public class Ejecutor {
                     comp.setFuente(String.valueOf(exp.valor));
                     break;
                 case "AT_ONCLICK":
-                    exp = resolverAritmetica(hijo.getHijos().get(0), ent);
+                    exp = resolverExpresion(hijo.getHijos().get(0).getHijos().get(0), ent);
                     comp.setOnClick(String.valueOf(exp.valor));
+                    break;
+                case "AT_CLASSNAME":
+                    String nombreCss = (String) hijo.getHijos().get(0).getValor();
+                    comp.setClassName(nombreCss);
                     break;
             }
         }
@@ -906,13 +964,13 @@ public class Ejecutor {
                         return new Expresion(Simbolo.EnumTipo.cadena, String.valueOf(expresion1.valor) + String.valueOf(expresion2.valor));
                     case doble:
                         //Caracter Doble
-                        return new Expresion(Simbolo.EnumTipo.cadena, Double.valueOf(String.valueOf(expresion1.valor)) + Double.valueOf(String.valueOf(expresion2.valor)));
+                        return new Expresion(Simbolo.EnumTipo.doble, Double.valueOf(String.valueOf(expresion1.valor)) + Double.valueOf(String.valueOf(expresion2.valor)));
                     case entero:
                         //Caracter Entero
-                        return new Expresion(Simbolo.EnumTipo.cadena, Integer.valueOf(String.valueOf(expresion1.valor)) + Integer.valueOf(String.valueOf(expresion2.valor)));
+                        return new Expresion(Simbolo.EnumTipo.entero, Integer.valueOf(String.valueOf(expresion1.valor)) + Integer.valueOf(String.valueOf(expresion2.valor)));
                     case caracter:
                         //Caracter Caracter
-                        return new Expresion(Simbolo.EnumTipo.cadena, Integer.valueOf(String.valueOf(expresion1.valor)) + Integer.valueOf(String.valueOf(expresion2.valor)));
+                        return new Expresion(Simbolo.EnumTipo.entero, Integer.valueOf(String.valueOf(expresion1.valor)) + Integer.valueOf(String.valueOf(expresion2.valor)));
                     case error:
                         return expresion2;
                     default:
@@ -1063,21 +1121,21 @@ public class Ejecutor {
                         if (String.valueOf(expresion2).equals("0") || String.valueOf(expresion2).equals("0.0")) {
                             return new Expresion(Simbolo.EnumTipo.error, "Division por 0");
                         } else {
-                            return new Expresion(Simbolo.EnumTipo.doble, Integer.valueOf(String.valueOf(expresion1.valor)) / Integer.valueOf(String.valueOf(expresion2.valor)));
+                            return new Expresion(Simbolo.EnumTipo.doble, Double.valueOf(String.valueOf(expresion1.valor)) / Double.valueOf(String.valueOf(expresion2.valor)));
                         }
                     case caracter:
                         //Entero Caracter
                         if (String.valueOf(expresion2).equals("0") || String.valueOf(expresion2).equals("0.0")) {
                             return new Expresion(Simbolo.EnumTipo.error, "Division por 0");
                         } else {
-                            return new Expresion(Simbolo.EnumTipo.doble, Integer.valueOf(String.valueOf(expresion1.valor)) / Integer.valueOf(String.valueOf(expresion2.valor).charAt(0)));
+                            return new Expresion(Simbolo.EnumTipo.doble, Double.valueOf(String.valueOf(expresion1.valor)) / Double.valueOf(String.valueOf(expresion2.valor).charAt(0)));
                         }
                     case doble:
                         //Entero Doble
                         if (String.valueOf(expresion2).equals("0") || String.valueOf(expresion2).equals("0.0")) {
                             return new Expresion(Simbolo.EnumTipo.error, "Division por 0");
                         } else {
-                            return new Expresion(Simbolo.EnumTipo.doble, Double.valueOf(String.valueOf(expresion1.valor)) - Double.valueOf(String.valueOf(expresion2.valor)));
+                            return new Expresion(Simbolo.EnumTipo.doble, Double.valueOf(String.valueOf(expresion1.valor)) / Double.valueOf(String.valueOf(expresion2.valor)));
                         }
                     default:
                         String cadena = "Division no definida entre los tipos " + expresion1.tipo + " y " + expresion2.tipo;
@@ -1087,13 +1145,13 @@ public class Ejecutor {
                 switch (expresion2.tipo) {
                     case doble:
                         //Caracter Doble
-                        return new Expresion(Simbolo.EnumTipo.cadena, Double.valueOf(String.valueOf(expresion1.valor)) / Double.valueOf(String.valueOf(expresion2.valor)));
+                        return new Expresion(Simbolo.EnumTipo.doble, Double.valueOf(String.valueOf(expresion1.valor)) / Double.valueOf(String.valueOf(expresion2.valor)));
                     case entero:
                         //Caracter Entero
-                        return new Expresion(Simbolo.EnumTipo.cadena, Integer.valueOf(String.valueOf(expresion1.valor)) / Integer.valueOf(String.valueOf(expresion2.valor)));
+                        return new Expresion(Simbolo.EnumTipo.doble, Double.valueOf(String.valueOf(expresion1.valor)) / Double.valueOf(String.valueOf(expresion2.valor)));
                     case caracter:
                         //Caracter Caracter
-                        return new Expresion(Simbolo.EnumTipo.cadena, Integer.valueOf(String.valueOf(expresion1.valor)) / Integer.valueOf(String.valueOf(expresion2.valor)));
+                        return new Expresion(Simbolo.EnumTipo.doble, Double.valueOf(String.valueOf(expresion1.valor)) / Double.valueOf(String.valueOf(expresion2.valor)));
                     default:
                         String cadena = "Division no definida entre los tipos " + expresion1.tipo + " y " + expresion2.tipo;
                         return new Expresion(Simbolo.EnumTipo.error, cadena);

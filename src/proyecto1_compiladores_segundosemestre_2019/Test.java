@@ -136,6 +136,11 @@ public class Test extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         String texto = areaCodigo.getText();
+        texto = texto.replace("á", "a");
+        texto = texto.replace("é", "e");
+        texto = texto.replace("í", "i");
+        texto = texto.replace("ó", "o");
+        texto = texto.replace("ú", "u");
         if(!texto.isEmpty()){
             Analizadores.UFE.Analisis_Lexico lexico_ufe = new Analizadores.UFE.Analisis_Lexico(new BufferedReader(new StringReader(texto)));
             Analizadores.UFE.Analisis_Sintactico sintactico_ufe = new Analizadores.UFE.Analisis_Sintactico(lexico_ufe);
@@ -144,6 +149,8 @@ public class Test extends javax.swing.JFrame {
                 String path = "C:/Users/USER/Desktop/Prueba/src/";
                 Ejecutor ejecutor = new Ejecutor();
                 ejecutor.Ejecutar(sintactico_ufe.padre, "Main", path);
+                Graficador graficador = new Graficador(ejecutor.paraGraficar);
+                graficador.Graficar();
                 FileWriter archivo = null;
                 PrintWriter pw = null;
                 String cadena = graficarNodo(sintactico_ufe.padre);

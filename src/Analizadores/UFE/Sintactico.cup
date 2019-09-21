@@ -1419,9 +1419,13 @@ ARITM ::= ARITM:a suma:c ARITM:b
 
     RESULT = booleano;
 :}
-    | llaveA E:b llaveC
+    | llaveA ARITM:b llaveC
 {:
-    RESULT = b;
+    NodoSintactico aritm = new NodoSintactico("ARITM", bleft, bright);
+    aritm.addHijo(b);
+    aritm.setNumNodo(contador++);
+
+    RESULT = aritm;
 :}
     ;
 
