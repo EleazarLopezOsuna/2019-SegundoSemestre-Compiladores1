@@ -30,13 +30,14 @@ import Modelos.Errores;
 
 //--------> Expresiones regulares
 numero                  = [0-9]+
+colorrgb                = ([0-9][0-9][0-9]|[0-9][0-9]|[0-9])
 booleano                = ("true"|"false")
 cadena                  = "'"[^"'"]*"'"
 comentarioLinea         = "//".*
 identificador           = [a-zA-Z]([a-zA-Z]|[0-9|"_"])*
 subidentificador        = "."[a-zA-Z]([a-zA-Z]|[0-9|"_"])*
 comentarioMultiLinea    = "/*"( [^*] | (\*+[^*/]) )*\*+\/
-hexadecimal             = "#"[0-9a-f]{6}
+hexadecimal             = "#"[0-9a-fA-F]{6}
 
 //--------> Estados
 %state ESTILO
@@ -95,6 +96,7 @@ hexadecimal             = "#"[0-9a-f]{6}
 <YYINITIAL> {comentarioLinea}      {  }
 <YYINITIAL> {comentarioMultiLinea} {  }
 <ESTILO> {hexadecimal}             { return new Symbol(Simbolos.hexadecimal, yycolumn, yyline, yytext()); }
+<ESTILO> {colorrgb}              { return new Symbol(Simbolos.colorrgb, yycolumn, yyline, yytext()); }
 
 //--------> Caracteres adicionales
 [\t\r\n\f\s\v\xxx]                { /* Espacios en blanco se ignoran */ }

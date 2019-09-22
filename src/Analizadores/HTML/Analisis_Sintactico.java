@@ -34,12 +34,11 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\021\000\002\002\004\000\002\002\003\000\002\003" +
+    "\000\017\000\002\002\004\000\002\002\003\000\002\003" +
     "\012\000\002\004\011\000\002\005\011\000\002\006\011" +
     "\000\002\007\004\000\002\007\003\000\002\010\003\000" +
-    "\002\010\003\000\002\011\011\000\002\013\011\000\002" +
-    "\015\006\000\002\015\005\000\002\012\004\000\002\012" +
-    "\003\000\002\014\003" });
+    "\002\010\003\000\002\011\011\000\002\013\013\000\002" +
+    "\013\014\000\002\012\004\000\002\012\003" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -47,10 +46,10 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\074\000\004\023\005\001\002\000\004\002\076\001" +
+    "\000\072\000\004\023\005\001\002\000\004\002\074\001" +
     "\002\000\004\004\007\001\002\000\004\002\000\001\002" +
     "\000\004\022\010\001\002\000\004\023\011\001\002\000" +
-    "\004\012\061\001\002\000\004\023\013\001\002\000\004" +
+    "\004\012\057\001\002\000\004\023\013\001\002\000\004" +
     "\006\020\001\002\000\004\023\015\001\002\000\004\005" +
     "\016\001\002\000\004\022\017\001\002\000\004\002\uffff" +
     "\001\002\000\004\022\021\001\002\000\004\023\024\001" +
@@ -58,24 +57,23 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
     "\000\006\014\031\016\032\001\002\000\004\023\027\001" +
     "\002\000\004\023\ufffa\001\002\000\010\007\033\014\031" +
     "\016\032\001\002\000\004\023\ufffb\001\002\000\004\022" +
-    "\054\001\002\000\004\020\035\001\002\000\004\022\034" +
+    "\052\001\002\000\004\020\035\001\002\000\004\022\034" +
     "\001\002\000\004\023\ufffc\001\002\000\004\024\036\001" +
     "\002\000\004\021\037\001\002\000\004\022\040\001\002" +
-    "\000\004\023\043\001\002\000\004\023\ufff1\001\002\000" +
-    "\004\023\ufff2\001\002\000\006\016\032\017\052\001\002" +
-    "\000\004\023\047\001\002\000\004\023\ufff6\001\002\000" +
-    "\004\023\ufff3\001\002\000\006\016\032\017\050\001\002" +
-    "\000\004\022\051\001\002\000\004\023\ufff5\001\002\000" +
-    "\004\022\053\001\002\000\004\023\ufff4\001\002\000\004" +
-    "\025\055\001\002\000\004\023\056\001\002\000\004\015" +
-    "\057\001\002\000\004\022\060\001\002\000\004\023\ufff7" +
-    "\001\002\000\004\022\062\001\002\000\004\023\064\001" +
-    "\002\000\004\023\073\001\002\000\004\010\065\001\002" +
-    "\000\004\022\066\001\002\000\004\025\067\001\002\000" +
-    "\004\023\070\001\002\000\004\011\071\001\002\000\004" +
-    "\022\072\001\002\000\004\023\ufffd\001\002\000\004\013" +
-    "\074\001\002\000\004\022\075\001\002\000\004\023\ufffe" +
-    "\001\002\000\004\002\001\001\002" });
+    "\000\004\023\042\001\002\000\004\023\ufff3\001\002\000" +
+    "\006\016\032\017\050\001\002\000\004\023\045\001\002" +
+    "\000\004\023\ufff4\001\002\000\006\016\032\017\046\001" +
+    "\002\000\004\022\047\001\002\000\004\023\ufff5\001\002" +
+    "\000\004\022\051\001\002\000\004\023\ufff6\001\002\000" +
+    "\004\025\053\001\002\000\004\023\054\001\002\000\004" +
+    "\015\055\001\002\000\004\022\056\001\002\000\004\023" +
+    "\ufff7\001\002\000\004\022\060\001\002\000\004\023\062" +
+    "\001\002\000\004\023\071\001\002\000\004\010\063\001" +
+    "\002\000\004\022\064\001\002\000\004\025\065\001\002" +
+    "\000\004\023\066\001\002\000\004\011\067\001\002\000" +
+    "\004\022\070\001\002\000\004\023\ufffd\001\002\000\004" +
+    "\013\072\001\002\000\004\022\073\001\002\000\004\023" +
+    "\ufffe\001\002\000\004\002\001\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -83,7 +81,7 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\074\000\006\002\003\003\005\001\001\000\002\001" +
+    "\000\072\000\006\002\003\003\005\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
     "\000\004\004\011\001\001\000\002\001\001\000\004\006" +
     "\013\001\001\000\002\001\001\000\002\001\001\000\002" +
@@ -93,18 +91,17 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
     "\010\010\027\011\022\013\021\001\001\000\002\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001\000\002\001\001\000\012\012" +
-    "\043\013\040\014\041\015\044\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\006\013\040\014" +
-    "\045\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
+    "\001\001\000\002\001\001\000\002\001\001\000\006\012" +
+    "\042\013\040\001\001\000\002\001\001\000\002\001\001" +
+    "\000\004\013\043\001\001\000\002\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\004\005\062\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\004\005\060\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001" });
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -144,6 +141,9 @@ public class Analisis_Sintactico extends java_cup.runtime.lr_parser {
 
 
     public Cola TodosLosErrores = new Cola();
+    public ArrayList<Div> divs = new ArrayList<>();
+    public String noufe = "";
+    public String titulo = "";
 
     //Metodo al que se llama automaticamente ante algun error sintactico
     public void syntax_error(Symbol s){
@@ -234,6 +234,11 @@ class CUP$Analisis_Sintactico$actions {
           case 4: // TITULO ::= abrir inicioTitle cerrar texto abrir finTitle cerrar 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-3)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-3)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-3)).value;
+		
+    titulo = (String) a;
 
               CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("TITULO",3, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
@@ -288,40 +293,50 @@ class CUP$Analisis_Sintactico$actions {
           case 10: // ERROR ::= abrir inicioNoufe cerrar texto abrir finNoufe cerrar 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-3)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-3)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-3)).value;
+		
+    noufe = (String) a;
 
               CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("ERROR",7, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 11: // SECCION ::= abrir inicioDiv id igual cadena cerrar OPC 
+          case 11: // SECCION ::= abrir inicioDiv id igual cadena cerrar abrir finDiv cerrar 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-4)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-4)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-4)).value;
+		
+    String nombre = (String) a;
+    nombre = nombre.replace("\"","");
+    divs.add(new Div(nombre));
 
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("SECCION",9, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-6)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("SECCION",9, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-8)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 12: // OPC ::= L_SECCIONES abrir finDiv cerrar 
+          case 12: // SECCION ::= abrir inicioDiv id igual cadena cerrar L_SECCIONES abrir finDiv cerrar 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-5)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-5)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-5)).value;
+		
+    String nombre = (String) a;
+    nombre = nombre.replace("\"","");
+    divs.add(new Div(nombre));
 
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("OPC",11, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
+              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("SECCION",9, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-9)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 13: // OPC ::= abrir finDiv cerrar 
-            {
-              Object RESULT =null;
-
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("OPC",11, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.elementAt(CUP$Analisis_Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
-            }
-          return CUP$Analisis_Sintactico$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 14: // L_SECCIONES ::= L_SECCIONES SECCION2 
+          case 13: // L_SECCIONES ::= L_SECCIONES SECCION 
             {
               Object RESULT =null;
 
@@ -330,20 +345,11 @@ class CUP$Analisis_Sintactico$actions {
           return CUP$Analisis_Sintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 15: // L_SECCIONES ::= SECCION2 
+          case 14: // L_SECCIONES ::= SECCION 
             {
               Object RESULT =null;
 
               CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("L_SECCIONES",8, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
-            }
-          return CUP$Analisis_Sintactico$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 16: // SECCION2 ::= SECCION 
-            {
-              Object RESULT =null;
-
-              CUP$Analisis_Sintactico$result = parser.getSymbolFactory().newSymbol("SECCION2",10, ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Analisis_Sintactico$stack.peek()), RESULT);
             }
           return CUP$Analisis_Sintactico$result;
 

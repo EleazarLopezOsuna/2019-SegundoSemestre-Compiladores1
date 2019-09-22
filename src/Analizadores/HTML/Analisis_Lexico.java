@@ -71,7 +71,7 @@ public class Analisis_Lexico implements java_cup.runtime.Scanner {
     "\6\2\1\6\1\7\1\10\1\1\1\0\1\11\12\0"+
     "\1\12\14\0\1\13\3\0\1\14\1\15\4\0\1\16"+
     "\2\0\1\17\2\0\1\20\1\21\1\22\1\0\1\23"+
-    "\1\0\1\24\1\0\1\25\1\26\1\27";
+    "\1\0\1\24\1\0\1\25\1\26\1\1";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[71];
@@ -650,117 +650,112 @@ public class Analisis_Lexico implements java_cup.runtime.Scanner {
             { /**/
             } 
             // fall through
-          case 24: break;
+          case 23: break;
           case 2: 
             { System.out.println("ERROR LEXICO: " + yytext() + " LINEA: " + yyline + " COLUMNA: " + yycolumn);
             } 
             // fall through
-          case 25: break;
+          case 24: break;
           case 3: 
             { return new Symbol(Simbolos.abrir, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 26: break;
+          case 25: break;
           case 4: 
             { yybegin(TEXTO); return new Symbol(Simbolos.cerrar, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 27: break;
+          case 26: break;
           case 5: 
             { return new Symbol(Simbolos.igual, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 28: break;
+          case 27: break;
           case 6: 
             { /* Espacios en blanco se ignoran */
             } 
             // fall through
-          case 29: break;
+          case 28: break;
           case 7: 
             { return new Symbol(Simbolos.texto, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 30: break;
+          case 29: break;
           case 8: 
             { yybegin(YYINITIAL); return new Symbol(Simbolos.abrir, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 31: break;
+          case 30: break;
           case 9: 
             { return new Symbol(Simbolos.cadena, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 32: break;
+          case 31: break;
           case 10: 
             { return new Symbol(Simbolos.id, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 33: break;
+          case 32: break;
           case 11: 
             { return new Symbol(Simbolos.inicioDiv, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 34: break;
+          case 33: break;
           case 12: 
             { return new Symbol(Simbolos.inicioHtml, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 35: break;
+          case 34: break;
           case 13: 
             { return new Symbol(Simbolos.inicioHead, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 36: break;
+          case 35: break;
           case 14: 
             { return new Symbol(Simbolos.finDiv, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 37: break;
+          case 36: break;
           case 15: 
             { return new Symbol(Simbolos.inicioBody, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 38: break;
+          case 37: break;
           case 16: 
             { return new Symbol(Simbolos.inicioTitle, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 39: break;
+          case 38: break;
           case 17: 
             { return new Symbol(Simbolos.finHtml, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 40: break;
+          case 39: break;
           case 18: 
             { return new Symbol(Simbolos.finHead, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 41: break;
+          case 40: break;
           case 19: 
             { return new Symbol(Simbolos.finBody, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 42: break;
+          case 41: break;
           case 20: 
             { return new Symbol(Simbolos.inicioNoufe, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 43: break;
+          case 42: break;
           case 21: 
             { return new Symbol(Simbolos.finTitle, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 44: break;
+          case 43: break;
           case 22: 
             { return new Symbol(Simbolos.finNoufe, yycolumn, yyline, yytext());
             } 
             // fall through
-          case 45: break;
-          case 23: 
-            { System.out.println("COMENTARIO");
-            } 
-            // fall through
-          case 46: break;
+          case 44: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

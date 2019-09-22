@@ -38,7 +38,7 @@ caracter                = "'"(.)"'"
 identificador           = [a-zA-Z]([a-zA-Z]|[0-9|"_"])*
 comentarioLinea         = "//".*
 comentarioMultiLinea    = "/*"( [^*] | (\*+[^*/]) )*\*+\/
-hexadecimal             = "#"[0-9a-f]{6}
+hexadecimal             = "#"[0-9a-fA-F]{6}
 texto                   = ([^("{" | "<")] |\t|\r|\n|\f|\s|\v)*
 otros                   = [\t|\r|\n|\f|\s]*
 
@@ -67,7 +67,7 @@ otros                   = [\t|\r|\n|\f|\s]*
 <YYINITIAL> ">"                      { return new Symbol(Simbolos.mayorQue, yycolumn, yyline, yytext()); }
 
 <YYINITIAL> "&&"                     { return new Symbol(Simbolos.logicoAND, yycolumn, yyline, yytext()); }
-<YYINITIAL> "||"                     { return new Symbol(Simbolos.logicoOR, yycolumn, yyline, yytext()); }
+<YYINITIAL> "OR"                     { return new Symbol(Simbolos.logicoOR, yycolumn, yyline, yytext()); }
 <YYINITIAL> "^"                      { return new Symbol(Simbolos.logicoXOR, yycolumn, yyline, yytext()); }
 
 <YYINITIAL> "("                      { return new Symbol(Simbolos.parentesisA, yycolumn, yyline, yytext()); }

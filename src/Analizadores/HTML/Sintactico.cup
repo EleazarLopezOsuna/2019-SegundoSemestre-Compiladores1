@@ -11,6 +11,9 @@ import Modelos.*;
 parser code
 {:
     public Cola TodosLosErrores = new Cola();
+    public ArrayList<Div> divs = new ArrayList<>();
+    public String noufe = "";
+    public String titulo = "";
 
     //Metodo al que se llama automaticamente ante algun error sintactico
     public void syntax_error(Symbol s){
@@ -62,7 +65,10 @@ INICIO ::= abrir inicioHtml cerrar CABEZA CUERPO abrir finHtml cerrar
         ;
 CABEZA ::= abrir inicioHead cerrar TITULO abrir finHead cerrar
         ;
-TITULO ::= abrir inicioTitle cerrar texto abrir finTitle cerrar
+TITULO ::= abrir inicioTitle cerrar texto:a abrir finTitle cerrar
+{:
+    titulo = (String) a;
+:}
         ;
 CUERPO ::= abrir inicioBody cerrar L_OPCIONES abrir finBody cerrar
         ;
@@ -72,15 +78,24 @@ L_OPCIONES ::= L_OPCIONES OPCIONES
 OPCIONES ::= ERROR
         | SECCION
         ;
-ERROR ::= abrir inicioNoufe cerrar texto abrir finNoufe cerrar
+ERROR ::= abrir inicioNoufe cerrar texto:a abrir finNoufe cerrar
+{:
+    noufe = (String) a;
+:}
         ;
-SECCION ::= abrir inicioDiv id igual cadena cerrar OPC
+SECCION ::= abrir inicioDiv id igual cadena:a cerrar abrir finDiv cerrar
+{:
+    String nombre = (String) a;
+    nombre = nombre.replace("\"","");
+    divs.add(new Div(nombre));
+:}
+        | abrir inicioDiv id igual cadena:a cerrar L_SECCIONES abrir finDiv cerrar
+{:
+    String nombre = (String) a;
+    nombre = nombre.replace("\"","");
+    divs.add(new Div(nombre));
+:}
         ;
-OPC ::= L_SECCIONES abrir finDiv cerrar
-        | abrir finDiv cerrar
-        ;
-L_SECCIONES ::= L_SECCIONES SECCION2
-        | SECCION2
-        ;
-SECCION2 ::= SECCION
+L_SECCIONES ::= L_SECCIONES SECCION
+        | SECCION
         ;

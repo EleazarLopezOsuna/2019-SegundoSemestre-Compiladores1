@@ -6,10 +6,11 @@
 package proyecto1_compiladores_segundosemestre_2019;
 
 import Modelos.Componente;
-import Modelos.Ufe;
+import Modelos.Estilo;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,6 +30,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 
@@ -59,6 +61,32 @@ public class Graficador {
                     panel.setLayout(null);
                     panel.setName(componente.getNombre());
                     agregarPanel(componente.getComponentes(), panel, frame);
+                    for (Estilo estilo : componente.getEstilos()) {
+                        if (estilo.getBackground() != null) {
+                            panel.setBackground(estilo.getBackground());
+                        }
+                        if (estilo.getBorde() != null) {
+                            if (estilo.getBorde()) {
+                                if (estilo.getColorBorde() != null) {
+                                    if (estilo.getAnchoBorde() >= 0) {
+                                        Border border = BorderFactory.createLineBorder(estilo.getColorBorde(), estilo.getAnchoBorde());
+                                        panel.setBorder(border);
+                                    }
+                                }
+                            } else {
+                                panel.setBorder(null);
+                            }
+                        }
+                        if (estilo.getFuente() != null) {
+                            if (estilo.getAlturaFuente() >= 0) {
+                                Font fuente = new Font(estilo.getFuente(), Font.PLAIN, estilo.getAlturaFuente());
+                                panel.setFont(fuente);
+                            }
+                        }
+                        if (estilo.getColorFuente() != null) {
+                            panel.setForeground(estilo.getColorFuente());
+                        }
+                    }
                     panelPrincipal.add(panel);
                     break;
                 case text:
@@ -71,6 +99,45 @@ public class Graficador {
                         label.setBorder(border);
                     }
                     label.setText(componente.getContenido());
+                    for (Estilo estilo : componente.getEstilos()) {
+                        if (estilo.getBackground() != null) {
+                            label.setBackground(estilo.getBackground());
+                        }
+                        if (estilo.getBorde() != null) {
+                            if (estilo.getBorde()) {
+                                if (estilo.getColorBorde() != null) {
+                                    if (estilo.getAnchoBorde() >= 0) {
+                                        Border border = BorderFactory.createLineBorder(estilo.getColorBorde(), estilo.getAnchoBorde());
+                                        label.setBorder(border);
+                                    }
+                                }
+                            } else {
+                                label.setBorder(null);
+                            }
+                        }
+                        if (estilo.getAlineacion() != null) {
+                            switch (estilo.getAlineacion().toLowerCase()) {
+                                case "left":
+                                    label.setHorizontalAlignment(SwingConstants.LEFT);
+                                    break;
+                                case "right":
+                                    label.setHorizontalAlignment(SwingConstants.RIGHT);
+                                    break;
+                                case "center":
+                                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                                    break;
+                            }
+                        }
+                        if (estilo.getFuente() != null) {
+                            if (estilo.getAlturaFuente() >= 0) {
+                                Font fuente = new Font(estilo.getFuente(), Font.PLAIN, estilo.getAlturaFuente());
+                                label.setFont(fuente);
+                            }
+                        }
+                        if (estilo.getColorFuente() != null) {
+                            label.setForeground(estilo.getColorFuente());
+                        }
+                    }
                     panelPrincipal.add(label);
                     break;
                 case textfield:
@@ -83,6 +150,45 @@ public class Graficador {
                         textField.setBorder(border);
                     }
                     textField.setText(componente.getContenido());
+                    for (Estilo estilo : componente.getEstilos()) {
+                        if (estilo.getBackground() != null) {
+                            textField.setBackground(estilo.getBackground());
+                        }
+                        if (estilo.getBorde() != null) {
+                            if (estilo.getBorde()) {
+                                if (estilo.getColorBorde() != null) {
+                                    if (estilo.getAnchoBorde() >= 0) {
+                                        Border border = BorderFactory.createLineBorder(estilo.getColorBorde(), estilo.getAnchoBorde());
+                                        textField.setBorder(border);
+                                    }
+                                }
+                            } else {
+                                textField.setBorder(null);
+                            }
+                        }
+                        if (estilo.getAlineacion() != null) {
+                            switch (estilo.getAlineacion().toLowerCase()) {
+                                case "left":
+                                    textField.setHorizontalAlignment(SwingConstants.LEFT);
+                                    break;
+                                case "right":
+                                    textField.setHorizontalAlignment(SwingConstants.RIGHT);
+                                    break;
+                                case "center":
+                                    textField.setHorizontalAlignment(SwingConstants.CENTER);
+                                    break;
+                            }
+                        }
+                        if (estilo.getFuente() != null) {
+                            if (estilo.getAlturaFuente() >= 0) {
+                                Font fuente = new Font(estilo.getFuente(), Font.PLAIN, estilo.getAlturaFuente());
+                                textField.setFont(fuente);
+                            }
+                        }
+                        if (estilo.getColorFuente() != null) {
+                            textField.setForeground(estilo.getColorFuente());
+                        }
+                    }
                     panelPrincipal.add(textField);
                     break;
                 case button:
@@ -98,6 +204,45 @@ public class Graficador {
                     boton.addActionListener((ActionEvent e) -> {
                         JOptionPane.showMessageDialog(frame, componente.getOnClick());
                     });
+                    for (Estilo estilo : componente.getEstilos()) {
+                        if (estilo.getBackground() != null) {
+                            boton.setBackground(estilo.getBackground());
+                        }
+                        if (estilo.getBorde() != null) {
+                            if (estilo.getBorde()) {
+                                if (estilo.getColorBorde() != null) {
+                                    if (estilo.getAnchoBorde() >= 0) {
+                                        Border border = BorderFactory.createLineBorder(estilo.getColorBorde(), estilo.getAnchoBorde());
+                                        boton.setBorder(border);
+                                    }
+                                }
+                            } else {
+                                boton.setBorder(null);
+                            }
+                        }
+                        if (estilo.getAlineacion() != null) {
+                            switch (estilo.getAlineacion().toLowerCase()) {
+                                case "left":
+                                    boton.setHorizontalAlignment(SwingConstants.LEFT);
+                                    break;
+                                case "right":
+                                    boton.setHorizontalAlignment(SwingConstants.RIGHT);
+                                    break;
+                                case "center":
+                                    boton.setHorizontalAlignment(SwingConstants.CENTER);
+                                    break;
+                            }
+                        }
+                        if (estilo.getFuente() != null) {
+                            if (estilo.getAlturaFuente() >= 0) {
+                                Font fuente = new Font(estilo.getFuente(), Font.PLAIN, estilo.getAlturaFuente());
+                                boton.setFont(fuente);
+                            }
+                        }
+                        if (estilo.getColorFuente() != null) {
+                            boton.setForeground(estilo.getColorFuente());
+                        }
+                    }
                     panelPrincipal.add(boton);
                     break;
                 case image:
@@ -115,6 +260,45 @@ public class Graficador {
                         }
                         label.setText(componente.getContenido());
                         label.setIcon(imagen);
+                        for (Estilo estilo : componente.getEstilos()) {
+                            if (estilo.getBackground() != null) {
+                                label.setBackground(estilo.getBackground());
+                            }
+                            if (estilo.getBorde() != null) {
+                                if (estilo.getBorde()) {
+                                    if (estilo.getColorBorde() != null) {
+                                        if (estilo.getAnchoBorde() >= 0) {
+                                            Border border = BorderFactory.createLineBorder(estilo.getColorBorde(), estilo.getAnchoBorde());
+                                            label.setBorder(border);
+                                        }
+                                    }
+                                } else {
+                                    label.setBorder(null);
+                                }
+                            }
+                            if (estilo.getAlineacion() != null) {
+                                switch (estilo.getAlineacion().toLowerCase()) {
+                                    case "left":
+                                        label.setHorizontalAlignment(SwingConstants.LEFT);
+                                        break;
+                                    case "right":
+                                        label.setHorizontalAlignment(SwingConstants.RIGHT);
+                                        break;
+                                    case "center":
+                                        label.setHorizontalAlignment(SwingConstants.CENTER);
+                                        break;
+                                }
+                            }
+                            if (estilo.getFuente() != null) {
+                                if (estilo.getAlturaFuente() >= 0) {
+                                    Font fuente = new Font(estilo.getFuente(), Font.PLAIN, estilo.getAlturaFuente());
+                                    label.setFont(fuente);
+                                }
+                            }
+                            if (estilo.getColorFuente() != null) {
+                                label.setForeground(estilo.getColorFuente());
+                            }
+                        }
                         panelPrincipal.add(label);
                     } catch (MalformedURLException ex) {
                         Logger.getLogger(Graficador.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,6 +314,32 @@ public class Graficador {
                         Border border = BorderFactory.createLineBorder(Color.black, componente.getBorder());
                         spinner.setBorder(border);
                     }
+                    for (Estilo estilo : componente.getEstilos()) {
+                        if (estilo.getBackground() != null) {
+                            spinner.setBackground(estilo.getBackground());
+                        }
+                        if (estilo.getBorde() != null) {
+                            if (estilo.getBorde()) {
+                                if (estilo.getColorBorde() != null) {
+                                    if (estilo.getAnchoBorde() >= 0) {
+                                        Border border = BorderFactory.createLineBorder(estilo.getColorBorde(), estilo.getAnchoBorde());
+                                        spinner.setBorder(border);
+                                    }
+                                }
+                            } else {
+                                spinner.setBorder(null);
+                            }
+                        }
+                        if (estilo.getFuente() != null) {
+                            if (estilo.getAlturaFuente() >= 0) {
+                                Font fuente = new Font(estilo.getFuente(), Font.PLAIN, estilo.getAlturaFuente());
+                                spinner.setFont(fuente);
+                            }
+                        }
+                        if (estilo.getColorFuente() != null) {
+                            spinner.setForeground(estilo.getColorFuente());
+                        }
+                    }
                     panelPrincipal.add(spinner);
                     break;
                 case list:
@@ -143,6 +353,32 @@ public class Graficador {
                     }
                     componente.getItems().forEach(comboBox::addItem);
                     comboBox.setSelectedIndex(componente.getDefecto());
+                    for (Estilo estilo : componente.getEstilos()) {
+                        if (estilo.getBackground() != null) {
+                            comboBox.setBackground(estilo.getBackground());
+                        }
+                        if (estilo.getBorde() != null) {
+                            if (estilo.getBorde()) {
+                                if (estilo.getColorBorde() != null) {
+                                    if (estilo.getAnchoBorde() >= 0) {
+                                        Border border = BorderFactory.createLineBorder(estilo.getColorBorde(), estilo.getAnchoBorde());
+                                        comboBox.setBorder(border);
+                                    }
+                                }
+                            } else {
+                                comboBox.setBorder(null);
+                            }
+                        }
+                        if (estilo.getFuente() != null) {
+                            if (estilo.getAlturaFuente() >= 0) {
+                                Font fuente = new Font(estilo.getFuente(), Font.PLAIN, estilo.getAlturaFuente());
+                                comboBox.setFont(fuente);
+                            }
+                        }
+                        if (estilo.getColorFuente() != null) {
+                            comboBox.setForeground(estilo.getColorFuente());
+                        }
+                    }
                     panelPrincipal.add(comboBox);
                     break;
             }
@@ -254,19 +490,25 @@ public class Graficador {
         }
     }
 
-    public void Graficar() {
+    public void Graficar(String error) {
         JFrame frame = new JFrame();
         frame.setLayout(null);
-        componentes.forEach((div, componente) -> {
-            switch (componente.getTipo()) {
-                case ufex:
-                    agregarFrame(componente.getComponentes(), frame, div);
-                    break;
-                default:
-                    break;
-            }
-        });
-        // set up the jframe, then display it
+        if (error.isEmpty()) {
+            componentes.forEach((div, componente) -> {
+                switch (componente.getTipo()) {
+                    case ufex:
+                        agregarFrame(componente.getComponentes(), frame, div);
+                        break;
+                    default:
+                        break;
+                }
+            });
+        } else {
+            JLabel errorL = new JLabel();
+            errorL.setBounds(0, 0, 1000, 100);
+            errorL.setText(error);
+            frame.add(errorL);
+        }
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setPreferredSize(new Dimension(500, 500));
         frame.pack();

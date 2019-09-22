@@ -29,14 +29,118 @@ public class Ejecutor {
     public String path;
     public String nombreComponenteActual = "";
     public HashMap<String, Componente> paraGraficar;
+    public HashMap<String, Estilo> estilos;
+    public Analizadores.HTML.Analisis_Sintactico sintactico_html;
+    public Analizadores.CSS.Analisis_Sintactico sintactico_css;
+    public String error;
+    public ArrayList<String> errores;
 
     public void Ejecutar(NodoSintactico raiz, String nombreArchivo, String path) {
         paraGraficar = new HashMap<>();
+        estilos = new HashMap<>();
+        errores = new ArrayList<>();
         componentesUfex = new Ufe(nombreArchivo);
         this.path = path;
+        analizarHtml();
+        analizarCss();
         recorrerImports(raiz, null);
         recorrer(raiz, null, null);
         recorrerRender(raiz, null);
+    }
+
+    private void analizarCss() {
+        File archivoC = new File(path + "src/App.css");
+        String documentoC = "";
+        if (archivoC.exists()) {
+            if (archivoC.canRead()) {
+                if (archivoC.getName().endsWith("css")) {
+                    try {
+                        try (BufferedReader in = new BufferedReader(
+                                new InputStreamReader(
+                                        new FileInputStream(archivoC), "UTF8"))) {
+                            String str;
+                            while ((str = in.readLine()) != null) {
+                                documentoC += str + "\n";
+                            }
+                        }
+                    } catch (IOException e) {
+                    }
+                    documentoC = documentoC.replace("á", "a");
+                    documentoC = documentoC.replace("é", "e");
+                    documentoC = documentoC.replace("í", "i");
+                    documentoC = documentoC.replace("ó", "o");
+                    documentoC = documentoC.replace("ú", "u");
+                    documentoC = documentoC.replace("ñ", "n");
+
+                    //Se ejecuta el analizador
+                    Analizadores.CSS.Analisis_Lexico lexico_css = new Analizadores.CSS.Analisis_Lexico(new BufferedReader(new StringReader(documentoC)));
+                    sintactico_css = new Analizadores.CSS.Analisis_Sintactico(lexico_css);
+                    try {
+                        sintactico_css.parse();
+                        for (Estilo estilo : sintactico_css.estilos) {
+                            if (estilos.containsKey(estilo.getNombre())) {
+                                estilos.replace(estilo.getNombre(), estilo);
+                            } else {
+                                estilos.put(estilo.getNombre(), estilo);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Extension no compatible");
+                }
+            } else {
+                errores.add("Error al leer el archivo");
+            }
+        } else {
+            errores.add("El archivo no existe");
+        }
+    }
+
+    private void analizarHtml() {
+        File archivoC = new File(path + "public/index.html");
+        String documentoC = "";
+        if (archivoC.exists()) {
+            if (archivoC.canRead()) {
+                if (archivoC.getName().endsWith("html")) {
+                    try {
+                        try (BufferedReader in = new BufferedReader(
+                                new InputStreamReader(
+                                        new FileInputStream(archivoC), "UTF8"))) {
+                            String str;
+                            while ((str = in.readLine()) != null) {
+                                documentoC += str + "\n";
+                            }
+                        }
+                    } catch (IOException e) {
+                    }
+                    documentoC = documentoC.replace("á", "a");
+                    documentoC = documentoC.replace("é", "e");
+                    documentoC = documentoC.replace("í", "i");
+                    documentoC = documentoC.replace("ó", "o");
+                    documentoC = documentoC.replace("ú", "u");
+                    documentoC = documentoC.replace("ñ", "n");
+
+                    //Se ejecuta el analizador
+                    Analizadores.HTML.Analisis_Lexico lexico_html = new Analizadores.HTML.Analisis_Lexico(new BufferedReader(new StringReader(documentoC)));
+                    sintactico_html = new Analizadores.HTML.Analisis_Sintactico(lexico_html);
+                    try {
+                        sintactico_html.parse();
+
+                    } catch (Exception ex) {
+                        Logger.getLogger(Test.class
+                                .getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Extension no compatible");
+                }
+            } else {
+                errores.add("Error al leer el archivo");
+            }
+        } else {
+            errores.add("El archivo no existe");
+        }
     }
 
     private void recorrerRender(NodoSintactico raiz, Entorno ent) {
@@ -54,15 +158,27 @@ public class Ejecutor {
                 String componenteRender = (String) raiz.getHijos().get(0).getValor();
                 String divRender = (String) raiz.getHijos().get(1).getValor();
                 if (componentesUfex.getComponentes().containsKey(componenteRender)) {
-                    Componente comp = componentesUfex.getComponentes().get(componenteRender);
-                    if(paraGraficar.containsKey(divRender)){
-                        paraGraficar.replace(divRender, comp);
+                    Boolean encontrado = false;
+                    for (Div div : sintactico_html.divs) {
+                        if (div.getNombre().equals(divRender)) {
+                            encontrado = true;
+                            break;
+                        }
+                    }
+                    if (encontrado) {
+                        Componente comp = componentesUfex.getComponentes().get(componenteRender);
+                        if (paraGraficar.containsKey(divRender)) {
+                            paraGraficar.replace(divRender, comp);
+                        } else {
+                            paraGraficar.put(divRender, comp);
+                        }
+                        error = "";
                     } else {
-                        paraGraficar.put(divRender, comp);
+                        paraGraficar.put("ERROR", null);
+                        error = sintactico_html.noufe;
                     }
                 } else {
-                    //AGREGAR EL ERROR
-                    System.out.println("El componente: " + componenteRender + " no existe");
+                    errores.add("El componente: " + componenteRender + " no existe");
                 }
                 break;
             default:
@@ -81,6 +197,70 @@ public class Ejecutor {
                     recorrerImports(hijo, ent);
                 }
                 break;
+            case "IMPORT_CSS":
+                Expresion rutaC = resolverAritmetica(raiz.getHijos().get(0), ent);
+                String direccionCSS = "ERROR";
+                switch (rutaC.tipo) {
+                    case cadena:
+                        direccionCSS = (String) rutaC.valor;
+                        direccionCSS = direccionCSS.replace("./", path);
+                        break;
+                    case error:
+                        errores.add(String.valueOf(rutaC.valor));
+                        break;
+                    default:
+                        errores.add("Se esperaba cadena");
+                        break;
+                }
+                File archivoC = new File(direccionCSS);
+                String documentoC = "";
+                if (archivoC.exists()) {
+                    if (archivoC.canRead()) {
+                        if (archivoC.getName().endsWith("css")) {
+                            try {
+                                try (BufferedReader in = new BufferedReader(
+                                        new InputStreamReader(
+                                                new FileInputStream(archivoC), "UTF8"))) {
+                                    String str;
+                                    while ((str = in.readLine()) != null) {
+                                        documentoC += str + "\n";
+                                    }
+                                }
+                            } catch (IOException e) {
+                            }
+                            documentoC = documentoC.replace("á", "a");
+                            documentoC = documentoC.replace("é", "e");
+                            documentoC = documentoC.replace("í", "i");
+                            documentoC = documentoC.replace("ó", "o");
+                            documentoC = documentoC.replace("ú", "u");
+                            documentoC = documentoC.replace("ñ", "n");
+
+                            //Se ejecuta el analizador
+                            Analizadores.CSS.Analisis_Lexico lexico_css = new Analizadores.CSS.Analisis_Lexico(new BufferedReader(new StringReader(documentoC)));
+                            sintactico_css = new Analizadores.CSS.Analisis_Sintactico(lexico_css);
+                            try {
+                                sintactico_css.parse();
+                                for (Estilo estilo : sintactico_css.estilos) {
+                                    if (estilos.containsKey(estilo.getNombre())) {
+                                        estilos.replace(estilo.getNombre(), estilo);
+                                    } else {
+                                        estilos.put(estilo.getNombre(), estilo);
+                                    }
+                                }
+                            } catch (Exception ex) {
+                                Logger.getLogger(Test.class
+                                        .getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Extension no compatible");
+                        }
+                    } else {
+                        errores.add("Error al leer el archivo");
+                    }
+                } else {
+                    errores.add("El archivo no existe");
+                }
+                break;
             case "IMPORT_COMPONENTE":
                 String nombreComponente = (String) raiz.getHijos().get(0).getValor();
                 Expresion ruta = resolverAritmetica(raiz.getHijos().get(1).getHijos().get(0), ent);
@@ -91,12 +271,10 @@ public class Ejecutor {
                         direccion = direccion.replace("./", path);
                         break;
                     case error:
-                        //AGREGAR EL ERROR
-                        System.out.println(ruta.valor);
+                        errores.add(String.valueOf(ruta.valor));
                         break;
                     default:
-                        //AGREGAR EL ERROR
-                        System.out.println("Se esperaba cadena");
+                        errores.add("Se esperaba cadena");
                         break;
                 }
                 File archivo = new File(direccion);
@@ -132,21 +310,24 @@ public class Ejecutor {
                                 if (ejecutor.componentesUfex.getComponentes().containsKey(nombreComponente)) {
                                     Componente compo = ejecutor.componentesUfex.getComponentes().get(nombreComponente);
                                     componentesUfex.getComponentes().put(nombreComponente, compo);
+
+                                }
+                                for (String errorX : ejecutor.errores) {
+                                    errores.add(direccion + "     " + errorX);
                                 }
                             } catch (Exception ex) {
-                                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(Test.class
+                                        .getName()).log(Level.SEVERE, null, ex);
                             }
 
                         } else {
                             JOptionPane.showMessageDialog(null, "Extension no compatible");
                         }
                     } else {
-                        //AGREGAR EL ERROR
-                        System.out.println("Error al leer el archivo");
+                        errores.add("Error al leer el archivo");
                     }
                 } else {
-                    //AGREGAR EL ERROR
-                    System.out.println("El archivo no existe");
+                    errores.add("El archivo no existe");
                 }
                 break;
             default:
@@ -200,8 +381,7 @@ public class Ejecutor {
                         }
                         break;
                     default:
-                        //AGREGAR EL ERROR
-                        System.out.println(resultado.valor);
+                        errores.add(String.valueOf(resultado.valor));
                         break;
                 }
                 break;
@@ -219,8 +399,7 @@ public class Ejecutor {
                         }
                         break;
                     default:
-                        //AGREGAR EL ERROR
-                        System.out.println(resultado.valor);
+                        errores.add(String.valueOf(resultado.valor));
                         break;
                 }
                 break;
@@ -228,9 +407,9 @@ public class Ejecutor {
                 resultado = resolverExpresion(raiz.getHijos().get(0), ent);
                 if (resultado.tipo != Simbolo.EnumTipo.error) {
                     System.out.println(resultado.valor);
+                    errores.add(String.valueOf(resultado.valor));
                 } else {
-                    //AGREGAR EL ERROR
-                    System.out.println(resultado.valor);
+                    errores.add(String.valueOf(resultado.valor));
                 }
                 break;
             case "REPETIR":
@@ -266,8 +445,7 @@ public class Ejecutor {
                 if (!componentesUfex.getComponentes().containsKey(nombreComponenteActual)) {
                     componentesUfex.getComponentes().put(nombreComponenteActual, componente);
                 } else {
-                    //AGREGAR EL ERROR
-                    System.out.println("Componente: " + nombreComponenteActual + " ya existe");
+                    errores.add("Componente: " + nombreComponenteActual + " ya existe");
                 }
                 break;
             case "ITEMS":
@@ -278,8 +456,7 @@ public class Ejecutor {
                         if (exp.tipo != Simbolo.EnumTipo.error) {
                             valorItem = String.valueOf(exp.valor);
                         } else {
-                            //AGREGAR EL ERROR
-                            System.out.println(exp.valor);
+                            errores.add(String.valueOf(exp.valor));
                         }
                     } else {
                         valorItem = (String) hijo.getValor();
@@ -295,32 +472,11 @@ public class Ejecutor {
                     int numeroDefecto = (int) defecto.valor;
                     componente.setDefecto(numeroDefecto);
                 } else {
-                    //AGREGAR EL ERROR
-                    System.out.println("Se esperaba tipo Entero");
+                    errores.add("Se esperaba tipo Entero");
                 }
                 break;
             default:
                 break;
-        }
-    }
-
-    private void imprimirComponentes(ArrayList<Componente> retorno, String cadena) {
-        for (Componente comp : retorno) {
-            System.out.println(cadena + comp.getTipo());
-            if (comp.getTipo() == Componente.EnumTipo.panel) {
-                String nueva = cadena + "     ";
-                imprimirComponentesPanel(comp, nueva);
-            }
-        }
-    }
-
-    private void imprimirComponentesPanel(Componente retorno, String cadena) {
-        for (Componente comp : retorno.getComponentes()) {
-            System.out.println(cadena + comp.getTipo());
-            if (comp.getTipo() == Componente.EnumTipo.panel) {
-                String nueva = cadena + "     ";
-                imprimirComponentesPanel(comp, nueva);
-            }
         }
     }
 
@@ -378,13 +534,11 @@ public class Ejecutor {
                 recorrer(raiz.getHijos().get(1), ent, retorno);
                 if (retorno.getDefecto() >= 0) {
                     if ((retorno.getDefecto()) >= retorno.getItems().size()) {
-                        //AGREGAR EL ERROR
-                        System.out.println("Index fuera de los limites");
+                        errores.add("Index fuera de los limites");
                         retorno.setDefecto(0);
                     }
                 } else {
-                    //AGREGAR EL ERROR
-                    System.out.println("Se esperaba un index positivo");
+                    errores.add("Se esperaba un index positivo");
                     retorno.setDefecto(0);
                 }
                 break;
@@ -416,7 +570,6 @@ public class Ejecutor {
             Expresion expresion = resolverExpresion(raiz.getHijos().get(0), ent);
             if (expresion.tipo != Simbolo.EnumTipo.error) {
                 comp.setNombre(String.valueOf(expresion.valor));
-                System.out.println(expresion.valor);
             }
         } else {
             comp.setNombre(String.valueOf(raiz.getValor()));
@@ -431,12 +584,10 @@ public class Ejecutor {
                 comp.setDefecto(valor);
                 break;
             case error:
-                //AGREGAR EL ERROR
-                System.out.println(exp.valor);
+                errores.add(String.valueOf(exp.valor));
                 break;
             default:
-                //AGREGAR EL ERROR
-                System.out.println("Se esperaba tipo entero");
+                errores.add("Se esperaba tipo entero");
                 break;
         }
     }
@@ -450,8 +601,7 @@ public class Ejecutor {
                     nuevo = componentesUfex.getComponentes().get(nombreComponente);
                     comp.getComponentes().add(nuevo);
                 } else {
-                    //AGREGAR EL ERROR
-                    System.out.println("Componente no encontrado");
+                    errores.add("Componente no encontrado");
                 }
             } else {
                 comp.getComponentes().add(EjecutarComponente(hijo, ent));
@@ -461,7 +611,11 @@ public class Ejecutor {
 
     private void EjecutarPropiedades(Componente comp, NodoSintactico raiz, Entorno ent) {
         Expresion exp;
+        Boolean aplicado = false;
         for (NodoSintactico hijo : raiz.getHijos()) {
+            if (aplicado) {
+                break;
+            }
             switch (hijo.getNombre()) {
                 case "AT_ID":
                     comp.setId(String.valueOf(hijo.getValor()));
@@ -503,11 +657,32 @@ public class Ejecutor {
                     comp.setFuente(String.valueOf(exp.valor));
                     break;
                 case "AT_ONCLICK":
-                    exp = resolverExpresion(hijo.getHijos().get(0).getHijos().get(0), ent);
+                    exp = resolverExpresion(hijo.getHijos().get(0).getHijos().get(0).getHijos().get(0), ent);
                     comp.setOnClick(String.valueOf(exp.valor));
                     break;
                 case "AT_CLASSNAME":
                     String nombreCss = (String) hijo.getHijos().get(0).getValor();
+                    String[] style = nombreCss.split(" ");
+                    boolean encontrado = false;
+                    for (int i = 0; i < style.length; i++) {
+                        if (estilos.containsKey(style[i])) {
+                            encontrado = true;
+                        } else {
+                            errores.add("Estilo: " + style[i] + " no encontrado");
+                            encontrado = false;
+                            break;
+                        }
+                    }
+                    if (encontrado) {
+                        for (int i = 0; i < style.length; i++) {
+                            if (estilos.containsKey(style[i])) {
+                                comp.getEstilos().add(estilos.get(style[i]));
+                                aplicado = true;
+                            } else {
+                                aplicado = false;
+                            }
+                        }
+                    }
                     comp.setClassName(nombreCss);
                     break;
             }
@@ -606,23 +781,37 @@ public class Ejecutor {
 
     private void EjecutarReasignacion(NodoSintactico raiz, Entorno ent) {
         String nombre = (String) raiz.getHijos().get(0).getValor();
+        Expresion exp = null;
         if (raiz.getHijos().size() == 2) {
-            Simbolo sim = ent.buscar(nombre, raiz.getLinea(), raiz.getColumna());
+            Simbolo sim;
+            if (raiz.getHijos().get(0).getHijos().size() == 1) {
+                exp = resolverExpresion(raiz.getHijos().get(0).getHijos().get(0), ent);
+                if (exp.tipo == Simbolo.EnumTipo.entero) {
+                    sim = ent.buscar(exp.valor + "_" + nombre, raiz.getLinea(), raiz.getColumna());
+                } else {
+                    sim = null;
+                }
+            } else {
+                sim = ent.buscar(nombre, raiz.getLinea(), raiz.getColumna());
+            }
             if (sim != null) {
                 Expresion resultado = resolverExpresion(raiz.getHijos().get(1), ent);
                 if (resultado.tipo != Simbolo.EnumTipo.error) {
                     sim = new Simbolo(resultado.tipo, resultado.valor);
-                    if (!ent.modificar(nombre, sim)) {
-                        //AGREGAR EL ERROR
-                        System.out.println("Error al reasignar la variable");
+                    if (exp != null) {
+                        if (!ent.modificar(exp.valor + "_" + nombre, sim)) {
+                            errores.add("Error al reasignar la variable");
+                        }
+                    } else {
+                        if (!ent.modificar(nombre, sim)) {
+                            errores.add("Error al reasignar la variable");
+                        }
                     }
                 } else {
-                    //AGREGAR EL ERROR
-                    System.out.println(resultado.tipo);
+                    errores.add(String.valueOf(resultado.tipo));
                 }
             } else {
-                //AGREGAR EL ERROR
-                System.out.println("La variable no existe");
+                errores.add("La variable no existe");
             }
         } else {
             Expresion index = resolverExpresion(raiz.getHijos().get(1), ent);
@@ -635,25 +824,20 @@ public class Ejecutor {
                         if (resultado.tipo != Simbolo.EnumTipo.error) {
                             sim = new Simbolo(resultado.tipo, resultado.valor);
                             if (!ent.modificar(in + "_" + nombre, sim)) {
-                                //AGREGAR EL ERROR
-                                System.out.println("Error al reasignar la variable");
+                                errores.add("Error al reasignar la variable");
                             }
                         } else {
-                            //AGREGAR EL ERROR
-                            System.out.println(resultado.tipo);
+                            errores.add(String.valueOf(resultado.tipo));
                         }
                     } else {
-                        //AGREGAR EL ERROR
-                        System.out.println("La variable no existe");
+                        errores.add("La variable no existe");
                     }
                     break;
                 case error:
-                    //AGREGAR EL ERROR
-                    System.out.println(index.valor);
+                    errores.add(String.valueOf(index.valor));
                     break;
                 default:
-                    //AGREGAR EL ERROR
-                    System.out.println("Se esperaba valor entero");
+                    errores.add("Se esperaba valor entero");
                     break;
             }
         }
@@ -668,16 +852,20 @@ public class Ejecutor {
                     Entorno nuevo = new Entorno(ent);
                     recorrer(raiz.getHijos().get(1), nuevo, componente);
                     resultado = resolverExpresion(raiz.getHijos().get(0), ent);
-                    comprobador = (boolean) resultado.valor;
+                    if (String.valueOf(resultado.valor).toLowerCase().equals("true")) {
+                        comprobador = true;
+                    } else if (String.valueOf(resultado.valor).toLowerCase().equals("false")) {
+                        comprobador = false;
+                    } else {
+                        comprobador = false;
+                    }
                 }
                 break;
             case error:
-                //AGREGAR EL ERROR
-                System.out.println(resultado.valor);
+                errores.add(String.valueOf(resultado.valor));
                 break;
             default:
-                //AGREGAR EL ERROR
-                System.out.println("Se esperaba tipo booleano, tipo " + resultado.tipo + " encontrado");
+                errores.add("Se esperaba tipo booleano, tipo " + resultado.tipo + " encontrado");
                 break;
         }
     }
@@ -694,12 +882,10 @@ public class Ejecutor {
                 }
                 break;
             case error:
-                //AGREGAR EL ERROR
-                System.out.println(resultado.valor);
+                errores.add(String.valueOf(resultado.valor));
                 break;
             default:
-                //AGREGAR EL ERROR
-                System.out.println("Se esperaba tipo entero, tipo " + resultado.tipo + " encontrado");
+                errores.add("Se esperaba tipo entero, tipo " + resultado.tipo + " encontrado");
                 break;
         }
     }
@@ -714,19 +900,16 @@ public class Ejecutor {
                 if (resultado.tipo != Simbolo.EnumTipo.error) {
                     nuevo = new Simbolo(resultado.tipo, resultado.valor);
                     if (!ent.insertar(String.valueOf(raiz.getHijos().get(0).getValor()), nuevo, raiz.getLinea(), raiz.getColumna())) {
-                        //AGREGAR EL ERROR
-                        System.out.println("Error la variable ya existe");
+                        errores.add("Error la variable ya existe");
                     }
                 } else {
-                    //AGREGAR EL ERROR
-                    System.out.println(resultado.valor);
+                    errores.add(String.valueOf(resultado.valor));
                 }
                 break;
             case "SD":
                 nuevo = new Simbolo(Simbolo.EnumTipo.vacio, null);
                 if (!ent.insertar(String.valueOf(raiz.getHijos().get(0).getValor()), nuevo, raiz.getLinea(), raiz.getColumna())) {
-                    //AGREGAR EL ERROR
-                    System.out.println("Error la variable ya existe");
+                    errores.add("Error la variable ya existe");
                 }
                 break;
             case "ADA":
@@ -738,8 +921,7 @@ public class Ejecutor {
                             int repeticiones = (int) index.valor - 1;
                             nuevo = new Simbolo(index.tipo, index.valor);
                             if (!ent.insertar(String.valueOf(raiz.getHijos().get(0).getValor()), nuevo, raiz.getLinea(), raiz.getColumna())) {
-                                //AGREGAR EL ERROR
-                                System.out.println("Error la variable ya existe");
+                                errores.add("Error la variable ya existe");
                                 break;
                             } else {
                                 while (0 <= repeticiones) {
@@ -751,12 +933,10 @@ public class Ejecutor {
                             }
                             break;
                         case error:
-                            //AGREGAR ERROR
-                            System.out.println(index.valor);
+                            errores.add(String.valueOf(index.valor));
                             break;
                         default:
-                            //AGREGAR ERROR
-                            System.out.println("Se esperaba indice entero");
+                            errores.add("Se esperaba indice entero");
                             break;
                     }
                 } else {
@@ -765,8 +945,7 @@ public class Ejecutor {
                     int error = 0;
                     nuevo = new Simbolo(Simbolo.EnumTipo.entero, elementos.getHijos().size());
                     if (!ent.insertar(String.valueOf(raiz.getHijos().get(0).getValor()), nuevo, raiz.getLinea(), raiz.getColumna())) {
-                        //AGREGAR EL ERROR
-                        System.out.println("Error la variable ya existe");
+                        errores.add("Error la variable ya existe");
                         break;
                     } else {
                         for (int i = 0; i < hijos; i++) {
@@ -787,8 +966,7 @@ public class Ejecutor {
                                 ent.insertar(nombreVariable, nuevo, raiz.getLinea(), raiz.getColumna());
                             }
                         } else {
-                            //AGREGAR EL ERROR
-                            System.out.println("La variable no ha sido inicializada");
+                            errores.add("La variable no ha sido inicializada");
                         }
                     }
 
@@ -801,8 +979,7 @@ public class Ejecutor {
                         int repeticiones = (int) index.valor - 1;
                         nuevo = new Simbolo(index.tipo, index.valor);
                         if (!ent.insertar(String.valueOf(raiz.getHijos().get(0).getValor()), nuevo, raiz.getLinea(), raiz.getColumna())) {
-                            //AGREGAR EL ERROR
-                            System.out.println("Error la variable ya existe");
+                            errores.add("Error la variable ya existe");
                             break;
                         } else {
                             while (0 <= repeticiones) {
@@ -814,12 +991,10 @@ public class Ejecutor {
                         }
                         break;
                     case error:
-                        //AGREGAR ERROR
-                        System.out.println(index.valor);
+                        errores.add(String.valueOf(index.valor));
                         break;
                     default:
-                        //AGREGAR ERROR
-                        System.out.println("Se esperaba indice entero");
+                        errores.add("Se esperaba indice entero");
                         break;
                 }
                 break;
@@ -1222,7 +1397,7 @@ public class Ejecutor {
                 boolean resultado = (boolean) expresion1.valor || (boolean) expresion2.valor;
                 return new Expresion(Simbolo.EnumTipo.booleano, resultado);
             }
-            return new Expresion(Simbolo.EnumTipo.error, "Tipo booleano requerido, tipo " + expresion1.tipo + " encontrado");
+            return new Expresion(Simbolo.EnumTipo.error, "Tipo booleano requerido, tipo " + expresion2.tipo + " encontrado");
         }
         return new Expresion(Simbolo.EnumTipo.error, "Tipo booleano requerido, tipo " + expresion1.tipo + " encontrado");
     }
@@ -1233,7 +1408,7 @@ public class Ejecutor {
                 boolean resultado = (boolean) expresion1.valor && (boolean) expresion2.valor;
                 return new Expresion(Simbolo.EnumTipo.booleano, resultado);
             }
-            return new Expresion(Simbolo.EnumTipo.error, "Tipo booleano requerido, tipo " + expresion1.tipo + " encontrado");
+            return new Expresion(Simbolo.EnumTipo.error, "Tipo booleano requerido, tipo " + expresion2.tipo + " encontrado");
         }
         return new Expresion(Simbolo.EnumTipo.error, "Tipo booleano requerido, tipo " + expresion1.tipo + " encontrado");
     }
@@ -1252,7 +1427,7 @@ public class Ejecutor {
                 boolean resultado = (boolean) expresion1.valor ^ (boolean) expresion2.valor;
                 return new Expresion(Simbolo.EnumTipo.booleano, resultado);
             }
-            return new Expresion(Simbolo.EnumTipo.error, "Tipo booleano requerido, tipo " + expresion1.tipo + " encontrado");
+            return new Expresion(Simbolo.EnumTipo.error, "Tipo booleano requerido, tipo " + expresion2.tipo + " encontrado");
         }
         return new Expresion(Simbolo.EnumTipo.error, "Tipo booleano requerido, tipo " + expresion1.tipo + " encontrado");
     }

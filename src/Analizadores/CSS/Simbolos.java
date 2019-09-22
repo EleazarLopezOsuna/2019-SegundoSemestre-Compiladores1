@@ -9,24 +9,25 @@ package Analizadores.CSS;
 public class Simbolos {
   /* terminals */
   public static final int width = 18;
-  public static final int white = 35;
-  public static final int hexadecimal = 22;
+  public static final int white = 32;
+  public static final int hexadecimal = 20;
   public static final int borderWidth = 12;
   public static final int dosPuntos = 5;
-  public static final int brown = 34;
-  public static final int gray = 36;
-  public static final int yellow = 29;
+  public static final int brown = 31;
+  public static final int gray = 33;
+  public static final int yellow = 26;
   public static final int rgb = 19;
   public static final int coma = 8;
-  public static final int identificador = 23;
+  public static final int identificador = 38;
   public static final int border = 10;
-  public static final int purple = 30;
+  public static final int purple = 27;
+  public static final int colorrgb = 21;
   public static final int fontSize = 15;
-  public static final int numero = 20;
-  public static final int blue = 33;
+  public static final int numero = 41;
+  public static final int blue = 30;
   public static final int EOF = 0;
-  public static final int orange = 28;
-  public static final int ALIleft = 39;
+  public static final int orange = 25;
+  public static final int ALIleft = 36;
   public static final int error = 1;
   public static final int hight = 17;
   public static final int fontColor = 16;
@@ -35,20 +36,20 @@ public class Simbolos {
   public static final int puntoComa = 4;
   public static final int llaveA = 6;
   public static final int background = 9;
-  public static final int subidentificador = 24;
-  public static final int ALIright = 38;
-  public static final int red = 26;
-  public static final int pink = 27;
-  public static final int green = 32;
-  public static final int booleano = 25;
-  public static final int ALIcenter = 40;
-  public static final int black = 37;
+  public static final int subidentificador = 39;
+  public static final int ALIright = 35;
+  public static final int red = 23;
+  public static final int pink = 24;
+  public static final int green = 29;
+  public static final int booleano = 22;
+  public static final int ALIcenter = 37;
   public static final int parentesisC = 3;
+  public static final int black = 34;
   public static final int align = 13;
   public static final int parentesisA = 2;
   public static final int font = 14;
-  public static final int cadena = 21;
-  public static final int magenta = 31;
+  public static final int cadena = 40;
+  public static final int magenta = 28;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -70,11 +71,8 @@ public class Simbolos {
   "hight",
   "width",
   "rgb",
-  "numero",
-  "cadena",
   "hexadecimal",
-  "identificador",
-  "subidentificador",
+  "colorrgb",
   "booleano",
   "red",
   "pink",
@@ -90,7 +88,11 @@ public class Simbolos {
   "black",
   "ALIright",
   "ALIleft",
-  "ALIcenter"
+  "ALIcenter",
+  "identificador",
+  "subidentificador",
+  "cadena",
+  "numero"
   };
 }
 

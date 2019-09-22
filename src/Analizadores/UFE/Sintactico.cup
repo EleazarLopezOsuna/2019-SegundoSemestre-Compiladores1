@@ -161,11 +161,11 @@ DECLARACION ::= var ASIGNACION:a puntoComa
 {:
     NodoSintactico identificador = new NodoSintactico("ID", aleft, aright);
     identificador.setValor(a);
+    identificador.addHijo(b);
     identificador.setNumNodo(contador++);
 
     NodoSintactico tmp = new NodoSintactico("REASIGNACION", aleft, aright);
     tmp.addHijo(identificador);
-    tmp.addHijo(b);
     tmp.addHijo(c);
     tmp.setNumNodo(contador++);
     

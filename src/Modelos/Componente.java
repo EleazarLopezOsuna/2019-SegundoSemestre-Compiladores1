@@ -32,6 +32,7 @@ public class Componente {
     private int max;
     private String contenido;
     private ArrayList<Componente> componentes;
+    private ArrayList<Estilo> estilos;
 
     public Componente(EnumTipo tipo) {
         this.tipo = tipo;
@@ -51,8 +52,17 @@ public class Componente {
         max = 100;
         contenido = "";
         componentes = new ArrayList<>();
+        estilos = new ArrayList<>();
     }
 
+    public ArrayList<Estilo> getEstilos() {
+        return estilos;
+    }
+
+    public void setEstilos(ArrayList<Estilo> estilos) {
+        this.estilos = estilos;
+    }
+    
     public EnumTipo getTipo() {
         return tipo;
     }
@@ -133,8 +143,6 @@ public class Componente {
         this.componentes = componentes;
     }
     
-    
-    
     public String getId() {
         return id;
     }
@@ -177,6 +185,10 @@ public class Componente {
 
     public Color getColor() {
         return color;
+    }
+    
+    public void setColor(Color color){
+        this.color = color;
     }
 
     public void setColor(String NombreColor) {

@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package proyecto1_compiladores_segundosemestre_2019;
+
+import Modelos.Div;
 import Nodos.NodoSintactico;
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -12,7 +14,6 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 /**
  *
@@ -42,6 +43,8 @@ public class Test extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        consola = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,15 +75,20 @@ public class Test extends javax.swing.JFrame {
             }
         });
 
+        consola.setColumns(20);
+        consola.setRows(5);
+        jScrollPane2.setViewportView(consola);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 801, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 801, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
                         .addComponent(jButton2)
@@ -93,13 +101,15 @@ public class Test extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -108,10 +118,10 @@ public class Test extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String texto = areaCodigo.getText();
-        if(!texto.isEmpty()){
+        if (!texto.isEmpty()) {
             Analizadores.HTML.Analisis_Lexico lexico_html = new Analizadores.HTML.Analisis_Lexico(new BufferedReader(new StringReader(texto)));
             Analizadores.HTML.Analisis_Sintactico sintactico_html = new Analizadores.HTML.Analisis_Sintactico(lexico_html);
-            try{
+            try {
                 sintactico_html.parse();
             } catch (Exception ex) {
                 Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
@@ -122,10 +132,10 @@ public class Test extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         String texto = areaCodigo.getText();
-        if(!texto.isEmpty()){
+        if (!texto.isEmpty()) {
             Analizadores.CSS.Analisis_Lexico lexico_css = new Analizadores.CSS.Analisis_Lexico(new BufferedReader(new StringReader(texto)));
             Analizadores.CSS.Analisis_Sintactico sintactico_css = new Analizadores.CSS.Analisis_Sintactico(lexico_css);
-            try{
+            try {
                 sintactico_css.parse();
             } catch (Exception ex) {
                 Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,54 +146,62 @@ public class Test extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         String texto = areaCodigo.getText();
+        consola.setText("");
         texto = texto.replace("á", "a");
         texto = texto.replace("é", "e");
         texto = texto.replace("í", "i");
         texto = texto.replace("ó", "o");
         texto = texto.replace("ú", "u");
-        if(!texto.isEmpty()){
+        if (!texto.isEmpty()) {
             Analizadores.UFE.Analisis_Lexico lexico_ufe = new Analizadores.UFE.Analisis_Lexico(new BufferedReader(new StringReader(texto)));
             Analizadores.UFE.Analisis_Sintactico sintactico_ufe = new Analizadores.UFE.Analisis_Sintactico(lexico_ufe);
-            try{
+            try {
                 sintactico_ufe.parse();
-                String path = "C:/Users/USER/Desktop/Prueba/src/";
+                String path = "C:/Users/USER/Desktop/Prueba2/";
                 Ejecutor ejecutor = new Ejecutor();
                 ejecutor.Ejecutar(sintactico_ufe.padre, "Main", path);
-                Graficador graficador = new Graficador(ejecutor.paraGraficar);
-                graficador.Graficar();
+                if (!ejecutor.paraGraficar.isEmpty()) {
+                    Graficador graficador = new Graficador(ejecutor.paraGraficar);
+                    graficador.Graficar(ejecutor.error);
+                }
+                for (String errorX : ejecutor.errores) {
+                    consola.setText(consola.getText() + errorX + "\n");
+                }
                 FileWriter archivo = null;
                 PrintWriter pw = null;
                 String cadena = graficarNodo(sintactico_ufe.padre);
-                try{
+                try {
                     archivo = new FileWriter("arbol.dot");
                     pw = new PrintWriter(archivo);
                     pw.println("digraph G{\nnode[shape=box];\nrankdir=UD;\n");
                     pw.println(cadena);
                     pw.println("\n}");
                     archivo.close();
-                }catch (IOException e){}
-                
-                try{
+                } catch (IOException e) {
+                }
+
+                try {
                     String cmd = "dot -Tpng arbol.dot -o arbol.png";
                     Runtime.getRuntime().exec(cmd);
-                }catch (IOException e){}
+                } catch (IOException e) {
+                }
             } catch (Exception ex) {
                 Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    public String graficarNodo(NodoSintactico nodo){
+    public String graficarNodo(NodoSintactico nodo) {
         String cadena = "";
-        for(NodoSintactico hijos: nodo.getHijos()){
+        for (NodoSintactico hijos : nodo.getHijos()) {
             String nodoPadre = "";
             String nodoHijo = "";
-            if(nodo.getValor() != null){
+            if (nodo.getValor() != null) {
                 nodoPadre = "\"" + nodo.getNumNodo() + "_" + nodo.getNombre() + "\"" + "[label = \"" + nodo.getValor() + "\"];";
             } else {
                 nodoPadre = "\"" + nodo.getNumNodo() + "_" + nodo.getNombre() + "\"" + "[label = \"" + nodo.getNombre() + "\"];";
             }
-            if(hijos.getValor() != null){
+            if (hijos.getValor() != null) {
                 nodoHijo = "\"" + hijos.getNumNodo() + "_" + hijos.getNombre() + "\"" + "[label = \"" + hijos.getValor() + "\"];";
             } else {
                 nodoHijo = "\"" + hijos.getNumNodo() + "_" + hijos.getNombre() + "\"" + "[label = \"" + hijos.getNombre() + "\"];";
@@ -195,7 +213,7 @@ public class Test extends javax.swing.JFrame {
         }
         return cadena;
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -216,7 +234,7 @@ public class Test extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -227,10 +245,12 @@ public class Test extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaCodigo;
+    private javax.swing.JTextArea consola;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }

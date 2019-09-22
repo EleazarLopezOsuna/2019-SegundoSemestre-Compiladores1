@@ -42,8 +42,7 @@ otros                   = [\t|\r|\n|\f|\s|\v|\xxx|\xhh]*
 /*--------- 3ra Area: Reglas Lexicas ---------*/
 
 //--------> Simbolos
-<YYINITIAL> {comentarioMultiLinea}  { System.out.println("COMENTARIO"); }
-<TEXTO> {comentarioMultiLinea}  { System.out.println("COMENTARIO"); }
+<YYINITIAL> {comentarioMultiLinea}  { /**/ }
 <YYINITIAL> "<"                     { return new Symbol(Simbolos.abrir, yycolumn, yyline, yytext()); }
 <YYINITIAL> ">"                     { yybegin(TEXTO); return new Symbol(Simbolos.cerrar, yycolumn, yyline, yytext()); }
 <YYINITIAL> "="                     { return new Symbol(Simbolos.igual, yycolumn, yyline, yytext()); }
@@ -65,6 +64,7 @@ otros                   = [\t|\r|\n|\f|\s|\v|\xxx|\xhh]*
 <YYINITIAL> "id"                    { return new Symbol(Simbolos.id, yycolumn, yyline, yytext()); }
 
 
+<TEXTO> {comentarioMultiLinea}      { /**/ }
 <TEXTO> {otros}                     { /**/ }
 <TEXTO> "<"                         { yybegin(YYINITIAL); return new Symbol(Simbolos.abrir, yycolumn, yyline, yytext()); }
 <TEXTO> {texto}                     { return new Symbol(Simbolos.texto, yycolumn, yyline, yytext()); }
